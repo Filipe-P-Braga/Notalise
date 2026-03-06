@@ -1,0 +1,58 @@
+// Importa o decorator Component do Angular
+// Ele permite transformar essa classe em um componente Angular
+import { Component } from '@angular/core';
+
+// Importa o service que fará a comunicação com a API
+import { EventoService } from '../services/evento.service';
+
+// Decorator que define as configurações do componente
+@Component({
+  selector: 'app-evento', 
+  // Nome da tag HTML usada para chamar esse componente
+
+  templateUrl: './evento.component.html'
+  // Arquivo HTML que contém o layout da tela
+})
+
+// Classe principal do componente
+export class EventoComponent {
+
+  // Variável que armazenará o valor digitado no campo
+  esperarEstruturaEvento: string = '';
+
+  // Construtor da classe
+  // Aqui o Angular injeta automaticamente o EventoService
+  constructor(private eventoService: EventoService) {}
+
+  // Método que será chamado quando o usuário clicar em enviar
+  enviar() {
+
+    // Cria um objeto com os dados que serão enviados para a API
+    const dados = {
+      esperarEstruturaEvento: this.esperarEstruturaEvento
+      // Pega o valor digitado no campo
+    };
+
+    // Chama o método do service que faz a requisição HTTP
+    this.eventoService.esperarCriacaoApi(dados)
+
+      // subscribe executa a chamada da API
+      .subscribe({
+
+        // Executa quando a chamada da API retorna sucesso
+        next: (res) => {
+          console.log('Sucesso', res);
+          // Mostra no console a resposta da API
+        },
+
+        // Executa quando ocorre algum erro na requisição
+        error: (err) => {
+          console.error('Erro', err);
+          // Mostra o erro no console
+        }
+
+      });
+
+  }
+
+}
