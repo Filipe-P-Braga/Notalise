@@ -1,26 +1,20 @@
-public class EventService
+using Backend.Models;
+using Backend.Repositories;
+
+namespace Backend.Services
 {
-    private Repositorio repo = new Repositorio();
-
-    public void CreateEvent(Event ev)
+    public class EventService
     {
-        repo.CreateEvent(ev);
-    }
+        private readonly EventRepository _repo;
 
-    public void UpdateEvent(Event ev)
-    {
-        repo.UpdateEvent(ev);
-    }
+        public EventService(EventRepository repo)
+        {
+            _repo = repo;
+        }
 
-    // futuras implementações
-    // TODO: método DELETE
-    public void DeleteEvent(int id)
-    {
-        // TODO
-    }
-
-    public List<Event> GetEvents()
-    {
-        return new List<Event>();
+        public void CreateEvent(Event ev)
+        {
+            _repo.InsertEvent(ev);
+        }
     }
 }

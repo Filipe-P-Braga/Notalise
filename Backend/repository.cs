@@ -1,57 +1,28 @@
+using Backend.Models;
 using MySql.Data.MySqlClient;
 
-public class Repositorio
+namespace Backend.Repositories
 {
-    // talvez cause problema ? usuário padrão ? senha padrão ?
-    string connectionString = "server=localhost;database=eventsdb;user=root;password=123456";
-
-    public void CreateEvent(Event ev)
+    public class Repository
     {
-        using var conn = new MySqlConnection(connectionString);
-        conn.Open();
+        private string connectionString = "server=localhost;database=eventsdb;user=root;password=123456";
 
-        string query = @"INSERT INTO Events (Name, Address, Description, Score)
-                         VALUES (@name, @address, @description, @score)";
+        public void InsertEvent(Event ev)
+        {
+            using var conn = new MySqlConnection(connectionString);
+            conn.Open();
 
-        using var cmd = new MySqlCommand(query, conn);
+            var query = @"INSERT INTO Events (Name, Address, Description, Score)
+                          VALUES (@name, @address, @description, @score)";
 
-        cmd.Parameters.AddWithValue("@name", ev.Name);
-        cmd.Parameters.AddWithValue("@address", ev.Address);
-        cmd.Parameters.AddWithValue("@description", ev.Description);
-        cmd.Parameters.AddWithValue("@score", ev.Score);
+            using var cmd = new MySqlCommand(query, conn);
 
-        cmd.ExecuteNonQuery();
-    }
+            cmd.Parameters.AddWithValue("@name", ev.Name);
+            cmd.Parameters.AddWithValue("@address", ev.Address);
+            cmd.Parameters.AddWithValue("@description", ev.Description);
+            cmd.Parameters.AddWithValue("@score", ev.Score);
 
-    public void UpdateEvent(Event ev)
-    {
-        using var conn = new MySqlConnection(connectionString);
-        conn.Open();
-
-        string query = @"UPDATE Events 
-                         SET Name=@name, Address=@address, Description=@description, Score=@score
-                         WHERE Id=@id";
-
-        using var cmd = new MySqlCommand(query, conn);
-
-        cmd.Parameters.AddWithValue("@id", ev.Id);
-        cmd.Parameters.AddWithValue("@name", ev.Name);
-        cmd.Parameters.AddWithValue("@address", ev.Address);
-        cmd.Parameters.AddWithValue("@description", ev.Description);
-        cmd.Parameters.AddWithValue("@score", ev.Score);
-
-        cmd.ExecuteNonQuery();
-    }
-
-    // Próximos passos a serem criados
-    public void DeleteEvent(int id)
-    {
-        // TODO: implementar DELETE
-    }
-
-    public List<Event> GetEvents()
-    {
-        // TODO: implementar READ
-        return new List<Event>();
+            cmd.ExecuteNonQuery();
+        }
     }
 }
