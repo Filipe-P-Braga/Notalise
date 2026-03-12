@@ -1,25 +1,35 @@
 using Microsoft.AspNetCore.Mvc;
-using Backend.Models;
-using Backend.Services;
 
-namespace Backend.Controllers
+[ApiController]
+[Route("event")]
+public class EventController : ControllerBase
 {
-    [ApiController]
-    [Route("api/event")]
-    public class EventController : ControllerBase
+    private EventService service = new EventService();
+
+    [HttpPost("create")]
+    public IActionResult CreateEvent([FromBody] Event ev)
     {
-        private readonly EventService _service;
+        service.CreateEvent(ev);
+        return Ok("Evento criado");
+    }
 
-        public EventController(EventService service)
-        {
-            _service = service;
-        }
+    [HttpPut("update")]
+    public IActionResult UpdateEvent([FromBody] Event ev)
+    {
+        service.UpdateEvent(ev);
+        return Ok("Evento atualizado");
+    }
 
-        [HttpPost("CreateEvent")]
-        public IActionResult CreateEvent([FromBody] Event ev)
-        {
-            _service.CreateEvent(ev);
-            return Ok("Event created");
-        }
+    // TODO: Estrutura dos métodos GET e DELETE a serem feitas
+    [HttpGet]
+    public IActionResult GetEvents()
+    {
+        return Ok("TODO: Implementar GET");
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteEvent(int id)
+    {
+        return Ok("TODO: Implementar DELETE");
     }
 }
