@@ -43,15 +43,60 @@ public class Repositorio
         cmd.ExecuteNonQuery();
     }
 
-    // Próximos passos a serem criados
-    public void DeleteEvent(int id)
-    {
-        // TODO: implementar DELETE
-    }
 
+    // feito o método DELETE
     public List<Event> GetEvents()
     {
-        // TODO: implementar READ
-        return new List<Event>();
+        var lista = new List<Event>();
+
+        using var conn = new MySqlConnection(connectionString);
+        conn.Open();
+
+        string query = "SELECT * FROM Events";
+
+        using var cmd = new MySqlCommand(query, conn);
+        using var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            lista.Add(new Event
+            {
+                Id = reader.GetInt32("Id"),
+                Name = reader.GetString("Name"),
+                Address = reader.GetString("Address"),
+                Description = reader.IsDBNull("Description") ? null : reader.GetString("Description"),
+                Score = reader.GetInt32("Score")
+            });
+        }
+
+        return lista;
+    }
+
+    // feito o método READ
+    public Event? GetEventById(int id)
+    {
+        using var conn = new MySqlConnection(connectionString);
+        conn.Open();
+
+        string query = "SELECT * FROM Events WHERE Id=@id";
+
+        using var cmd = new MySqlCommand(query, conn);
+        cmd.Parameters.AddWithValue("@id", id);
+
+        using var reader = cmd.ExecuteReader();
+
+        if (reader.Read())
+        {
+            return new Event
+            {
+                Id = reader.GetInt32("Id"),
+                Name = reader.GetString("Name"),
+                Address = reader.GetString("Address"),
+                Description = reader.IsDBNull("Description") ? null : reader.GetString("Description"),
+                Score = reader.GetInt32("Score")
+            };
+        }
+
+        return null;
     }
 }
