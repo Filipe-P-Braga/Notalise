@@ -2,9 +2,11 @@ using MySql.Data.MySqlClient;
 
 public class Repositorio
 {
-    // talvez cause problema ? usuário padrão ? senha padrão ?
+    // talvez cause problema ? usuário padrão ? senha padrão ? 
+    // database sendo eventsdb para todos
     string connectionString = "server=localhost;database=eventsdb;user=root;password=123456";
 
+    //parte referente ao evento criado tipo inovaweek
     public void CreateEvent(Event ev)
     {
         using var conn = new MySqlConnection(connectionString);
@@ -42,7 +44,6 @@ public class Repositorio
 
         cmd.ExecuteNonQuery();
     }
-
 
     // feito o método DELETE
     public List<Event> GetEvents()
@@ -99,4 +100,46 @@ public class Repositorio
 
         return null;
     }
+
+    //Parte referente ao Stand tipo o que é oferecido no inovaweek
+    //Mexe com stand no event.cs
+    public void CreateStand(Stand stand)
+    {
+        using var conn = new MySqlConnection(connectionString);
+        conn.Open();
+
+        string query = @"INSERT INTO Stands (EventId, Name, Local, Description, Score)
+                        VALUES (@eventId, @name, @local, @description, @score)";
+
+        using var cmd = new MySqlCommand(query, conn);
+
+        cmd.Parameters.AddWithValue("@eventId", stand.EventId);
+        cmd.Parameters.AddWithValue("@name", stand.Name);
+        cmd.Parameters.AddWithValue("@local", stand.Local);
+        cmd.Parameters.AddWithValue("@description", stand.Description);
+        cmd.Parameters.AddWithValue("@score", stand.Score);
+
+        cmd.ExecuteNonQuery();
+    }
+
+    public void UpdateStand(Stand stand)
+{
+    using var conn = new MySqlConnection(connectionString);
+    conn.Open();
+
+    string query = @"UPDATE Stands 
+                     SET Name=@name, Local=@local, Description=@description, Score=@score
+                     WHERE Id=@id";
+
+    using var cmd = new MySqlCommand(query, conn);
+
+    cmd.Parameters.AddWithValue("@id", stand.Id);
+    cmd.Parameters.AddWithValue("@name", stand.Name);
+    cmd.Parameters.AddWithValue("@local", stand.Local);
+    cmd.Parameters.AddWithValue("@description", stand.Description);
+    cmd.Parameters.AddWithValue("@score", stand.Score);
+
+    cmd.ExecuteNonQuery();
+}
+
 }
