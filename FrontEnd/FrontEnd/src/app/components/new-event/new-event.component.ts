@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { EventService } from '../../../services/event.service.ts';
+import { EventService } from '../../../services/event.service';
 
 @Component({
   selector: 'app-new-event',
@@ -26,18 +26,20 @@ export class NewEventComponent {
 
   }
 
-createEvent() {
-  if (this.eventForm.valid) {
+  createEvent() {
+    if (this.eventForm.valid) {
 
-    const event = {
-      name: this.eventForm.value.name,
-      address: this.eventForm.value.address,
-      description: this.eventForm.value.description,
-      score: 0
-    };
+      const event = {
+        ...this.eventForm.value,
+        score: 0
+      };
 
-    this.eventService.createEvent(event).subscribe;
-    this.eventForm.reset();
+      // 🔥 ajuste aqui
+      this.eventService.createEvent(event);
+
+      console.log('Evento criado:', event);
+
+      this.eventForm.reset();
+    }
   }
-}
 }

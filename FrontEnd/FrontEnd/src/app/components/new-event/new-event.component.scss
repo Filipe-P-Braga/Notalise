@@ -1,0 +1,160 @@
+.page {
+  font-family: Arial, sans-serif;
+  background: #efeff5;
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 320px;
+  overflow: hidden;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* SOBREPOSIÇÃO */
+.hero-overlay {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 600px;
+  color: #333;
+}
+
+.hero-overlay h1 {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: transparent;
+  -webkit-text-stroke: 1px #555;
+}
+
+.hero-overlay h3 {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.hero-overlay p {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #777;
+}
+
+/* LINHA */
+.divider {
+  width: 80%;
+  height: 1px;
+  background: #ccc;
+  margin: 120px auto 40px;
+}
+
+/* BANNER */
+.banner {
+  width: 70%;
+  margin: auto;
+  background: url('image/assets/inovaweek.jfif');
+  background-size: cover;
+  height: 80px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  color: black;
+  font-weight: bold;
+}
+
+/* COMMENTS */
+.comments {
+  width: 70%;
+  margin: 40px auto;
+}
+
+.comments h2 {
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+/* COMMENT */
+.comment {
+  display: flex;
+  gap: 15px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.green {
+  background: #9be7a1;
+}
+
+.pink {
+  background: #f3a6d6;
+}
+
+.comment span {
+  display: block;
+  font-size: 12px;
+  color: #999;
+}
+
+.comment p {
+  margin-top: 5px;
+}
+
+/* ARROW */
+.arrow {
+  text-align: center;
+  font-size: 24px;
+  margin: 20px 0;
+  color: #555;
+}
+
+/* FOOTER */
+footer {
+  background: #c7c6da;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-columns {
+  display: flex;
+  gap: 40px;
+}
+
+.footer-columns div {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-columns p {
+  font-weight: bold;
+}
+
+.footer-columns span {
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.footer-icons {
+  display: flex;
+  gap: 10px;
+}
