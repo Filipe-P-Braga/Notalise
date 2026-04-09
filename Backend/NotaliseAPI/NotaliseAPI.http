@@ -1,0 +1,6 @@
+@NotaliseAPI_HostAddress = http://localhost:5159
+
+GET {{NotaliseAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
