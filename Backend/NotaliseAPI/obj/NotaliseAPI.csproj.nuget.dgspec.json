@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lucas\\Desktop\\D4U\\NotaliseAPI\\NotaliseAPI.csproj": {}
+    "C:\\Users\\Lucas\\Desktop\\D4U-2\\Notalise\\Backend\\NotaliseAPI\\NotaliseAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lucas\\Desktop\\D4U\\NotaliseAPI\\NotaliseAPI.csproj": {
+    "C:\\Users\\Lucas\\Desktop\\D4U-2\\Notalise\\Backend\\NotaliseAPI\\NotaliseAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lucas\\Desktop\\D4U\\NotaliseAPI\\NotaliseAPI.csproj",
+        "projectUniqueName": "C:\\Users\\Lucas\\Desktop\\D4U-2\\Notalise\\Backend\\NotaliseAPI\\NotaliseAPI.csproj",
         "projectName": "NotaliseAPI",
-        "projectPath": "C:\\Users\\Lucas\\Desktop\\D4U\\NotaliseAPI\\NotaliseAPI.csproj",
+        "projectPath": "C:\\Users\\Lucas\\Desktop\\D4U-2\\Notalise\\Backend\\NotaliseAPI\\NotaliseAPI.csproj",
         "packagesPath": "C:\\Users\\Lucas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lucas\\Desktop\\D4U\\NotaliseAPI\\obj\\",
+        "outputPath": "C:\\Users\\Lucas\\Desktop\\D4U-2\\Notalise\\Backend\\NotaliseAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lucas\\AppData\\Roaming\\NuGet\\NuGet.Config"

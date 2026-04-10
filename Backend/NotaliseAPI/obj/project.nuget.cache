@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5FM2Av/R/hk=",
+  "dgSpecHash": "4nEq1ydd5Sc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lucas\\Desktop\\D4U\\NotaliseAPI\\NotaliseAPI.csproj",
+  "projectFilePath": "C:\\Users\\Lucas\\Desktop\\D4U-2\\Notalise\\Backend\\NotaliseAPI\\NotaliseAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lucas\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\Lucas\\.nuget\\packages\\google.protobuf\\3.32.0\\google.protobuf.3.32.0.nupkg.sha512",

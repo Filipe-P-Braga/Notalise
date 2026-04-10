@@ -12,5 +12,18 @@ public class StandService
         repo.UpdateStand(stand);
     }
 
-    //to do : DELETE e READ
+    public List<Stand> GetStands()
+    {
+        return repo.GetStands();
+    }
+
+    public Stand? GetStandById(int id)
+    {
+        return repo.GetStandById(id);
+    }
+
+    public void DeleteStand(int id)
+    {
+        repo.DeleteStand(id);
+    }
 }
