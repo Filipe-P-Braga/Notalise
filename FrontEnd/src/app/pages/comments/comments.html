@@ -1,0 +1,51 @@
+<div class="page-container animate-fade-in">
+  <div class="header-section">
+    <h1 class="title-lg">Mural de <span class="text-gradient">Avaliações</span></h1>
+    <p>Navegue pelos eventos e descubra o que a comunidade diz sobre os estandes apresentados e avaliados.</p>
+  </div>
+
+  <div class="events-list">
+    <div class="event-card glass-panel" *ngFor="let event of events">
+      <div class="event-header" (click)="toggleEvent(event.id)" [class.active]="event.isOpen">
+        <div class="event-info">
+          <div class="event-icon">📅</div>
+          <h2 class="event-title">{{ event.name }}</h2>
+        </div>
+        <button class="toggle-btn">
+          <span class="chevron" [class.rotated]="event.isOpen">▼</span>
+        </button>
+      </div>
+
+      <div class="event-body" *ngIf="event.isOpen">
+        <div class="empty-state" *ngIf="event.stands.length === 0">
+          Nenhum estande avaliado neste evento.
+        </div>
+
+        <div class="stand-grid">
+          <div class="stand-card" *ngFor="let stand of event.stands">
+            <div class="stand-header">
+              <h3 class="stand-name">{{ stand.name }}</h3>
+              <div class="stand-rating">
+                <span class="star">★</span> {{ stand.rating }}
+              </div>
+            </div>
+            <p class="stand-course">{{ stand.course }}</p>
+            
+            <div class="comments-section">
+              <h4 class="comments-title">Comentários ({{ stand.comments.length }})</h4>
+              <div class="comment-item" *ngFor="let comment of stand.comments">
+                <div class="comment-head">
+                  <span class="comment-user">{{ comment.user }}</span>
+                  <div class="comment-stars">
+                    <span class="star-small" *ngFor="let s of getStarArray(comment.stars)">★</span>
+                  </div>
+                </div>
+                <p class="comment-text">"{{ comment.text }}"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

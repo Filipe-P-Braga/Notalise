@@ -1,0 +1,52 @@
+<div class="page-container animate-fade-in">
+  <div class="header-section">
+    <h1 class="title-lg">Mapeie seu <span class="text-gradient">Estande</span></h1>
+    <p>Cadastre sua equipe e suas ideias para o Inovaweek, e permita que todos avaliem sua inovação.</p>
+  </div>
+
+  <div class="form-card glass-panel">
+    <form [formGroup]="standForm" (ngSubmit)="onSubmit()" class="stand-form">
+      
+      <div class="form-group-row">
+        <div class="form-group">
+          <label class="form-label">Nome do Projeto/Estande</label>
+          <input type="text" formControlName="name" class="form-input" placeholder="Ex: Smart City UVV" [class.error]="isSubmitted && standForm.get('name')?.invalid"/>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Curso Responsável</label>
+          <input type="text" formControlName="course" class="form-input" placeholder="Ex: Ciência da Computação" [class.error]="isSubmitted && standForm.get('course')?.invalid"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Coordenador/Orientador</label>
+        <input type="text" formControlName="coordinator" class="form-input" placeholder="Nome do professor orientador" [class.error]="isSubmitted && standForm.get('coordinator')?.invalid"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Evento de Exibição</label>
+        <select formControlName="event" class="form-input select-input">
+          <option value="inovaweek">Inovaweek UVV</option>
+          <option value="other">Outro Evento Universitário</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descrição do Projeto</label>
+        <textarea formControlName="description" class="form-input" placeholder="Breve resumo do que seu estande vai apresentar..." [class.error]="isSubmitted && standForm.get('description')?.invalid"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary w-full pulse-btn">
+          Confirmar e Publicar
+        </button>
+      </div>
+      
+      <div class="success-message" *ngIf="isSuccess">
+        Estande cadastrado com sucesso! Preparado para receber avaliações no Notalise. 🚀
+      </div>
+
+    </form>
+  </div>
+</div>
