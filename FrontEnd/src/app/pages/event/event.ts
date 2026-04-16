@@ -1,37 +1,27 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-event',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule],
   templateUrl: './event.html',
   styleUrl: './event.css',
 })
 export class Event {
-  eventForm: FormGroup;
-  isSubmitted = false;
-  isSuccess = false;
+  eventData = {
+    title: 'Inovaweek',
+    subtitle: '2026',
+    ratingAge: 'Livre',
+    format: 'Presencial | Online',
+    genres: ['Tecnologia', 'Inovação', 'Negócios', 'Universitário'],
+    averageRating: 4.9,
+    totalRatings: '21.5K',
+    synopsis: 'No maior evento de inovação do estado, alunos apresentam projetos que podem mudar o mundo. Durante as exposições, visitantes avaliam estandes e descobrem o "absoluto segredo" do empreendedorismo moderno. Esta é a história de inovações que encontram desafios, mas alcançam o sucesso.',
+    local: 'Campus Boa Vista (UVV), Vila Velha',
+    date: '12 a 15 de Outubro de 2026',
+    contentRating: 'Livre para todos os públicos',
+    copyright: '©Universidade Vila Velha / Notalise'
+  };
 
-  constructor(private fb: FormBuilder) {
-    this.eventForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(3)]],
-      date: ['', Validators.required],
-      local: ['', Validators.required],
-      description: ['', [Validators.required, Validators.minLength(10)]]
-    });
-  }
-
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.eventForm.valid) {
-      console.log('Evento Cadastrado:', this.eventForm.value);
-      this.isSuccess = true;
-      setTimeout(() => {
-        this.isSuccess = false;
-        this.eventForm.reset();
-        this.isSubmitted = false;
-      }, 3000);
-    }
-  }
+  stars = [1, 2, 3, 4, 5];
 }

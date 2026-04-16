@@ -4,6 +4,7 @@
     <p>Navegue pelos eventos e descubra o que a comunidade diz sobre os estandes apresentados e avaliados.</p>
   </div>
 
+
   <div class="events-list">
     <div class="event-card glass-panel" *ngFor="let event of events">
       <div class="event-header" (click)="toggleEvent(event.id)" [class.active]="event.isOpen">
@@ -30,7 +31,7 @@
               </div>
             </div>
             <p class="stand-course">{{ stand.course }}</p>
-            
+
             <div class="comments-section">
               <h4 class="comments-title">Comentários ({{ stand.comments.length }})</h4>
               <div class="comment-item" *ngFor="let comment of stand.comments">
@@ -47,5 +48,6 @@
         </div>
       </div>
     </div>
+    <app-qrcode [value]="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"></app-qrcode>
   </div>
 </div>

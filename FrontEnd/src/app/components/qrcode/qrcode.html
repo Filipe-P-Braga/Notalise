@@ -1,0 +1,11 @@
+<button (click)="gerarQRCode()" class="btn-primary orange-btn w-full pulse-btn">Gerar QR Code</button>
+
+<!-- Overlay -->
+<div class="overlay" *ngIf="isOpen" (click)="fechar()">
+
+  <!-- Modal -->
+  <div class="modal" (click)="$event.stopPropagation()">
+    <img [src]="qrCodeImage" />
+  </div>
+  
+</div>

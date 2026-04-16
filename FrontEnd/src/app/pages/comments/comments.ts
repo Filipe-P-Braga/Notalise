@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Qrcode } from '../../components/qrcode/qrcode';
 
 @Component({
   selector: 'app-comments',
-  imports: [CommonModule],
+  imports: [CommonModule, Qrcode],
   templateUrl: './comments.html',
   styleUrl: './comments.css',
 })
