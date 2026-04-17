@@ -1,0 +1,47 @@
+<div class="comment-create-wrapper animate-fade-in">
+  <div class="form-card glass-panel orange-accent">
+    <h3 class="form-title">Deixe sua avaliação</h3>
+    
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="stand-form">
+      
+      <div class="form-group-row">
+        <div class="form-group" style="flex: 0.3;">
+          <label class="form-label">Nota (1 a 5)</label>
+          <div class="rating-input">
+            <input type="number" formControlName="score" min="1" max="5" class="form-input" [class.error]="isSubmitted && commentForm.get('score')?.invalid"/>
+          </div>
+        </div>
+
+        <div class="form-group" style="flex: 1;">
+          <label class="form-label">Seu Nome (Opcional)</label>
+          <input type="text" formControlName="userId" class="form-input" placeholder="Ex: Maria" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Comentário</label>
+        <textarea formControlName="text" class="form-input" placeholder="O que você achou deste estande? Conta pra gente!" [class.error]="isSubmitted && commentForm.get('text')?.invalid"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Você é</label>
+        <select formControlName="type" class="form-input">
+          <option value="visitante">Visitante</option>
+          <option value="avaliador">Avaliador Oficial</option>
+          <option value="aluno">Aluno / Expositor</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary orange-btn w-full pulse-btn">
+          Enviar Avaliação
+        </button>
+      </div>
+      
+      <div class="success-message" *ngIf="isSuccess">
+        Avaliação enviada com sucesso! Muito obrigado ✨
+      </div>
+
+    </form>
+  </div>
+</div>

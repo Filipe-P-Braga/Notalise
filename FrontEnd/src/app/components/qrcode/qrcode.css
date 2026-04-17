@@ -5,7 +5,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* escurece o fundo */
+  background: rgba(0, 0, 0, 0.7);
+  /* escurece o fundo */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,4 +24,13 @@
 .modal img {
   width: 300px;
   height: 300px;
+}
+
+/* QR Code Container */
+.qrcode-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 0;
+  width: 100%;
 }

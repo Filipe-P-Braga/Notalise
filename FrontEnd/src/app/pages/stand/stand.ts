@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Qrcode } from '../../components/qrcode/qrcode';
 import { Comments } from '../../components/comments/comments';
+import { ComentCreateComponent } from '../../components/comentCreate/comentCreate';
 
 @Component({
   selector: 'app-stand',
   standalone: true,
-  imports: [CommonModule, Qrcode, Comments],
+  imports: [CommonModule, Qrcode, Comments, ComentCreateComponent],
   templateUrl: './stand.html',
   styleUrl: './stand.css',
 })
