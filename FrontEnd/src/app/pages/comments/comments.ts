@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Qrcode } from '../../components/qrcode/qrcode';
+import { Comments } from '../../components/comments/comments';
 
 @Component({
-  selector: 'app-comments',
-  imports: [CommonModule, Qrcode],
+  selector: 'app-comments-page',
+  standalone: true,
+  imports: [CommonModule, Qrcode, Comments],
   templateUrl: './comments.html',
   styleUrl: './comments.css',
 })
-export class Comments {
+export class CommentsPage {
   events = [
     {
       id: 1,
@@ -59,9 +61,5 @@ export class Comments {
     if (event) {
       event.isOpen = !event.isOpen;
     }
-  }
-
-  getStarArray(stars: number) {
-    return Array(stars).fill(0);
   }
 }

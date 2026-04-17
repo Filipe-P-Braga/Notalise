@@ -1,15 +1,15 @@
 <div class="presentation-container animate-fade-in">
   <div class="bg-layer">
     <div class="bg-gradient-overlay"></div>
-    <img src="event_banner.png" alt="Event Banner" class="bg-image">
+    <img src="ShowInova.jpg" alt="Event Banner" class="bg-image">
   </div>
 
-  <div class="top-bar">
+  <!-- <div class="top-bar">
     <div class="more-btn">
       <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
       <span>MAIS</span>
     </div>
-  </div>
+  </div> -->
 
   <div class="content-layout">
     <!-- Left side -->
@@ -21,7 +21,7 @@
       </h1>
 
       <div class="meta-row">
-        <span class="age-rating">{{ eventData.ratingAge }}</span>
+        <!-- <span class="age-rating">{{ eventData.ratingAge }}</span> -->
         <span class="format-text"> &nbsp;•&nbsp; {{ eventData.format }} &nbsp;•&nbsp; </span>
         <span class="genres-list">
           <ng-container *ngFor="let genre of eventData.genres; let last = last">
@@ -33,28 +33,35 @@
       <div class="rating-row">
         <div class="stars">
           <svg *ngFor="let star of stars" viewBox="0 0 24 24" class="star-icon">
-            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
           </svg>
         </div>
         <div class="dropdown-rating">
           Classificação média: {{ eventData.averageRating }} ({{ eventData.totalRatings }})
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M7 10l5 5 5-5z" />
+          </svg>
         </div>
       </div>
 
       <div class="action-row">
         <button class="primary-action-btn">
-          <svg viewBox="0 0 24 24" class="play-icon"><path d="M8 5v14l11-7z"/></svg>
+          <svg viewBox="0 0 24 24" class="play-icon">
+            <path d="M8 5v14l11-7z" />
+          </svg>
           AVALIAR ESTANDES
         </button>
-        <button class="icon-btn outline-btn">
+        <!-- <button class="icon-btn outline-btn">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
         </button>
         <button class="icon-btn outline-btn">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-        </button>
+        </button> -->
         <button class="icon-btn outline-btn">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path
+              d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z" />
+          </svg>
         </button>
       </div>
 
@@ -75,11 +82,11 @@
       <div class="detail-item">
         <span class="detail-label">Data:</span> {{ eventData.date }}
       </div>
-      <div class="detail-item">
+      <!-- <div class="detail-item">
         <span class="detail-label">Classificação de Conteúdo:</span> <span class="age-rating small">{{ eventData.ratingAge }}</span> {{ eventData.contentRating }}
-      </div>
+      </div> -->
       <div class="detail-item">
-        <span class="detail-label">Gêneros:</span> 
+        <span class="detail-label">Gêneros:</span>
         <ng-container *ngFor="let genre of eventData.genres; let last = last">
           <a href="#" class="genre-link">{{ genre }}</a><span *ngIf="!last">, </span>
         </ng-container>
@@ -89,4 +96,18 @@
       </div>
     </div>
   </div>
+
+</div>
+<div class="stands-section">
+  <div class="stands-header">
+    <h2 class="section-title">Estandes do Evento</h2>
+    <!-- <a href="#" class="view-all">VER TODOS</a> -->
+  </div>
+
+  <div class="stands-grid">
+    <app-stand-card *ngFor="let stand of stands" [stand]="stand"></app-stand-card>
+  </div>
+</div>
+<div class="qrcode-wrapper">
+  <app-qrcode [value]="'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1'"></app-qrcode>
 </div>

@@ -1,38 +1,58 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Qrcode } from '../../components/qrcode/qrcode';
+import { Comments } from '../../components/comments/comments';
 
 @Component({
   selector: 'app-stand',
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, Qrcode, Comments],
   templateUrl: './stand.html',
   styleUrl: './stand.css',
 })
 export class Stand {
-  standForm: FormGroup;
-  isSubmitted = false;
-  isSuccess = false;
+  selectedStand: any;
 
-  constructor(private fb: FormBuilder) {
-    this.standForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(10)]],
-      event: ['inovaweek', Validators.required],
-      coordinator: ['', Validators.required],
-      course: ['', Validators.required]
-    });
-  }
+  eventData = {
+    title: 'Notalise',
+    subtitle: '',
+    ratingAge: 'Livre',
+    format: 'Presencial | Online',
+    genres: ['Tecnologia', 'Inovação', 'Negócios', 'Universitário'],
+    averageRating: 4.9,
+    totalRatings: '21.5K',
+    synopsis: 'No maior evento de inovação do estado, alunos apresentam projetos que podem mudar o mundo. Durante as exposições, visitantes avaliam estandes e descobrem o "absoluto segredo" do empreendedorismo moderno. Esta é a história de inovações que encontram desafios, mas alcançam o sucesso.',
+    local: 'Campus Boa Vista (UVV), Vila Velha',
+    date: '12 a 15 de Outubro de 2026',
+    contentRating: 'Livre para todos os públicos',
+    copyright: '©Universidade Vila Velha / Notalise'
+  };
 
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.standForm.valid) {
-      console.log('Estande Cadastrado:', this.standForm.value);
-      this.isSuccess = true;
-      setTimeout(() => {
-        this.isSuccess = false;
-        this.standForm.reset({ event: 'inovaweek' });
-        this.isSubmitted = false;
-      }, 3000);
+  stands = [
+    {
+      id: 101,
+      name: 'Smart City UVV',
+      course: 'Ciência da Computação',
+      rating: 4.8,
+      comments: [
+        { user: 'Maria Silva', text: 'Excelente projeto, muito inovador!', stars: 5 },
+        { user: 'João Pedro', text: 'Gostei muito da aplicação prática.', stars: 4 }
+      ]
+    },
+    {
+      id: 102,
+      name: 'Tech Health',
+      course: 'Engenharia Biomédica',
+      rating: 4.5,
+      comments: [
+        { user: 'Ana Clara', text: 'Apresentação impecável, parabéns à equipe.', stars: 5 }
+      ]
     }
+  ];
+
+  stars = [1, 2, 3, 4, 5];
+
+  constructor() {
+    this.selectedStand = this.stands[0];
   }
 }

@@ -288,3 +288,69 @@
     font-size: 2.5rem;
   }
 }
+
+/* Stands Section */
+.stands-section {
+  position: relative;
+  z-index: 2;
+  padding: 0 4rem 4rem 4rem;
+  margin-top: 2rem;
+}
+
+.stands-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+.view-all {
+  color: #f97316;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+
+.view-all:hover {
+  color: #fb923c;
+  text-decoration: underline;
+}
+
+.stands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .stands-section {
+    padding: 0 2rem 2rem 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .stands-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* QR Code Container */
+.qrcode-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 0;
+  width: 100%;
+}

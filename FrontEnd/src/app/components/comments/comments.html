@@ -1,0 +1,12 @@
+<div class="comments-section" *ngIf="comments && comments.length > 0">
+  <h4 class="comments-title">Comentários ({{ comments.length }})</h4>
+  <div class="comment-item" *ngFor="let comment of comments">
+    <div class="comment-head">
+      <span class="comment-user">{{ comment.user }}</span>
+      <div class="comment-stars">
+        <span class="star-small" *ngFor="let s of getStarArray(comment.stars)">★</span>
+      </div>
+    </div>
+    <p class="comment-text">"{{ comment.text }}"</p>
+  </div>
+</div>

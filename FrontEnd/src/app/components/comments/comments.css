@@ -1,0 +1,47 @@
+.comments-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.comments-title {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.comment-item {
+  margin-bottom: 1.5rem;
+}
+
+.comment-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.comment-user {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.comment-stars {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.star-small {
+  color: #facc15;
+  font-size: 0.85rem;
+}
+
+.comment-text {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  font-style: italic;
+}

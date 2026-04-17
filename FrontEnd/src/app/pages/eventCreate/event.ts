@@ -8,7 +8,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   templateUrl: './event.html',
   styleUrl: './event.css',
 })
-export class Event {
+export class EventCreate {
   eventForm: FormGroup;
   isSubmitted = false;
   isSuccess = false;

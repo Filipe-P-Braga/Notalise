@@ -5,7 +5,7 @@ public class Repositorio
 {
     // talvez cause problema ? usuário padrão ? senha padrão ? 
     // database sendo eventsdb para todos
-    string connectionString = "server=localhost;database=eventsdb;user=lucas;password=3237";
+    string connectionString = "server=localhost;database=notalise;user=lucas;password=3237";
 
     //parte referente ao evento criado tipo inovaweek
     public void CreateEvent(Event ev)
@@ -59,7 +59,7 @@ public class Repositorio
         using var cmd = new MySqlCommand(query, conn);
         using var reader = cmd.ExecuteReader();
 
-        if (reader.Read())
+        while (reader.Read())
         {
             lista.Add(new Event
             {

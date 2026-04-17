@@ -32,22 +32,10 @@
             </div>
             <p class="stand-course">{{ stand.course }}</p>
 
-            <div class="comments-section">
-              <h4 class="comments-title">Comentários ({{ stand.comments.length }})</h4>
-              <div class="comment-item" *ngFor="let comment of stand.comments">
-                <div class="comment-head">
-                  <span class="comment-user">{{ comment.user }}</span>
-                  <div class="comment-stars">
-                    <span class="star-small" *ngFor="let s of getStarArray(comment.stars)">★</span>
-                  </div>
-                </div>
-                <p class="comment-text">"{{ comment.text }}"</p>
-              </div>
-            </div>
+            <app-comments [comments]="stand.comments"></app-comments>
           </div>
         </div>
       </div>
     </div>
-    <app-qrcode [value]="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"></app-qrcode>
   </div>
 </div>

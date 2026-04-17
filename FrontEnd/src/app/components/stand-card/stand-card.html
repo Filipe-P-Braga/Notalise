@@ -1,0 +1,61 @@
+<div class="stand-card-container" (click)="goToStand()">
+  <!-- Normal State -->
+  <div class="stand-card-normal">
+    <div class="image-wrapper">
+      <img [src]="stand.image" [alt]="stand.title" class="stand-image">
+      <!-- <span class="badge">{{ stand.badge }}</span> -->
+      <!-- Opcional: tag de status no canto inferior direito
+      <span class="status-tag">Visitado</span>
+      -->
+    </div>
+    <div class="normal-info">
+      <div class="info-content">
+        <h4 class="category-title" *ngIf="stand.category">{{ stand.category }}</h4>
+        <h3 class="stand-title">{{ stand.title }}</h3>
+        <p class="stand-tags">{{ stand.tags.join(' | ') }}</p>
+      </div>
+      <button class="more-options" (click)="$event.stopPropagation()">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hover State -->
+  <div class="stand-card-hover">
+    <div class="hover-content">
+      <h4 class="category-title" *ngIf="stand.category">{{ stand.category }}</h4>
+      <h3 class="stand-title">{{ stand.title }}</h3>
+
+      <div class="meta-row">
+        <!-- <span class="badge">{{ stand.badge }}</span> -->
+        <span class="date">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path
+              d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z" />
+          </svg>
+          {{ stand.date }}
+        </span>
+      </div>
+
+      <p class="description">{{ stand.description }}</p>
+
+      <div class="hover-actions">
+        <button class="action-btn" (click)="$event.stopPropagation(); goToStand()">
+          <svg viewBox="0 0 24 24" class="play-icon">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          VER ESTANDE
+        </button>
+        <button class="more-options" (click)="$event.stopPropagation()">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

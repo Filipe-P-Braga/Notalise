@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NotaliseAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8da6ca406d9b092261f4599a4070e9e7800c9218")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aba0c7936282d22cea615d6e7f99012049f2220d")]
 [assembly: System.Reflection.AssemblyProductAttribute("NotaliseAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NotaliseAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
