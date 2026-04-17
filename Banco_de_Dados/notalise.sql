@@ -89,3 +89,12 @@ VALUES (
     'Avaliação',
     'A avaliação foi realizada com sucesso e o stand apresentou um ótimo desempenho.'
 );
+
+SHOW TABLES;
+
+DESCRIBE Imagens;
+DESCRIBE User;
+DESCRIBE Event;
+DESCRIBE Stands;
+DESCRIBE Days;
+DESCRIBE Comments;
