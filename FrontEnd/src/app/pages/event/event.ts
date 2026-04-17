@@ -38,7 +38,7 @@ export class Event {
       description: 'No maior evento de inovação do estado, alunos apresentam projetos que podem mudar o mundo. Durante as exposições, visitantes avaliam estandes e descobrem o "absoluto segredo" do empreendedorismo moderno. Esta é a história de inovações que encontram desafios, mas alcançam o sucesso.',
       image: '/tamanduA.webp',
       tags: ['Inovação', 'Software']
-    }
+    },
 
   ];
 }
