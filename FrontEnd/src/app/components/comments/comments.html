@@ -2,9 +2,9 @@
   <h4 class="comments-title">Comentários ({{ comments.length }})</h4>
   <div class="comment-item" *ngFor="let comment of comments">
     <div class="comment-head">
-      <span class="comment-user">{{ comment.user }}</span>
+      <span class="comment-user">{{ comment.userId ? 'Usuário ' + comment.userId : (comment.user || 'Anônimo') }}</span>
       <div class="comment-stars">
-        <span class="star-small" *ngFor="let s of getStarArray(comment.stars)">★</span>
+        <span class="star-small" *ngFor="let s of getStarArray(comment.score || comment.stars || 0)">★</span>
       </div>
     </div>
     <p class="comment-text">"{{ comment.text }}"</p>

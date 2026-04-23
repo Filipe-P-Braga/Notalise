@@ -57,6 +57,16 @@
   padding: 0.5rem 0;
 }
 
+.nav-item-image {
+  color: var(--text-secondary);
+  text-decoration: none;
+  width: 25px;
+  height: 25px;
+  transition: var(--transition-fast);
+  position: relative;
+  margin: 0.2rem 0 0 0;
+}
+
 .nav-item:hover {
   color: var(--text-primary);
 }

@@ -19,7 +19,14 @@ export class EventService {
   constructor(private http: HttpClient) { }
 
   createEvent(event: EventModel): Observable<any> {
+    // O backend (C#) espera um objeto com Name, Address, Description, e Score
+    const payload = {
+      name: event.title,
+      address: event.local,
+      description: event.description,
+      score: 0
+    };
     // responseType: 'text' pois o backend retorna Ok("Evento criado") que é texto, não JSON
-    return this.http.post(`${this.apiUrl}/create`, event, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/create`, payload, { responseType: 'text' });
   }
 }

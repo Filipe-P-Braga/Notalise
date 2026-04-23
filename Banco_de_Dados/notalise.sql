@@ -98,3 +98,5 @@ DESCRIBE Event;
 DESCRIBE Stands;
 DESCRIBE Days;
 DESCRIBE Comments;
+
+SELECT * FROM comments;

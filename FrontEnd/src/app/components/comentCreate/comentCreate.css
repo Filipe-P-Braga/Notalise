@@ -115,6 +115,26 @@ textarea.form-input {
   animation: fadeIn 0.3s ease;
 }
 
+.nav-item-image {
+  color: var(--text-secondary);
+  text-decoration: none;
+  width: 25px;
+  height: 25px;
+  transition: var(--transition-fast);
+  position: relative;
+  margin: 0.2rem 0 0 2rem;
+}
+
+.stars span {
+  font-size: 30px;
+  cursor: pointer;
+  color: gray;
+}
+
+.stars span.filled {
+  color: gold;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }

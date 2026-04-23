@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface CommentModel {
-  standId: number;
-  text: string;
-  score: number;
-  userId?: string;
-  type?: string;
+  StandId: number;
+  Text: string;
+  Score: number;
+  UserId?: string;
+  Type?: string;
 }
 
 @Injectable({
@@ -18,7 +18,24 @@ export class CommentService {
 
   constructor(private http: HttpClient) { }
 
-  createComment(comment: CommentModel): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create`, comment);
+  createComment(comment: any): Observable<any> {
+    // O formulário no Angular gera as propriedades em minúsculo (userId, type, text, etc).
+    // A interface TypeScript não muda os nomes dessas propriedades em tempo de execução.
+    // Vamos garantir que a conversão ocorra independente do formato:
+    const payload = {
+      StandId: comment.standId || comment.StandId,
+      Text: comment.text || comment.Text,
+      Score: comment.score || comment.Score,
+      //UserId: (comment.userId === '' || comment.UserId === '') ? null : (comment.userId || comment.UserId),
+      UserId: null,
+      Type: (comment.type === '' || comment.Type === '') ? null : (comment.type || comment.Type),
+      Date: new Date().toISOString()
+    };
+
+    return this.http.post(`${this.apiUrl}/create`, payload);
+  }
+
+  getCommentsByStandId(standId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/stand/${standId}`);
   }
 }

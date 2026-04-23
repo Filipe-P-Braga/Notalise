@@ -5,7 +5,7 @@ public class Repositorio
 {
     // talvez cause problema ? usuário padrão ? senha padrão ? 
     // database sendo eventsdb para todos
-    string connectionString = "server=localhost;database=notalise;user=lucas;password=3237";
+    string connectionString = "server=localhost;database=notalise;user=root;password=JohnGalt24!";
 
     //parte referente ao evento criado tipo inovaweek
     public void CreateEvent(Event ev)
@@ -13,7 +13,7 @@ public class Repositorio
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = @"INSERT INTO Events (Name, Address, Description, Score)
+        string query = @"INSERT INTO Event (Name, Address, Description, Score)
                          VALUES (@name, @address, @description, @score)";
 
         using var cmd = new MySqlCommand(query, conn);
@@ -31,7 +31,7 @@ public class Repositorio
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = @"UPDATE Events 
+        string query = @"UPDATE Event 
                          SET Name=@name, Address=@address, Description=@description, Score=@score
                          WHERE Id=@id";
 
@@ -54,7 +54,7 @@ public class Repositorio
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = "SELECT * FROM Events";
+        string query = "SELECT * FROM Event";
 
         using var cmd = new MySqlCommand(query, conn);
         using var reader = cmd.ExecuteReader();
@@ -80,7 +80,7 @@ public class Repositorio
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = "DELETE FROM Events WHERE Id = @id";
+        string query = "DELETE FROM Event WHERE Id = @id";
 
         using var cmd = new MySqlCommand(query, conn);
         cmd.Parameters.AddWithValue("@id", id);
@@ -94,7 +94,7 @@ public class Repositorio
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = "SELECT * FROM Events WHERE Id=@id";
+        string query = "SELECT * FROM Event WHERE Id=@id";
 
         using var cmd = new MySqlCommand(query, conn);
         cmd.Parameters.AddWithValue("@id", id);
@@ -288,7 +288,7 @@ public class Repositorio
                 StandId = reader.GetInt32("StandsID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
-                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetString("UserID"),
+                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
                 Date = reader.GetDateTime("Date"),
                 Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
             });
@@ -319,7 +319,7 @@ public class Repositorio
                 StandId = reader.GetInt32("StandsID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
-                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetString("UserID"),
+                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
                 Date = reader.GetDateTime("Date"),
                 Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
             });
@@ -348,7 +348,7 @@ public class Repositorio
                 StandId = reader.GetInt32("StandsID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
-                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetString("UserID"),
+                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
                 Date = reader.GetDateTime("Date"),
                 Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
             };

@@ -5,17 +5,32 @@
     <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="stand-form">
       
       <div class="form-group-row">
-        <div class="form-group" style="flex: 0.3;">
+              <!-- VAI SER PEGO ATRAVÉS DO USUARIO -->
+        <!-- <div class="form-group" style="flex: 1;">
+          <label class="form-label">Seu Nome (Opcional)</label>
+          <input type="text" formControlName="userId" class="form-input" placeholder="Ex: Maria" />
+        </div> -->
+
+      <img src="/IconBranco.png" alt="Logo" class="nav-item-image">
+
+        <!-- <div class="form-group" style="flex: 0.3;">
           <label class="form-label">Nota (1 a 5)</label>
           <div class="rating-input">
             <input type="number" formControlName="score" min="1" max="5" class="form-input" [class.error]="isSubmitted && commentForm.get('score')?.invalid"/>
           </div>
+        </div> -->
+
+        <div class="stars">
+          <span 
+            *ngFor="let star of stars; let i = index"
+            (click)="setRating(i + 1)"
+            [class.filled]="i < rating">
+            ★
+          </span>
         </div>
 
-        <div class="form-group" style="flex: 1;">
-          <label class="form-label">Seu Nome (Opcional)</label>
-          <input type="text" formControlName="userId" class="form-input" placeholder="Ex: Maria" />
-        </div>
+      <!-- <p>Sua nota: {{ rating }}</p> -->
+        
       </div>
 
       <div class="form-group">
@@ -23,14 +38,15 @@
         <textarea formControlName="text" class="form-input" placeholder="O que você achou deste estande? Conta pra gente!" [class.error]="isSubmitted && commentForm.get('text')?.invalid"></textarea>
       </div>
 
-      <div class="form-group">
+      <!-- VAI SER PEGO ATRAVÉS DO USUARIO -->
+      <!-- <div class="form-group">
         <label class="form-label">Você é</label>
         <select formControlName="type" class="form-input">
           <option value="visitante">Visitante</option>
           <option value="avaliador">Avaliador Oficial</option>
           <option value="aluno">Aluno / Expositor</option>
         </select>
-      </div>
+      </div> -->
 
       <div class="form-actions">
         <button type="submit" class="btn-primary orange-btn w-full pulse-btn">

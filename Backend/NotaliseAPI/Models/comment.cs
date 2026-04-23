@@ -8,7 +8,7 @@ public class Comment
 
     public int Score { get; set; } // 1 a 5 estrelas
 
-    public string? UserId { get; set; } // Opcional - usuário que fez o comentário
+    public int? UserId { get; set; } // Opcional - usuário que fez o comentário
 
     public string? Type { get; set; } // Tipo de comentário
 
