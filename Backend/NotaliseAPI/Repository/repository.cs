@@ -5,11 +5,9 @@ public class Repositorio
 {
     // talvez cause problema ? usuário padrão ? senha padrão ? 
     // database sendo eventsdb para todos
-<<<<<<< HEAD
+
     string connectionString = "server=localhost;database=notalise;user=root;password=123456";
-=======
-    string connectionString = "server=localhost;database=notalise;user=root;password=123456";
->>>>>>> 7a2de1d7241d4b279c7f5289a9a761c29a0c7ca8
+
 
     //parte referente ao evento criado tipo inovaweek
     public void CreateEvent(Event ev)
