@@ -5,7 +5,7 @@ public class Repositorio
 {
     // talvez cause problema ? usuário padrão ? senha padrão ? 
     // database sendo eventsdb para todos
-    string connectionString = "server=localhost;database=notalise;user=lucas;password=3237";
+    string connectionString = "server=localhost;database=notalise;user=root;password=123456";
 
     //parte referente ao evento criado tipo inovaweek
     public void CreateEvent(Event ev)
@@ -226,6 +226,28 @@ public class Repositorio
         cmd.ExecuteNonQuery();
     }
 
+        //método para calcular a média de avaliação dos eventos a partir
+        // dos comentários feitos nos stands relacionados a ele
+public double GetAverageScoreByEvent(int eventId)
+{
+    using var conn = new MySqlConnection(connectionString);
+    conn.Open();
+
+    string query = @"
+        SELECT AVG(c.Score)
+        FROM Comments c
+        INNER JOIN Stands s ON c.StandsID = s.ID
+        WHERE s.ID_Event = @eventId
+    ";
+
+    using var cmd = new MySqlCommand(query, conn);
+    cmd.Parameters.AddWithValue("@eventId", eventId);
+
+    var result = cmd.ExecuteScalar();
+
+    return result != DBNull.Value ? Convert.ToDouble(result) : 0;
+}
+
     //Parte referente a Comments - comentários nos stands
     public void CreateComment(Comment comment)
     {
@@ -288,7 +310,7 @@ public class Repositorio
                 StandId = reader.GetInt32("StandsID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
-                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetString("UserID"),
+                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID").ToString(),
                 Date = reader.GetDateTime("Date"),
                 Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
             });
@@ -319,7 +341,7 @@ public class Repositorio
                 StandId = reader.GetInt32("StandsID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
-                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetString("UserID"),
+                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID").ToString(),
                 Date = reader.GetDateTime("Date"),
                 Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
             });
@@ -328,6 +350,21 @@ public class Repositorio
         return lista;
     }
 
+
+public double GetAverageScoreByStand(int standId)
+{
+    using var conn = new MySqlConnection(connectionString);
+    conn.Open();
+
+    string query = "SELECT AVG(Score) FROM Comments WHERE StandsID = @standId";
+
+    using var cmd = new MySqlCommand(query, conn);
+    cmd.Parameters.AddWithValue("@standId", standId);
+
+    var result = cmd.ExecuteScalar();
+
+    return result != DBNull.Value ? Convert.ToDouble(result) : 0;
+}
     public Comment? GetCommentById(int id)
     {
         using var conn = new MySqlConnection(connectionString);
@@ -348,7 +385,7 @@ public class Repositorio
                 StandId = reader.GetInt32("StandsID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
-                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetString("UserID"),
+                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID").ToString(),
                 Date = reader.GetDateTime("Date"),
                 Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
             };
