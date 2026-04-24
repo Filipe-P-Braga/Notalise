@@ -6,7 +6,7 @@ public class Repositorio
     // talvez cause problema ? usuário padrão ? senha padrão ? 
     // database sendo eventsdb para todos
 
-    string connectionString = "server=localhost;database=notalise;user=root;password=123456";
+    string connectionString = "server=localhost;database=notalise;user=root;password=JohnGalt24!";
 
 
     //parte referente ao evento criado tipo inovaweek
@@ -312,11 +312,9 @@ public double GetAverageScoreByEvent(int eventId)
                 StandId = reader.GetInt32("StandsID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
-<<<<<<< HEAD
+
                 UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
-=======
-                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID").ToString(),
->>>>>>> 7a2de1d7241d4b279c7f5289a9a761c29a0c7ca8
+
                 Date = reader.GetDateTime("Date"),
                 Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
             });
@@ -347,11 +345,9 @@ public double GetAverageScoreByEvent(int eventId)
                 StandId = reader.GetInt32("StandsID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
-<<<<<<< HEAD
+
                 UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
-=======
-                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID").ToString(),
->>>>>>> 7a2de1d7241d4b279c7f5289a9a761c29a0c7ca8
+
                 Date = reader.GetDateTime("Date"),
                 Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
             });
@@ -395,11 +391,9 @@ public double GetAverageScoreByStand(int standId)
                 StandId = reader.GetInt32("StandsID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
-<<<<<<< HEAD
+
                 UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
-=======
-                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID").ToString(),
->>>>>>> 7a2de1d7241d4b279c7f5289a9a761c29a0c7ca8
+
                 Date = reader.GetDateTime("Date"),
                 Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
             };
