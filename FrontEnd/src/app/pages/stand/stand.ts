@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Qrcode } from '../../components/qrcode/qrcode';
 import { Comments } from '../../components/comments/comments';
 import { ComentCreateComponent } from '../../components/comentCreate/comentCreate';
@@ -8,7 +9,7 @@ import { CommentService } from '../../services/comment.service';
 @Component({
   selector: 'app-stand',
   standalone: true,
-  imports: [CommonModule, Qrcode, Comments, ComentCreateComponent],
+  imports: [CommonModule, RouterModule, Qrcode, Comments, ComentCreateComponent],
   templateUrl: './stand.html',
   styleUrl: './stand.css',
 })

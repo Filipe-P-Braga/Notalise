@@ -1,0 +1,42 @@
+<div class="edit-container animate-fade-in">
+    <div class="top-bar">
+        <a routerLink="/estande" class="back-btn">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z" />
+            </svg>
+            Voltar para o estande
+        </a>
+    </div>
+
+    <div class="content-layout">
+        <div class="form-wrapper">
+            <h1 class="page-title">Editar Estande</h1>
+            <p class="page-subtitle">Atualize as informações do seu estande para os visitantes.</p>
+
+            <form (ngSubmit)="saveChanges()" #standForm="ngForm" class="edit-form">
+                <div class="form-group">
+                    <label for="name">Nome do Estande</label>
+                    <input type="text" id="name" name="name" [(ngModel)]="standData.name" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="course">Curso</label>
+                    <input type="text" id="course" name="course" [(ngModel)]="standData.course" required
+                        class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Descrição</label>
+                    <textarea id="description" name="description" [(ngModel)]="standData.description" rows="5" required
+                        class="form-input"></textarea>
+                </div>
+
+                <div class="action-buttons">
+                    <button type="submit" class="save-btn" [disabled]="!standForm.form.valid">
+                        Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
