@@ -20,6 +20,17 @@ CREATE TABLE User (
 INSERT INTO User (Name, Tipo, email)
 VALUES ('Lucas', 'Organizador', 'lucas@gmail.com');
 
+-- Tabela Days
+CREATE TABLE Days (
+    ID INT PRIMARY KEY AUTO_INCREMENT,
+    Day DATE,
+    StartHour TIME,
+    FinishHour TIME,
+);
+
+INSERT INTO Days (ID_Event, Day, StartHour, FinishHour)
+VALUES ('2026-05-10', '09:00:00', '18:00:00');
+
 -- Tabela Event
 CREATE TABLE Event (
     ID INT PRIMARY KEY AUTO_INCREMENT,
@@ -29,16 +40,20 @@ CREATE TABLE Event (
     Description TEXT,
     Score DECIMAL(3,2),
     Image VARCHAR(500),
+    DaysID INT,
+    FOREIGN KEY (DaysID) REFERENCES Days(ID),
     FOREIGN KEY (Manager) REFERENCES User(ID)
 );
 
-INSERT INTO Event (Name, Address, Manager, Description, Score)
+INSERT INTO Event (Name, Address, Manager, Description, Score, Image, DaysID)
 VALUES (
     'InovaWeek',
     'Vitória - ES',
     1,
     'Evento de inovação e tecnologia',
-    0.0
+    0.0,
+    'image.jpg',
+    1
 );
 
 -- Tabela Stands
@@ -48,41 +63,34 @@ CREATE TABLE Stands (
     Name VARCHAR(255) NOT NULL,
     Local VARCHAR(255),
     Score DECIMAL(3,2),
-    FOREIGN KEY (ID_Event) REFERENCES Event(ID)
+    DaysID INT,
+    FOREIGN KEY (ID_Event) REFERENCES Event(ID),
+    FOREIGN KEY (DaysID) REFERENCES Days(ID)
 );
 
-INSERT INTO Stands (ID_Event, Name, Local, Score)
-VALUES (1, 'Stand Tecnologia', 'Pavilhão A', 0.0);
+INSERT INTO Stands (ID_Event, Name, Local, Score, DaysID)
+VALUES (1, 'Stand Tecnologia', 'Pavilhão A', 0.0, 1);
 
--- Tabela Days
-CREATE TABLE Days (
-    ID_Event INT,
-    Day DATE,
-    StartHour TIME,
-    FinishHour TIME,
-    PRIMARY KEY (ID_Event, Day),
-    FOREIGN KEY (ID_Event) REFERENCES Event(ID)
-);
-
-INSERT INTO Days (ID_Event, Day, StartHour, FinishHour)
-VALUES (1, '2026-05-10', '09:00:00', '18:00:00');
 
 -- Tabela Comments
 CREATE TABLE Comments (
     ID INT PRIMARY KEY AUTO_INCREMENT,
     Date DATE NOT NULL,
-    StandsID INT NOT NULL,
+    StandsID INT,
+    EventID INT,
     Score DECIMAL(3,2),
     UserID INT,
     Type VARCHAR(100),
     Text TEXT,
     FOREIGN KEY (StandsID) REFERENCES Stands(ID),
+    FOREIGN KEY (EventID) REFERENCES `Event`(ID),
     FOREIGN KEY (UserID) REFERENCES User(ID)
 );
 
-INSERT INTO Comments (Date, StandsID, Score, UserID, Type, Text)
+INSERT INTO Comments (Date, StandsID, EventID, Score, UserID, Type, Text)
 VALUES (
     CURDATE(),
+    1,
     1,
     4.5,
     1,
@@ -99,4 +107,4 @@ DESCRIBE Stands;
 DESCRIBE Days;
 DESCRIBE Comments;
 
-SELECT * FROM comments;
+SELECT * FROM User;
