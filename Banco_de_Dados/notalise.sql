@@ -25,10 +25,10 @@ CREATE TABLE Days (
     ID INT PRIMARY KEY AUTO_INCREMENT,
     Day DATE,
     StartHour TIME,
-    FinishHour TIME,
+    FinishHour TIME
 );
 
-INSERT INTO Days (ID_Event, Day, StartHour, FinishHour)
+INSERT INTO Days (Day, StartHour, FinishHour)
 VALUES ('2026-05-10', '09:00:00', '18:00:00');
 
 -- Tabela Event
