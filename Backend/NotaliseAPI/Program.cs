@@ -1,7 +1,9 @@
+using NotaliseAPI.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
+builder.Services.AddScoped<Repositorio, Repositorio>();
 
 builder.Services.AddCors(options =>
 {

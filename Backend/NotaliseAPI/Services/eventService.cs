@@ -1,4 +1,6 @@
 using NotaliseAPI.Models;
+using NotaliseAPI.Repository;
+
 public class EventService
 {
     private Repositorio repo = new Repositorio();

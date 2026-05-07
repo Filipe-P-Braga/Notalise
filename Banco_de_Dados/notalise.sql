@@ -13,12 +13,13 @@ CREATE TABLE Imagens (
 CREATE TABLE User (
     ID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(255) NOT NULL,
-    Tipo VARCHAR(100),
-    email VARCHAR(255) NOT NULL
+    Tipo VARCHAR(100) DEFAULT 'Anonimo',
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );
 
-INSERT INTO User (Name, Tipo, email)
-VALUES ('Lucas', 'Organizador', 'lucas@gmail.com');
+INSERT INTO User (Name, Tipo, email, password)
+VALUES ('Lucas', 'Organizador', 'lucas@gmail.com', '123456');
 
 -- Tabela Days
 CREATE TABLE Days (
