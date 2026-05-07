@@ -8,9 +8,9 @@ import { EStand } from './pages/editionStand/e-stand';
 
 export const routes: Routes = [
   { path: '', component: Intro },
-  { path: 'estande', component: Stand },
+  { path: 'estande/:id', component: Stand },
   { path: 'editar-estande', component: EStand },
-  { path: 'evento', component: Event },
+  { path: 'evento/:id', component: Event },
   { path: 'criar-evento', component: EventCreate },
   { path: 'comentarios', component: CommentsPage },
   { path: '**', redirectTo: '' }

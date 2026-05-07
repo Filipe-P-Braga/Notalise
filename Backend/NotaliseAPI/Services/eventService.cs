@@ -24,7 +24,7 @@ public class EventService
         return repo.GetEvents();
     }
 
-        public Event? GetEventById(int id)
+    public Event? GetEventById(int id)
     {
         return repo.GetEventById(id);
     }

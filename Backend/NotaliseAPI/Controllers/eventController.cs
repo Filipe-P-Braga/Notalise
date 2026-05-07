@@ -29,6 +29,17 @@ public class EventController : ControllerBase
         return Ok(events);
     }
 
+    [HttpGet("{id}")]
+    public IActionResult GetEventById(int id)
+    {
+        var ev = service.GetEventById(id);
+
+        if (ev == null)
+            return NotFound("Evento não encontrado");
+
+        return Ok(ev);
+    }
+
     [HttpDelete("{id}")]
     public IActionResult DeleteEvent(int id)
     {

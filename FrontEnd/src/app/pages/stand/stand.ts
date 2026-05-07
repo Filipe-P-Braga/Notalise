@@ -5,6 +5,8 @@ import { Qrcode } from '../../components/qrcode/qrcode';
 import { Comments } from '../../components/comments/comments';
 import { ComentCreateComponent } from '../../components/comentCreate/comentCreate';
 import { CommentService } from '../../services/comment.service';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-stand',
@@ -45,12 +47,16 @@ export class Stand implements OnInit {
     this.loadComments();
   }
 
-  constructor(private commentService: CommentService, private cdr: ChangeDetectorRef) {
+  constructor(private commentService: CommentService, private cdr: ChangeDetectorRef, private route: ActivatedRoute, private http: HttpClient) {
     this.selectedStand = this.stands[0];
   }
 
   ngOnInit() {
     this.loadComments();
+
+    this.route.params.subscribe(params => {
+      this.loadStands(params['id']);
+    });
   }
 
   loadComments() {
@@ -66,4 +72,35 @@ export class Stand implements OnInit {
       }
     });
   }
-}
+
+  loadStands(id?: string) {
+    if(!id)return;
+
+    this.http.get<any>(`http://localhost:5000/stand/${id}`)
+      .subscribe({
+        next: (data) => {
+          this.eventData = {
+            title: data.name,
+            subtitle: '2026',
+            ratingAge: 'Livre',
+            format: 'Presencial | Online',
+            genres: ['Tecnologia', 'Inovação', 'Negócios', 'Universitário'],
+            averageRating: 20,
+            totalRatings: '21.5K',
+            synopsis: data.description,
+            local: data.local,
+            date: '12 a 15 de Outubro de 2026',
+            contentRating: 'Livre para todos os públicos',
+            copyright: '©Universidade Vila Velha / Notalise'
+          };
+
+          console.log('Eventos carregados ao abrir a página:', data);
+        },
+        error: (err) => {
+          console.error('Erro ao buscar dados do stand', err);
+        }
+      });
+  }
+
+
+  }

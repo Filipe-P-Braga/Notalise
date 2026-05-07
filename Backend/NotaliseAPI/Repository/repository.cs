@@ -176,10 +176,10 @@ public class Repositorio
             lista.Add(new Stand
             {
                 Id = reader.GetInt32("Id"),
-                EventId = reader.GetInt32("EventId"),
+                EventId = reader.GetInt32("ID_Event"),
                 Name = reader.GetString("Name"),
                 Local = reader.IsDBNull(reader.GetOrdinal("Local")) ? null : reader.GetString("Local"),
-                Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
+                //Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
                 Score = reader.GetInt32("Score")
             });
         }
@@ -203,11 +203,11 @@ public class Repositorio
         {
             return new Stand
             {
-                Id = reader.GetInt32("Id"),
-                EventId = reader.GetInt32("EventId"),
+                Id = reader.GetInt32("ID"),
+                EventId = reader.GetInt32("ID_Event"),
                 Name = reader.GetString("Name"),
                 Local = reader.IsDBNull(reader.GetOrdinal("Local")) ? null : reader.GetString("Local"),
-                Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
+                //Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
                 Score = reader.GetInt32("Score")
             };
         }

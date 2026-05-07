@@ -1,10 +1,10 @@
 INSERT INTO Event (Name, Address, Manager, Description, Score, Image, DaysID)
 VALUES (
     'InovaWeek',
-    'Vitória - ES',
+    'Campus Boa Vista (UVV), Vila Velha',
     1,
-    'Evento de inovação e tecnologia',
-    0.0,
+    'No maior evento de inovação do estado, alunos apresentam projetos que podem mudar o mundo. Durante as exposições, visitantes avaliam estandes e descobrem o "absoluto segredo" do empreendedorismo moderno. Esta é a história de inovações que encontram desafios, mas alcançam o sucesso.',
+    5.0,
     'image.jpg',
     1
 ), (
