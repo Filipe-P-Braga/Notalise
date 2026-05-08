@@ -1,12 +1,19 @@
 using MySql.Data.MySqlClient;
 using NotaliseAPI.Models;
 
-public class Repositorio
+namespace NotaliseAPI.Repository;
+
+public interface IRepositorio
+{
+    User? GetUserByEmailAndPassword(string email, string password);
+}
+
+public class Repositorio : IRepositorio
 {
     // talvez cause problema ? usuário padrão ? senha padrão ? 
     // database sendo eventsdb para todos
 
-    string connectionString = "server=localhost;database=notalise;user=root;password=JohnGalt24!";
+    string connectionString = "server=localhost;database=notalise;user=root;password=123456";
 
 
     //parte referente ao evento criado tipo inovaweek
@@ -473,6 +480,34 @@ public double GetAverageScoreByStand(int standId)
         cmd.Parameters.AddWithValue("@id", id);
 
         cmd.ExecuteNonQuery();
+    }
+
+        public User? GetUserByEmailAndPassword(string email, string password)
+    {
+        // sua lógica de consulta MySQL aqui
+        using var conn = new MySqlConnection(connectionString);
+        conn.Open();
+
+        string query = "SELECT * FROM User WHERE email = @email AND password = @password";
+
+        using var cmd = new MySqlCommand(query, conn);
+        cmd.Parameters.AddWithValue("@email", email);
+        cmd.Parameters.AddWithValue("@password", password);
+
+        using var reader = cmd.ExecuteReader();
+
+        if (reader.Read())
+        {
+            return new User
+            {
+                Id = reader.GetInt32("ID"),
+                Email = reader.GetString("email"),
+                Password = reader.GetString("password"),
+                Role = reader.GetString("Tipo").ToLower()
+            };
+        }
+
+        return null;
     }
 
 }

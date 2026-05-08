@@ -30,6 +30,11 @@
   cursor: pointer;
 }
 
+.nav-logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .badge {
   background: rgba(249, 115, 22, 0.2);
   color: var(--accent-orange);
@@ -67,6 +72,18 @@
   margin: 0.2rem 0 0 0;
 }
 
+
+.nav-user-btn {
+  display: flex;
+  align-items: center;
+  opacity: 0.7;
+  transition: var(--transition-fast);
+}
+
+.nav-user-btn:hover {
+  opacity: 1;
+}
+
 .nav-item:hover {
   color: var(--text-primary);
 }
@@ -86,6 +103,49 @@
   background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
   border-radius: 99px;
   box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+}
+
+.nav-user-email {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-role-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid transparent;
+}
+
+.role-suporte    { background: rgba(239,68,68,0.15);  color: #ef4444; border-color: rgba(239,68,68,0.3);  }
+.role-organizador{ background: rgba(249,115,22,0.15); color: #f97316; border-color: rgba(249,115,22,0.3); }
+.role-expositor  { background: rgba(234,179,8,0.15);  color: #eab308; border-color: rgba(234,179,8,0.3);  }
+.role-usuario    { background: rgba(59,130,246,0.15); color: #3b82f6; border-color: rgba(59,130,246,0.3); }
+.role-anonimo    { background: rgba(107,114,128,0.15);color: #6b7280; border-color: rgba(107,114,128,0.3);}
+
+.nav-logout-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.35rem 0.9rem;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.nav-logout-btn:hover {
+  border-color: rgba(255,255,255,0.35);
+  color: var(--text-primary);
 }
 
 @media (max-width: 768px) {

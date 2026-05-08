@@ -1,3 +1,5 @@
+using NotaliseAPI.Repository;
+
 public class CommentService
 {
     private Repositorio repo = new Repositorio();

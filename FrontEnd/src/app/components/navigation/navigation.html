@@ -1,7 +1,9 @@
 <nav class="navbar glass-panel">
   <div class="nav-container">
     <div class="nav-logo">
-      <span class="text-gradient">Notalise</span>
+      <a routerLink="/" class="nav-logo-link">
+        <span class="text-gradient">Notalise</span>
+      </a>
     </div>
     
     <div class="nav-links">
@@ -9,7 +11,16 @@
       <!-- <a routerLink="/estande" routerLinkActive="active" class="nav-item">Estandes</a> -->
       <a routerLink="/evento/1" routerLinkActive="active" class="nav-item">Eventos</a>
       <!-- <a routerLink="/comentarios" routerLinkActive="active" class="nav-item">Comentários</a> -->
-      <img src="/IconBranco.png" alt="Logo" class="nav-item-image">
+      
+      @if (authService.isLoggedIn()) {
+        <span class="nav-user-email">{{ authService.getUser()?.email }}</span>
+        <span class="nav-role-badge role-{{ authService.getRole() }}">{{ authService.getRole() }}</span>
+        <button class="nav-logout-btn" (click)="authService.logout()">Sair</button>
+      } @else {
+        <a routerLink="/login" class="nav-user-btn" title="Entrar">
+          <img src="/IconBranco.png" alt="Entrar" class="nav-item-image">
+        </a>
+      }
     </div>
   </div>
 </nav>

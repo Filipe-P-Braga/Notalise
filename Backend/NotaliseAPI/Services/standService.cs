@@ -1,3 +1,5 @@
+using NotaliseAPI.Repository;
+
 public class StandService
 {
     private Repositorio repo = new Repositorio();
