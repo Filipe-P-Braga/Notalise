@@ -35,24 +35,34 @@ VALUES ('2026-05-10', '09:00:00', '18:00:00');
 CREATE TABLE Event (
     ID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(255) NOT NULL,
+    Subtitle VARCHAR(255),
     Address VARCHAR(255),
     Manager INT,
     Description TEXT,
     Score DECIMAL(3,2),
     Image VARCHAR(500),
+    Genres JSON,
+    Format JSON, 
+    ContentRating VARCHAR(255) DEFAULT 'Livre para todos os públicos',
+    Copyright VARCHAR(255),
     DaysID INT,
     FOREIGN KEY (DaysID) REFERENCES Days(ID),
     FOREIGN KEY (Manager) REFERENCES User(ID)
 );
 
-INSERT INTO Event (Name, Address, Manager, Description, Score, Image, DaysID)
+INSERT INTO Event (Name, Subtitle, Address, Manager, Description, Score, Image, Genres, Format, ContentRating, Copyright, DaysID)
 VALUES (
     'InovaWeek',
+    '2026',
     'Vitória - ES',
     1,
     'Evento de inovação e tecnologia',
     0.0,
     'image.jpg',
+    JSON_ARRAY('Tecnologia', 'Inovação'),
+    JSON_ARRAY('Palestra', 'Workshop'),
+    'Livre para todos os públicos',
+    '©Universidade Vila Velha / Notalise',
     1
 );
 
@@ -61,15 +71,22 @@ CREATE TABLE Stands (
     ID INT PRIMARY KEY AUTO_INCREMENT,
     ID_Event INT NOT NULL,
     Name VARCHAR(255) NOT NULL,
+    Subtitle VARCHAR(255),
     Local VARCHAR(255),
+    Description TEXT,
     Score DECIMAL(3,2),
+    Image VARCHAR(500),
+    Genres JSON,
+    Format JSON, 
+    ContentRating VARCHAR(255) DEFAULT 'Livre para todos os públicos',
+    Copyright VARCHAR(255),
     DaysID INT,
     FOREIGN KEY (ID_Event) REFERENCES Event(ID),
     FOREIGN KEY (DaysID) REFERENCES Days(ID)
 );
 
-INSERT INTO Stands (ID_Event, Name, Local, Score, DaysID)
-VALUES (1, 'Stand Tecnologia', 'Pavilhão A', 0.0, 1);
+INSERT INTO Stands (ID_Event, Name, Subtitle, Local, Description, Score, Image, Genres, Format, ContentRating, Copyright, DaysID)
+VALUES (1, 'Notalise', 'Sua opinião importa', 'Pavilhão A', 'Uma plataforma para a avaliação de stands', 5.0, 'stand.jpg', JSON_ARRAY('Tecnologia', 'Inovação', 'Negócios', 'Universitário'), JSON_ARRAY('Presencial'), 'Livre para todos os públicos', '©Universidade Vila Velha / Notalise', 1);
 
 
 -- Tabela Comments

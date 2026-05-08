@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 
 export interface StandData {
-  id: string;
-  category: string;
-  title: string;
-  badge: string;
-  date: string;
+  id: string | number;
+  category?: string;
+  name: string;
+  subtitle?: string;
+  date?: string;
   description: string;
   image: string;
-  tags: string[];
+  genres: string[];
 }
 
 @Component({
@@ -26,9 +26,7 @@ export class StandCard {
   constructor(private router: Router) { }
 
   goToStand() {
-    // Navigate to the stand page
-    // Replace '/stand' with your actual stand route path
-    this.router.navigate(['/estande']);
+    this.router.navigate(['/estande', this.stand.id]);
     console.log('Navigating to stand:', this.stand.id);
   }
 }

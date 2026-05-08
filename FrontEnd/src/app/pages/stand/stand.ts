@@ -74,24 +74,24 @@ export class Stand implements OnInit {
   }
 
   loadStands(id?: string) {
-    if(!id)return;
+    if (!id) return;
 
     this.http.get<any>(`http://localhost:5000/stand/${id}`)
       .subscribe({
         next: (data) => {
           this.eventData = {
             title: data.name,
-            subtitle: '2026',
-            ratingAge: 'Livre',
-            format: 'Presencial | Online',
-            genres: ['Tecnologia', 'Inovação', 'Negócios', 'Universitário'],
-            averageRating: 20,
+            subtitle: data.subtitle || '',
+            ratingAge: data.contentRating || 'Livre',
+            format: data.format ? data.format.join(' | ') : 'Presencial | Online',
+            genres: data.genres || ['Tecnologia', 'Inovação', 'Negócios', 'Universitário'],
+            averageRating: data.score || 0,
             totalRatings: '21.5K',
             synopsis: data.description,
             local: data.local,
             date: '12 a 15 de Outubro de 2026',
-            contentRating: 'Livre para todos os públicos',
-            copyright: '©Universidade Vila Velha / Notalise'
+            contentRating: data.contentRating || 'Livre para todos os públicos',
+            copyright: data.copyright
           };
 
           console.log('Eventos carregados ao abrir a página:', data);
@@ -103,4 +103,4 @@ export class Stand implements OnInit {
   }
 
 
-  }
+}

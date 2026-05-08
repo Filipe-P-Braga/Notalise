@@ -13,9 +13,10 @@ import { RouterModule } from '@angular/router';
 export class EStand {
     standData = {
         name: 'Smart City UVV',
-        course: 'Ciência da Computação',
+        subtitle: 'Inovação urbana',
+        local: 'Ciência da Computação',
         description: 'Projeto inovador voltado para o desenvolvimento de soluções inteligentes para cidades do futuro.',
-        bannerUrl: 'tamanduA.webp'
+        image: 'tamanduA.webp'
     };
 
     saveChanges() {

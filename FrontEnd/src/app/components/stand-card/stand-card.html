@@ -2,8 +2,8 @@
   <!-- Normal State -->
   <div class="stand-card-normal">
     <div class="image-wrapper">
-      <img [src]="stand.image" [alt]="stand.title" class="stand-image">
-      <!-- <span class="badge">{{ stand.badge }}</span> -->
+      <img [src]="stand.image" [alt]="stand.name" class="stand-image">
+      <span class="badge" *ngIf="stand.subtitle">{{ stand.subtitle }}</span>
       <!-- Opcional: tag de status no canto inferior direito
       <span class="status-tag">Visitado</span>
       -->
@@ -11,8 +11,8 @@
     <div class="normal-info">
       <div class="info-content">
         <h4 class="category-title" *ngIf="stand.category">{{ stand.category }}</h4>
-        <h3 class="stand-title">{{ stand.title }}</h3>
-        <p class="stand-tags">{{ stand.tags.join(' | ') }}</p>
+        <h3 class="stand-title">{{ stand.name }}</h3>
+        <p class="stand-tags" *ngIf="stand.genres">{{ stand.genres.join(' | ') }}</p>
       </div>
       <button class="more-options" (click)="$event.stopPropagation()">
         <svg viewBox="0 0 24 24">
@@ -27,10 +27,10 @@
   <div class="stand-card-hover">
     <div class="hover-content">
       <h4 class="category-title" *ngIf="stand.category">{{ stand.category }}</h4>
-      <h3 class="stand-title">{{ stand.title }}</h3>
+      <h3 class="stand-title">{{ stand.name }}</h3>
 
       <div class="meta-row">
-        <!-- <span class="badge">{{ stand.badge }}</span> -->
+        <span class="badge" *ngIf="stand.subtitle">{{ stand.subtitle }}</span>
         <span class="date">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
             <path

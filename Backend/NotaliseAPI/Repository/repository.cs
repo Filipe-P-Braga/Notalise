@@ -15,15 +15,23 @@ public class Repositorio
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = @"INSERT INTO Event (Name, Address, Description, Score)
-                         VALUES (@name, @address, @description, @score)";
+        string query = @"INSERT INTO Event (Name, Subtitle, Address, Manager, Description, Score, Image, Genres, Format, ContentRating, Copyright, DaysID)
+                         VALUES (@name, @subtitle, @address, @manager, @description, @score, @image, @genres, @format, @contentRating, @copyright, @daysID)";
 
         using var cmd = new MySqlCommand(query, conn);
 
-        cmd.Parameters.AddWithValue("@name", ev.Name);
-        cmd.Parameters.AddWithValue("@address", ev.Address);
+        cmd.Parameters.AddWithValue("@name", ev.Name ?? "");
+        cmd.Parameters.AddWithValue("@subtitle", ev.Subtitle ?? "");
+        cmd.Parameters.AddWithValue("@address", ev.Address ?? "");
+        cmd.Parameters.AddWithValue("@manager", ev.Manager > 0 ? ev.Manager : 1);
         cmd.Parameters.AddWithValue("@description", ev.Description);
         cmd.Parameters.AddWithValue("@score", ev.Score);
+        cmd.Parameters.AddWithValue("@image", ev.Image);
+        cmd.Parameters.AddWithValue("@genres", System.Text.Json.JsonSerializer.Serialize(ev.Genres ?? Array.Empty<string>()));
+        cmd.Parameters.AddWithValue("@format", System.Text.Json.JsonSerializer.Serialize(ev.Format ?? Array.Empty<string>()));
+        cmd.Parameters.AddWithValue("@contentRating", ev.ContentRating ?? "Livre para todos os públicos");
+        cmd.Parameters.AddWithValue("@copyright", ev.Copyright ?? "");
+        cmd.Parameters.AddWithValue("@daysID", ev.DaysID > 0 ? ev.DaysID : 1);
 
         cmd.ExecuteNonQuery();
     }
@@ -34,16 +42,24 @@ public class Repositorio
         conn.Open();
 
         string query = @"UPDATE Event 
-                         SET Name=@name, Address=@address, Description=@description, Score=@score
+                         SET Name=@name, Subtitle=@subtitle, Address=@address, Manager=@manager, Description=@description, Score=@score, Image=@image, Genres=@genres, Format=@format, ContentRating=@contentRating, Copyright=@copyright, DaysID=@daysID
                          WHERE Id=@id";
 
         using var cmd = new MySqlCommand(query, conn);
 
         cmd.Parameters.AddWithValue("@id", ev.Id);
-        cmd.Parameters.AddWithValue("@name", ev.Name);
-        cmd.Parameters.AddWithValue("@address", ev.Address);
+        cmd.Parameters.AddWithValue("@name", ev.Name ?? "");
+        cmd.Parameters.AddWithValue("@subtitle", ev.Subtitle ?? "");
+        cmd.Parameters.AddWithValue("@address", ev.Address ?? "");
+        cmd.Parameters.AddWithValue("@manager", ev.Manager > 0 ? ev.Manager : 1);
         cmd.Parameters.AddWithValue("@description", ev.Description);
         cmd.Parameters.AddWithValue("@score", ev.Score);
+        cmd.Parameters.AddWithValue("@image", ev.Image);
+        cmd.Parameters.AddWithValue("@genres", System.Text.Json.JsonSerializer.Serialize(ev.Genres ?? Array.Empty<string>()));
+        cmd.Parameters.AddWithValue("@format", System.Text.Json.JsonSerializer.Serialize(ev.Format ?? Array.Empty<string>()));
+        cmd.Parameters.AddWithValue("@contentRating", ev.ContentRating ?? "Livre para todos os públicos");
+        cmd.Parameters.AddWithValue("@copyright", ev.Copyright ?? "");
+        cmd.Parameters.AddWithValue("@daysID", ev.DaysID > 0 ? ev.DaysID : 1);
 
         cmd.ExecuteNonQuery();
     }
@@ -67,9 +83,17 @@ public class Repositorio
             {
                 Id = reader.GetInt32("Id"),
                 Name = reader.GetString("Name"),
-                Address = reader.GetString("Address"),
+                Subtitle = reader.IsDBNull(reader.GetOrdinal("Subtitle")) ? "" : reader.GetString("Subtitle"),
+                Address = reader.IsDBNull(reader.GetOrdinal("Address")) ? "" : reader.GetString("Address"),
+                Manager = reader.IsDBNull(reader.GetOrdinal("Manager")) ? 0 : reader.GetInt32("Manager"),
                 Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
-                Score = reader.GetInt32("Score")
+                Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString("Image"),
+                Score = reader.IsDBNull(reader.GetOrdinal("Score")) ? 0 : Convert.ToSingle(reader["Score"]),
+                Genres = reader.IsDBNull(reader.GetOrdinal("Genres")) ? Array.Empty<string>() : System.Text.Json.JsonSerializer.Deserialize<string[]>(reader.GetString("Genres")),
+                Format = reader.IsDBNull(reader.GetOrdinal("Format")) ? Array.Empty<string>() : System.Text.Json.JsonSerializer.Deserialize<string[]>(reader.GetString("Format")),
+                ContentRating = reader.IsDBNull(reader.GetOrdinal("ContentRating")) ? "" : reader.GetString("ContentRating"),
+                Copyright = reader.IsDBNull(reader.GetOrdinal("Copyright")) ? "" : reader.GetString("Copyright"),
+                DaysID = reader.IsDBNull(reader.GetOrdinal("DaysID")) ? 0 : reader.GetInt32("DaysID")
             });
         }
 
@@ -109,9 +133,17 @@ public class Repositorio
             {
                 Id = reader.GetInt32("Id"),
                 Name = reader.GetString("Name"),
-                Address = reader.GetString("Address"),
+                Subtitle = reader.IsDBNull(reader.GetOrdinal("Subtitle")) ? "" : reader.GetString("Subtitle"),
+                Address = reader.IsDBNull(reader.GetOrdinal("Address")) ? "" : reader.GetString("Address"),
+                Manager = reader.IsDBNull(reader.GetOrdinal("Manager")) ? 0 : reader.GetInt32("Manager"),
                 Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
-                Score = reader.GetInt32("Score")
+                Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString("Image"),
+                Score = reader.IsDBNull(reader.GetOrdinal("Score")) ? 0 : Convert.ToSingle(reader["Score"]),
+                Genres = reader.IsDBNull(reader.GetOrdinal("Genres")) ? Array.Empty<string>() : System.Text.Json.JsonSerializer.Deserialize<string[]>(reader.GetString("Genres")),
+                Format = reader.IsDBNull(reader.GetOrdinal("Format")) ? Array.Empty<string>() : System.Text.Json.JsonSerializer.Deserialize<string[]>(reader.GetString("Format")),
+                ContentRating = reader.IsDBNull(reader.GetOrdinal("ContentRating")) ? "" : reader.GetString("ContentRating"),
+                Copyright = reader.IsDBNull(reader.GetOrdinal("Copyright")) ? "" : reader.GetString("Copyright"),
+                DaysID = reader.IsDBNull(reader.GetOrdinal("DaysID")) ? 0 : reader.GetInt32("DaysID")
             };
         }
 
@@ -125,16 +157,23 @@ public class Repositorio
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = @"INSERT INTO Stands (EventId, Name, Local, Description, Score)
-                        VALUES (@eventId, @name, @local, @description, @score)";
+        string query = @"INSERT INTO Stands (ID_Event, Name, Subtitle, Local, Description, Score, Image, Genres, Format, ContentRating, Copyright, DaysID)
+                        VALUES (@eventId, @name, @subtitle, @local, @description, @score, @image, @genres, @format, @contentRating, @copyright, @daysID)";
 
         using var cmd = new MySqlCommand(query, conn);
 
         cmd.Parameters.AddWithValue("@eventId", stand.EventId);
-        cmd.Parameters.AddWithValue("@name", stand.Name);
-        cmd.Parameters.AddWithValue("@local", stand.Local);
+        cmd.Parameters.AddWithValue("@name", stand.Name ?? "");
+        cmd.Parameters.AddWithValue("@subtitle", stand.Subtitle ?? "");
+        cmd.Parameters.AddWithValue("@local", stand.Local ?? "");
         cmd.Parameters.AddWithValue("@description", stand.Description);
         cmd.Parameters.AddWithValue("@score", stand.Score);
+        cmd.Parameters.AddWithValue("@image", stand.Image);
+        cmd.Parameters.AddWithValue("@genres", System.Text.Json.JsonSerializer.Serialize(stand.Genres ?? Array.Empty<string>()));
+        cmd.Parameters.AddWithValue("@format", System.Text.Json.JsonSerializer.Serialize(stand.Format ?? Array.Empty<string>()));
+        cmd.Parameters.AddWithValue("@contentRating", stand.ContentRating ?? "Livre para todos os públicos");
+        cmd.Parameters.AddWithValue("@copyright", stand.Copyright ?? "");
+        cmd.Parameters.AddWithValue("@daysID", stand.DaysID > 0 ? stand.DaysID : 1);
 
         cmd.ExecuteNonQuery();
     }
@@ -145,16 +184,23 @@ public class Repositorio
     conn.Open();
 
     string query = @"UPDATE Stands 
-                     SET Name=@name, Local=@local, Description=@description, Score=@score
+                     SET Name=@name, Subtitle=@subtitle, Local=@local, Description=@description, Score=@score, Image=@image, Genres=@genres, Format=@format, ContentRating=@contentRating, Copyright=@copyright, DaysID=@daysID
                      WHERE Id=@id";
 
     using var cmd = new MySqlCommand(query, conn);
 
     cmd.Parameters.AddWithValue("@id", stand.Id);
-    cmd.Parameters.AddWithValue("@name", stand.Name);
-    cmd.Parameters.AddWithValue("@local", stand.Local);
+    cmd.Parameters.AddWithValue("@name", stand.Name ?? "");
+    cmd.Parameters.AddWithValue("@subtitle", stand.Subtitle ?? "");
+    cmd.Parameters.AddWithValue("@local", stand.Local ?? "");
     cmd.Parameters.AddWithValue("@description", stand.Description);
     cmd.Parameters.AddWithValue("@score", stand.Score);
+    cmd.Parameters.AddWithValue("@image", stand.Image);
+    cmd.Parameters.AddWithValue("@genres", System.Text.Json.JsonSerializer.Serialize(stand.Genres ?? Array.Empty<string>()));
+    cmd.Parameters.AddWithValue("@format", System.Text.Json.JsonSerializer.Serialize(stand.Format ?? Array.Empty<string>()));
+    cmd.Parameters.AddWithValue("@contentRating", stand.ContentRating ?? "Livre para todos os públicos");
+    cmd.Parameters.AddWithValue("@copyright", stand.Copyright ?? "");
+    cmd.Parameters.AddWithValue("@daysID", stand.DaysID > 0 ? stand.DaysID : 1);
 
     cmd.ExecuteNonQuery();
 }
@@ -178,9 +224,16 @@ public class Repositorio
                 Id = reader.GetInt32("Id"),
                 EventId = reader.GetInt32("ID_Event"),
                 Name = reader.GetString("Name"),
+                Subtitle = reader.IsDBNull(reader.GetOrdinal("Subtitle")) ? "" : reader.GetString("Subtitle"),
                 Local = reader.IsDBNull(reader.GetOrdinal("Local")) ? null : reader.GetString("Local"),
-                //Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
-                Score = reader.GetInt32("Score")
+                Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
+                Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString("Image"),
+                Score = reader.IsDBNull(reader.GetOrdinal("Score")) ? 0 : Convert.ToInt32(reader["Score"]),
+                Genres = reader.IsDBNull(reader.GetOrdinal("Genres")) ? Array.Empty<string>() : System.Text.Json.JsonSerializer.Deserialize<string[]>(reader.GetString("Genres")),
+                Format = reader.IsDBNull(reader.GetOrdinal("Format")) ? Array.Empty<string>() : System.Text.Json.JsonSerializer.Deserialize<string[]>(reader.GetString("Format")),
+                ContentRating = reader.IsDBNull(reader.GetOrdinal("ContentRating")) ? "" : reader.GetString("ContentRating"),
+                Copyright = reader.IsDBNull(reader.GetOrdinal("Copyright")) ? "" : reader.GetString("Copyright"),
+                DaysID = reader.IsDBNull(reader.GetOrdinal("DaysID")) ? 0 : reader.GetInt32("DaysID")
             });
         }
 
@@ -206,9 +259,16 @@ public class Repositorio
                 Id = reader.GetInt32("ID"),
                 EventId = reader.GetInt32("ID_Event"),
                 Name = reader.GetString("Name"),
+                Subtitle = reader.IsDBNull(reader.GetOrdinal("Subtitle")) ? "" : reader.GetString("Subtitle"),
                 Local = reader.IsDBNull(reader.GetOrdinal("Local")) ? null : reader.GetString("Local"),
-                //Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
-                Score = reader.GetInt32("Score")
+                Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
+                Image = reader.IsDBNull(reader.GetOrdinal("Image")) ? null : reader.GetString("Image"),
+                Score = reader.IsDBNull(reader.GetOrdinal("Score")) ? 0 : Convert.ToInt32(reader["Score"]),
+                Genres = reader.IsDBNull(reader.GetOrdinal("Genres")) ? Array.Empty<string>() : System.Text.Json.JsonSerializer.Deserialize<string[]>(reader.GetString("Genres")),
+                Format = reader.IsDBNull(reader.GetOrdinal("Format")) ? Array.Empty<string>() : System.Text.Json.JsonSerializer.Deserialize<string[]>(reader.GetString("Format")),
+                ContentRating = reader.IsDBNull(reader.GetOrdinal("ContentRating")) ? "" : reader.GetString("ContentRating"),
+                Copyright = reader.IsDBNull(reader.GetOrdinal("Copyright")) ? "" : reader.GetString("Copyright"),
+                DaysID = reader.IsDBNull(reader.GetOrdinal("DaysID")) ? 0 : reader.GetInt32("DaysID")
             };
         }
 
