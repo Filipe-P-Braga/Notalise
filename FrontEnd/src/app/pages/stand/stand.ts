@@ -97,6 +97,10 @@ export class Stand implements OnInit {
           };
 
           console.log('Eventos carregados ao abrir a página:', data);
+
+          const roundedScore = Math.round(this.eventData.averageRating);
+          this.stars = Array(roundedScore).fill(0);
+
         },
         error: (err) => {
           console.error('Erro ao buscar dados do stand', err);
