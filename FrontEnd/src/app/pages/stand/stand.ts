@@ -30,7 +30,8 @@ export class Stand implements OnInit {
     local: 'Campus Boa Vista (UVV), Vila Velha',
     date: '12 a 15 de Outubro de 2026',
     contentRating: 'Livre para todos os públicos',
-    copyright: '©Universidade Vila Velha / Notalise'
+    copyright: '©Universidade Vila Velha / Notalise',
+    image: ''
   };
 
   stands = [  //Isso aqui na realidade deveria ser chamado do proprio banco, sendo o stand que está sendo acessado via ID, entretanto, como sabemos o Stand ainda está martelado, e por isso seria inutil tentar pegar ele por agora. Sendo assim, isso será um array ainda por hora
@@ -91,7 +92,8 @@ export class Stand implements OnInit {
             local: data.local,
             date: '12 a 15 de Outubro de 2026',
             contentRating: data.contentRating || 'Livre para todos os públicos',
-            copyright: data.copyright
+            copyright: data.copyright,
+            image: data.image || ''
           };
 
           console.log('Eventos carregados ao abrir a página:', data);

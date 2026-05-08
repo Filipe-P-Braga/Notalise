@@ -58,7 +58,7 @@ VALUES (
     1,
     'Evento de inovação e tecnologia',
     0.0,
-    'image.jpg',
+    'https://cdn.esbrasil.com.br/wp-content/uploads/2025/09/Texto-do-seu-paragrafo-19.jpg',
     JSON_ARRAY('Tecnologia', 'Inovação'),
     JSON_ARRAY('Palestra', 'Workshop'),
     'Livre para todos os públicos',
@@ -86,7 +86,7 @@ CREATE TABLE Stands (
 );
 
 INSERT INTO Stands (ID_Event, Name, Subtitle, Local, Description, Score, Image, Genres, Format, ContentRating, Copyright, DaysID)
-VALUES (1, 'Notalise', 'Sua opinião importa', 'Pavilhão A', 'Uma plataforma para a avaliação de stands', 5.0, 'stand.jpg', JSON_ARRAY('Tecnologia', 'Inovação', 'Negócios', 'Universitário'), JSON_ARRAY('Presencial'), 'Livre para todos os públicos', '©Universidade Vila Velha / Notalise', 1);
+VALUES (1, 'Notalise', 'Sua opinião importa', 'Pavilhão A', 'Uma plataforma para a avaliação de stands', 5.0, 'https://blog.even3.com.br/wp-content/uploads/2021/03/carreira-de-pesquisador-1-1.png', JSON_ARRAY('Tecnologia', 'Inovação', 'Negócios', 'Universitário'), JSON_ARRAY('Presencial'), 'Livre para todos os públicos', '©Universidade Vila Velha / Notalise', 1);
 
 
 -- Tabela Comments

@@ -28,7 +28,8 @@ export class Event implements OnInit {
     local: '',
     date: '',
     contentRating: '',
-    copyright: ''
+    copyright: '',
+    image: ''
   };
 
   stars = [1, 2, 3, 4, 5];
@@ -72,7 +73,8 @@ export class Event implements OnInit {
             local: data.address,
             date: '12 a 15 de Outubro de 2026',
             contentRating: data.contentRating || 'Livre para todos os públicos',
-            copyright: data.copyright
+            copyright: data.copyright,
+            image: data.image || ''
           };
 
           console.log('Eventos carregados ao abrir a página:', data);
