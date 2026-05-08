@@ -32,7 +32,7 @@ export class Event implements OnInit {
     image: ''
   };
 
-  stars = [1, 2, 3, 4, 5];
+  stars: number[] = [];
 
   stands: StandData[] = [
     {
@@ -76,6 +76,9 @@ export class Event implements OnInit {
             copyright: data.copyright,
             image: data.image || ''
           };
+
+          const roundedScore = Math.round(this.eventData.averageRating);
+          this.stars = Array(roundedScore).fill(0);
 
           console.log('Eventos carregados ao abrir a página:', data);
         },

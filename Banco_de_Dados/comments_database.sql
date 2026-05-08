@@ -5,4 +5,4 @@ VALUES ('2023-05-10', 1, 1, 5.0, 1, 'Organizador', 'Comentário sobre o stand No
        ('2023-05-10', 1, 1, 3.0, 1, 'Visitante', 'Comentário sobre o stand Porquê o Robotinic odeia o Sonic');
 
 SELECT * FROM Comments;
- s
+ 
