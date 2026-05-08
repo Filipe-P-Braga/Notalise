@@ -59,3 +59,10 @@ __screenshots__/
 # =========================
 .DS_Store
 Thumbs.db
+
+# =========================
+# Os que me pertubaram durante o conflito de merge
+# =========================
+bin/
+obj/
+.vs/
