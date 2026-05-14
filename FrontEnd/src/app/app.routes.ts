@@ -4,6 +4,7 @@ import { Stand } from './pages/stand/stand';
 import { Event } from './pages/event/event';
 import { EventCreate } from './pages/eventCreate/event';
 import { CommentsPage } from './pages/comments/comments';
+import { EventList } from './pages/eventList/event';
 import { EStand } from './pages/editionStand/e-stand';
 import { LoginPage } from './pages/login/login';
 import { authGuard } from './guards/auth.guard';
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'criar-evento', component: EventCreate },
   { path: 'comentarios', component: CommentsPage },
   { path: 'login', component: LoginPage },
+  { path: 'eventos', component: EventList },
   {
     path: 'criar-evento',
     component: EventCreate,

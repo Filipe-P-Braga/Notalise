@@ -41,6 +41,39 @@
   z-index: 1;
 }
 
+/* Events nav link */
+.events-nav-link {
+  position: absolute;
+  top: 1.5rem;
+  left: 4rem;
+  z-index: 3;
+}
+
+.all-events-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #f97316;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s, opacity 0.2s;
+  opacity: 0.85;
+}
+
+.all-events-btn:hover {
+  color: #fb923c;
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .events-nav-link {
+    left: 2rem;
+  }
+}
+
 /* Main Layout */
 .top-bar {
   position: relative;

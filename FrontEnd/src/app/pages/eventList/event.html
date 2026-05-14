@@ -1,0 +1,114 @@
+<div class="event-list-page animate-fade-in">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="page-title">Eventos</h1>
+    <div class="search-wrapper">
+      <svg viewBox="0 0 24 24" class="search-icon" fill="currentColor">
+        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      </svg>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Buscar eventos..."
+        [(ngModel)]="searchQuery"
+        (input)="filterEvents()"
+      />
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="state-container">
+    <div class="spinner"></div>
+    <p class="state-text">Carregando eventos...</p>
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="error && !loading" class="state-container">
+    <svg viewBox="0 0 24 24" class="state-icon error-icon" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+    </svg>
+    <p class="state-text">Não foi possível carregar os eventos.</p>
+    <button class="retry-btn" (click)="loadEvents()">Tentar novamente</button>
+  </div>
+
+  <!-- Empty search result -->
+  <div *ngIf="!loading && !error && filteredEvents.length === 0 && events.length > 0" class="state-container">
+    <p class="state-text">Nenhum evento encontrado para "<strong>{{ searchQuery }}</strong>".</p>
+  </div>
+
+  <!-- No events at all -->
+  <div *ngIf="!loading && !error && events.length === 0" class="state-container">
+    <svg viewBox="0 0 24 24" class="state-icon" fill="currentColor" style="color: #4b5563;">
+      <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/>
+    </svg>
+    <p class="state-text">Nenhum evento disponível no momento.</p>
+  </div>
+
+  <!-- Events grid -->
+  <div *ngIf="!loading && !error && filteredEvents.length > 0" class="events-grid">
+    <div
+      class="event-card"
+      *ngFor="let event of filteredEvents"
+      (click)="goToEvent(event.id)"
+    >
+      <!-- Normal state -->
+      <div class="card-normal">
+        <div class="card-image-wrapper">
+          <img
+            [src]="event.image || '/tamanduA.webp'"
+            [alt]="event.name"
+            class="card-image"
+          />
+          <span class="card-badge" *ngIf="event.subtitle">{{ event.subtitle }}</span>
+        </div>
+        <div class="card-info">
+          <div class="card-info-content">
+            <h3 class="card-name">{{ event.name }}</h3>
+            <p class="card-genres" *ngIf="event.genres?.length">{{ event.genres?.join(' | ') }}</p>
+          </div>
+          <button class="card-more-btn" (click)="$event.stopPropagation()">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hover state -->
+      <div class="card-hover">
+        <div class="hover-body">
+          <h3 class="card-name">{{ event.name }}</h3>
+
+          <div class="hover-meta">
+            <span class="card-badge" *ngIf="event.subtitle">{{ event.subtitle }}</span>
+            <div class="stars" *ngIf="event.score > 0">
+              <svg *ngFor="let s of getStars(event.score)" viewBox="0 0 24 24" class="star-icon" fill="currentColor">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+              </svg>
+            </div>
+          </div>
+
+          <p class="hover-address" *ngIf="event.address">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            {{ event.address }}
+          </p>
+
+          <p class="hover-description" *ngIf="event.description">{{ event.description }}</p>
+
+          <div class="hover-actions">
+            <button class="hover-action-btn" (click)="$event.stopPropagation(); goToEvent(event.id)">
+              <svg viewBox="0 0 24 24" class="play-icon" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              VER EVENTO
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

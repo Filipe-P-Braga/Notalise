@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Qrcode } from '../../components/qrcode/qrcode';
 import { StandCard, StandData } from '../../components/stand-card/stand-card';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [CommonModule, Qrcode, StandCard],
+  imports: [CommonModule, Qrcode, StandCard, RouterModule],
   templateUrl: './event.html',
   styleUrl: './event.css',
 })
