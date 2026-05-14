@@ -71,6 +71,12 @@
               "buildTarget": "notalise_app:build:development"
             }
           },
+          "options": {
+            "host": "0.0.0.0",
+            "allowedHosts": [
+              ".trycloudflare.com"
+            ]
+          },
           "defaultConfiguration": "development"
         },
         "test": {
