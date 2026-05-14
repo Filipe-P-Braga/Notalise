@@ -48,7 +48,10 @@ export class Event implements OnInit {
   ];
 
   constructor(private http: HttpClient, private route: ActivatedRoute) { }
-
+  
+  onImageError(event: any) {
+  event.target.src = 'ShowInova.jpg';
+}
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.loadEvents(params['id']);
