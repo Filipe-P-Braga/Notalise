@@ -13,8 +13,19 @@ public class Repositorio : IRepositorio
     // talvez cause problema ? usuário padrão ? senha padrão ? 
     // database sendo eventsdb para todos
 
-    string connectionString = "server=localhost;database=notalise;user=root;password=123456";
+string connectionString = "server=localhost;database=notalise;user=root;password=JohnGalt24!";
 
+    private bool HasColumn(MySqlDataReader reader, string columnName)
+    {
+        try
+        {
+            return reader.GetOrdinal(columnName) >= 0;
+        }
+        catch (IndexOutOfRangeException)
+        {
+            return false;
+        }
+    }
 
     //parte referente ao evento criado tipo inovaweek
     public void CreateEvent(Event ev)
@@ -90,7 +101,7 @@ public class Repositorio : IRepositorio
             {
                 Id = reader.GetInt32("Id"),
                 Name = reader.GetString("Name"),
-                Subtitle = reader.IsDBNull(reader.GetOrdinal("Subtitle")) ? "" : reader.GetString("Subtitle"),
+                Subtitle = HasColumn(reader, "Subtitle") && !reader.IsDBNull(reader.GetOrdinal("Subtitle")) ? reader.GetString("Subtitle") : "",
                 Address = reader.IsDBNull(reader.GetOrdinal("Address")) ? "" : reader.GetString("Address"),
                 Manager = reader.IsDBNull(reader.GetOrdinal("Manager")) ? 0 : reader.GetInt32("Manager"),
                 Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
@@ -140,7 +151,7 @@ public class Repositorio : IRepositorio
             {
                 Id = reader.GetInt32("Id"),
                 Name = reader.GetString("Name"),
-                Subtitle = reader.IsDBNull(reader.GetOrdinal("Subtitle")) ? "" : reader.GetString("Subtitle"),
+                Subtitle = HasColumn(reader, "Subtitle") && !reader.IsDBNull(reader.GetOrdinal("Subtitle")) ? reader.GetString("Subtitle") : "",
                 Address = reader.IsDBNull(reader.GetOrdinal("Address")) ? "" : reader.GetString("Address"),
                 Manager = reader.IsDBNull(reader.GetOrdinal("Manager")) ? 0 : reader.GetInt32("Manager"),
                 Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader.GetString("Description"),
@@ -423,6 +434,44 @@ public double GetAverageScoreByEvent(int eventId)
         return lista;
     }
 
+    public List<Comment> GetCommentsByEventId(int eventId)
+    {
+        var lista = new List<Comment>();
+
+        using var conn = new MySqlConnection(connectionString);
+        conn.Open();
+
+        string query = @"
+            SELECT c.*
+            FROM Comments c
+            LEFT JOIN Stands s ON c.StandsID = s.ID
+            WHERE c.EventID = @eventId OR s.ID_Event = @eventId
+            ORDER BY c.Date DESC";
+
+        using var cmd = new MySqlCommand(query, conn);
+        cmd.Parameters.AddWithValue("@eventId", eventId);
+
+        using var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            lista.Add(new Comment
+            {
+                Id = reader.GetInt32("ID"),
+                StandId = reader.GetInt32("StandsID"),
+                Text = reader.GetString("Text"),
+                Score = reader.GetInt32("Score"),
+
+                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
+
+                Date = reader.GetDateTime("Date"),
+                Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
+            });
+        }
+
+        return lista;
+    }
+
 
 public double GetAverageScoreByStand(int standId)
 {
@@ -510,4 +559,36 @@ public double GetAverageScoreByStand(int standId)
         return null;
     }
 
+    // Parte referente a UserActivity
+    public List<UserActivity> GetUserActivities()
+    {
+        var lista = new List<UserActivity>();
+
+        using var conn = new MySqlConnection(connectionString);
+        conn.Open();
+
+        string query = @"SELECT UA.ID, UA.UserID, UA.eventID, UA.TipoUsuario, UA.DataHora, UA.Avaliou, E.Name AS EventName
+                         FROM UserActivity UA
+                         LEFT JOIN Event E ON UA.eventID = E.ID
+                         ORDER BY UA.DataHora DESC";
+
+        using var cmd = new MySqlCommand(query, conn);
+        using var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            lista.Add(new UserActivity
+            {
+                Id = reader.GetInt32("ID"),
+                UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
+                EventId = reader.IsDBNull(reader.GetOrdinal("eventID")) ? null : reader.GetInt32("eventID"),
+                TipoUsuario = reader.IsDBNull(reader.GetOrdinal("TipoUsuario")) ? "Anonimo" : reader.GetString("TipoUsuario"),
+                DataHora = reader.GetDateTime("DataHora"),
+                Avaliou = reader.GetBoolean("Avaliou"),
+                EventName = reader.IsDBNull(reader.GetOrdinal("EventName")) ? "Sem Evento" : reader.GetString("EventName")
+            });
+        }
+
+        return lista;
+    }
 }

@@ -6,6 +6,7 @@ import { EventCreate } from './pages/eventCreate/event';
 import { CommentsPage } from './pages/comments/comments';
 import { EStand } from './pages/editionStand/e-stand';
 import { LoginPage } from './pages/login/login';
+import { StatisticsPage } from './pages/Statistics/statistics';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'criar-evento', component: EventCreate },
   { path: 'comentarios', component: CommentsPage },
   { path: 'login', component: LoginPage },
+  { path: 'estatisticas/:id', component: StatisticsPage },
   {
     path: 'criar-evento',
     component: EventCreate,

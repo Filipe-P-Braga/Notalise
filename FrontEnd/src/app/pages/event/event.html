@@ -1,7 +1,7 @@
 <div class="presentation-container animate-fade-in">
   <div class="bg-layer">
     <div class="bg-gradient-overlay"></div>
-    <img [src]="eventData?.image" alt="Event Banner" class="bg-image">
+    <img [src]="eventData.image" alt="Event Banner" class="bg-image">
   </div>
 
   <!-- <div class="top-bar">
@@ -15,16 +15,16 @@
     <!-- Left side -->
     <div class="main-details">
       <h1 class="event-title">
-        <span class="event-title-main">{{ eventData?.title }}</span>
+        <span class="event-title-main">{{ eventData.title }}</span>
         <br>
-        <span class="event-title-sub">{{ eventData?.subtitle }}</span>
+        <span class="event-title-sub">{{ eventData.subtitle }}</span>
       </h1>
 
       <div class="meta-row">
-        <!-- <span class="age-rating">{{ eventData?.ratingAge }}</span> -->
-        <span class="format-text"> &nbsp;•&nbsp; {{ eventData?.format }} &nbsp;•&nbsp; </span>
+        <!-- <span class="age-rating">{{ eventData.ratingAge }}</span> -->
+        <span class="format-text"> &nbsp;•&nbsp; {{ eventData.format }} &nbsp;•&nbsp; </span>
         <span class="genres-list">
-          <ng-container *ngFor="let genre of eventData?.genres; let last = last">
+          <ng-container *ngFor="let genre of eventData.genres; let last = last">
             <a href="#" class="genre-link">{{ genre }}</a><span *ngIf="!last">, </span>
           </ng-container>
         </span>
@@ -37,7 +37,7 @@
           </svg>
         </div>
         <div class="dropdown-rating">
-          Classificação média: {{ eventData?.averageRating }} ({{ eventData?.totalRatings }})
+          Classificação média: {{ eventData.averageRating }} ({{ eventData.totalRatings }})
           <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
             <path d="M7 10l5 5 5-5z" />
           </svg>
@@ -66,7 +66,7 @@
       </div>
 
       <p class="synopsis-text">
-        {{ eventData?.synopsis }}
+        {{ eventData.synopsis }}
       </p>
 
       <div class="bottom-link">
@@ -77,22 +77,22 @@
     <!-- Right side (Info details) -->
     <div class="extra-details">
       <div class="detail-item">
-        <span class="detail-label">Local:</span> {{ eventData?.local }}
+        <span class="detail-label">Local:</span> {{ eventData.local }}
       </div>
       <div class="detail-item">
-        <span class="detail-label">Data:</span> {{ eventData?.date }}
+        <span class="detail-label">Data:</span> {{ eventData.date }}
       </div>
       <!-- <div class="detail-item">
-        <span class="detail-label">Classificação de Conteúdo:</span> <span class="age-rating small">{{ eventData?.ratingAge }}</span> {{ eventData?.contentRating }}
+        <span class="detail-label">Classificação de Conteúdo:</span> <span class="age-rating small">{{ eventData.ratingAge }}</span> {{ eventData.contentRating }}
       </div> -->
       <div class="detail-item">
         <span class="detail-label">Gêneros:</span>
-        <ng-container *ngFor="let genre of eventData?.genres; let last = last">
+        <ng-container *ngFor="let genre of eventData.genres; let last = last">
           <a href="#" class="genre-link">{{ genre }}</a><span *ngIf="!last">, </span>
         </ng-container>
       </div>
       <div class="copyright-text">
-        {{ eventData?.copyright }}
+        {{ eventData.copyright }}
       </div>
     </div>
   </div>

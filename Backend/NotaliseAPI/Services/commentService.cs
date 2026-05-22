@@ -24,6 +24,11 @@ public class CommentService
         return repo.GetCommentsByStandId(standId);
     }
 
+    public List<Comment> GetCommentsByEventId(int eventId)
+    {
+        return repo.GetCommentsByEventId(eventId);
+    }
+
     public Comment? GetCommentById(int id)
     {
         return repo.GetCommentById(id);

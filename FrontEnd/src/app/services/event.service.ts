@@ -37,4 +37,12 @@ export class EventService {
     // responseType: 'text' pois o backend retorna Ok("Evento criado") que é texto, não JSON
     return this.http.post(`${this.apiUrl}/create`, payload, { responseType: 'text' });
   }
+
+  getEvents(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
+  getEventById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
 }

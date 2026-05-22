@@ -38,4 +38,8 @@ export class CommentService {
   getCommentsByStandId(standId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/stand/${standId}`);
   }
+
+  getCommentsByEventId(eventId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/event/${eventId}`);
+  }
 }

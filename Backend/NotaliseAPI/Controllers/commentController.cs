@@ -80,6 +80,20 @@ public class CommentController : ControllerBase
         }
     }
 
+    [HttpGet("event/{eventId}")]
+    public IActionResult GetCommentsByEvent(int eventId)
+    {
+        try
+        {
+            var comments = service.GetCommentsByEventId(eventId);
+            return Ok(comments);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
     [HttpDelete("{id}")]
     public IActionResult DeleteComment(int id)
     {
