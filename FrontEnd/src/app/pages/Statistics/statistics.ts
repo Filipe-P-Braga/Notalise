@@ -1,41 +1,107 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
-import { Comments } from '../../components/comments/comments';
-import { EventService } from '../../services/event.service';
-import { CommentService } from '../../services/comment.service';
+
 import { ActivatedRoute } from '@angular/router';
+
+import { Comments } from '../../components/comments/comments';
+
+import { EventService } from '../../services/event.service';
+
+import { CommentService } from '../../services/comment.service';
+
 import { UserActivityService } from '../../services/userActivity.service';
-import { Subject, forkJoin } from 'rxjs';
-import { takeUntil, switchMap } from 'rxjs/operators';
+
+import {
+  Subject,
+  BehaviorSubject,
+  forkJoin,
+  EMPTY
+} from 'rxjs';
+
+import {
+  takeUntil,
+  switchMap,
+  tap,
+  catchError
+} from 'rxjs/operators';
 
 
 @Component({
   selector: 'app-statistics',
+
   standalone: true,
-  imports: [CommonModule, Comments],
+
+  imports: [
+    CommonModule,
+    Comments
+  ],
+
   templateUrl: './statistics.html',
+
   styleUrls: ['./statistics.css'],
 })
 
-
 export class StatisticsPage implements OnInit, OnDestroy {
+
+  // =========================
+  // DESTROY
+  // =========================
+
   private destroy$ = new Subject<void>();
 
+
+  // =========================
+  // REFRESH STREAM
+  // =========================
+
+  private refresh$ = new BehaviorSubject<void>(undefined);
+
+
+  // =========================
+  // STATE
+  // =========================
+
   eventId?: number;
+
   eventDetails: any = null;
+
   comments: any[] = [];
+
+  loading = false;
+
+  errorMessage = '';
+
+
+  // =========================
+  // SATISFACTION
+  // =========================
+
   satisfactionData = [
     { label: 'Baixa', value: 0, color: '#ef4444' },
     { label: 'Média', value: 0, color: '#f59e0b' },
     { label: 'Alta', value: 0, color: '#10b981' }
   ];
-  loading = false;
-  errorMessage = '';
-  
+
+
+  // =========================
+  // PIE CHART
+  // =========================
+
   evaluationPieData = [
     { label: 'Avaliaram', value: 0, color: '#10b981' },
     { label: 'Não Avaliaram', value: 0, color: '#ef4444' }
   ];
+
+
+  // =========================
+  // HOURLY COUNT
+  // =========================
 
   hourlyCountData = [
     { label: '02h', value: 0, heightPercent: 0 },
@@ -52,6 +118,11 @@ export class StatisticsPage implements OnInit, OnDestroy {
     { label: '24h', value: 0, heightPercent: 0 }
   ];
 
+
+  // =========================
+  // HOURLY AVERAGE
+  // =========================
+
   hourlyAverageData = [
     { label: '02h', value: 0, heightPercent: 0 },
     { label: '04h', value: 0, heightPercent: 0 },
@@ -66,57 +137,102 @@ export class StatisticsPage implements OnInit, OnDestroy {
     { label: '22h', value: 0, heightPercent: 0 },
     { label: '24h', value: 0, heightPercent: 0 }
   ];
-  
-  barData = [
-    { label: 'Jan', value: 30 },
-    { label: 'Fev', value: 50 },
-    { label: 'Mar', value: 80 },
-    { label: 'Abr', value: 40 },
-    { label: 'Mai', value: 90 },
-    { label: 'Jun', value: 60 }
-  ];
+
+
+  // =========================
+  // EVENTS
+  // =========================
 
   events: any[] = [];
 
-  toggleEvent(eventId: number): void {
-    const event = this.events.find(e => e.id === eventId || e.Id === eventId);
-    if (event) {
-      event.isOpen = !event.isOpen;
-    }
-  }
+
+  // =========================
+  // CONSTRUCTOR
+  // =========================
 
   constructor(
+
     private eventService: EventService,
+
     private commentService: CommentService,
+
     private userActivityService: UserActivityService,
-    private route: ActivatedRoute
+
+    private route: ActivatedRoute,
+
+    private cdr: ChangeDetectorRef
+
   ) { }
 
 
+  // =========================
+  // INIT
+  // =========================
+
   ngOnInit(): void {
 
-    this.route.paramMap.pipe(
+    this.refresh$.pipe(
 
-      switchMap(params => {
+      tap(() => {
 
-        const idParam = params.get('id');
-        const id = idParam ? Number(idParam) : null;
+        this.loading = true;
 
-        if (!id || Number.isNaN(id)) {
-          throw new Error('ID inválido');
-        }
+        this.errorMessage = '';
 
-        this.eventId = id;
+      }),
 
-        return forkJoin({
+      switchMap(() =>
 
-          event: this.loadEvent(id),
+        this.route.paramMap.pipe(
 
-          comments: this.loadComments(id),
+          switchMap(params => {
 
-          activities: this.loadUserActivities()
+            const idParam = params.get('id');
 
-        });
+            const id = idParam
+              ? Number(idParam)
+              : null;
+
+            if (!id || Number.isNaN(id)) {
+
+              this.errorMessage =
+                'ID inválido';
+
+              return EMPTY;
+
+            }
+
+            this.eventId = id;
+
+            return forkJoin({
+
+              event: this.eventService
+                .getEventById(id),
+
+              comments: this.commentService
+                .getCommentsByEventId(id),
+
+              activities: this.userActivityService
+                .getUserActivities()
+
+            });
+
+          })
+
+        )
+
+      ),
+
+      catchError((err) => {
+
+        console.error(err);
+
+        this.errorMessage =
+          'Erro ao carregar estatísticas';
+
+        this.loading = false;
+
+        return EMPTY;
 
       }),
 
@@ -126,13 +242,37 @@ export class StatisticsPage implements OnInit, OnDestroy {
 
       next: ({ event, comments, activities }) => {
 
+        // =========================
+        // EVENT DETAILS
+        // =========================
+
         this.eventDetails = event;
+
+
+        // =========================
+        // COMMENTS
+        // =========================
 
         this.comments = comments;
 
+
+        // =========================
+        // SATISFACTION
+        // =========================
+
         this.updateSatisfaction();
 
+
+        // =========================
+        // HOURLY STATS
+        // =========================
+
         this.calculateHourlyStats();
+
+
+        // =========================
+        // FILTER ACTIVITIES
+        // =========================
 
         const filtered = activities.filter(activity => {
 
@@ -142,8 +282,12 @@ export class StatisticsPage implements OnInit, OnDestroy {
           return actEventId === this.eventId;
 
         });
-        
-              // USUÁRIOS QUE AVALIARAM
+
+
+        // =========================
+        // EVALUATED
+        // =========================
+
         const evaluated = filtered.filter(activity => {
 
           const hasEvaluated =
@@ -155,7 +299,11 @@ export class StatisticsPage implements OnInit, OnDestroy {
 
         }).length;
 
-        // USUÁRIOS QUE NÃO AVALIARAM
+
+        // =========================
+        // NOT EVALUATED
+        // =========================
+
         const notEvaluated = filtered.filter(activity => {
 
           const hasEvaluated =
@@ -167,7 +315,11 @@ export class StatisticsPage implements OnInit, OnDestroy {
 
         }).length;
 
-        // ATUALIZA O GRÁFICO
+
+        // =========================
+        // UPDATE PIE CHART
+        // =========================
+
         this.evaluationPieData = [
 
           {
@@ -184,143 +336,334 @@ export class StatisticsPage implements OnInit, OnDestroy {
 
         ];
 
-      },
 
-      error: (err) => {
+        // =========================
+        // FINALIZE
+        // =========================
 
-        console.error(err);
+        this.loading = false;
 
-        this.errorMessage =
-          'Erro ao carregar estatísticas';
+        this.cdr.detectChanges();
 
       }
-  });
-}
 
-
-
-
-  loadEvent(eventId: number) {
-
-    return this.eventService.getEventById(eventId);
-  }
-
-  loadComments(eventId: number) {
- 
-    return this.commentService.getCommentsByEventId(eventId);
-  }
-
-  updateSatisfaction(): void {
-    const low = this.comments.filter(comment => {
-      const score = comment.score ?? comment.Score ?? 0;
-      return score >= 1 && score <= 3;
-    }).length;
-
-    const medium = this.comments.filter(comment => {
-      const score = comment.score ?? comment.Score ?? 0;
-      return score === 4;
-    }).length;
-
-    const high = this.comments.filter(comment => {
-      const score = comment.score ?? comment.Score ?? 0;
-      return score === 5;
-    }).length;
-
-    this.satisfactionData = [
-      { label: 'Baixa', value: low, color: '#ef4444' },
-      { label: 'Média', value: medium, color: '#f59e0b' },
-      { label: 'Alta', value: high, color: '#10b981' }
-    ];
-  }
-
-  get donutBackground(): string {
-    let currentPercent = 0;
-    const total = this.satisfactionData.reduce((sum, item) => sum + item.value, 0) || 1;
-
-    const gradients = this.satisfactionData.map(item => {
-      const start = currentPercent;
-      currentPercent += (item.value / total) * 100;
-      return `${item.color} ${start}% ${currentPercent}%`;
     });
 
-    return `conic-gradient(${gradients.join(',')})`;
+
+    // =========================
+    // FIRST LOAD
+    // =========================
+
+    this.refresh();
+
   }
 
-  loadUserActivities() {
-    return this.userActivityService.getUserActivities();
+
+  // =========================
+  // REFRESH
+  // =========================
+
+  refresh(): void {
+
+    this.refresh$.next();
+
   }
+
+
+  // =========================
+  // TOGGLE EVENT
+  // =========================
+
+  toggleEvent(eventId: number): void {
+
+    const event = this.events.find(e =>
+
+      e.id === eventId
+      || e.Id === eventId
+
+    );
+
+    if (event) {
+
+      event.isOpen = !event.isOpen;
+
+    }
+
+  }
+
+
+  // =========================
+  // SATISFACTION
+  // =========================
+
+  updateSatisfaction(): void {
+
+    const low = this.comments.filter(comment => {
+
+      const score =
+        comment.score ?? comment.Score ?? 0;
+
+      return score >= 1 && score <= 3;
+
+    }).length;
+
+
+    const medium = this.comments.filter(comment => {
+
+      const score =
+        comment.score ?? comment.Score ?? 0;
+
+      return score === 4;
+
+    }).length;
+
+
+    const high = this.comments.filter(comment => {
+
+      const score =
+        comment.score ?? comment.Score ?? 0;
+
+      return score === 5;
+
+    }).length;
+
+
+    this.satisfactionData = [
+
+      {
+        label: 'Baixa',
+        value: low,
+        color: '#ef4444'
+      },
+
+      {
+        label: 'Média',
+        value: medium,
+        color: '#f59e0b'
+      },
+
+      {
+        label: 'Alta',
+        value: high,
+        color: '#10b981'
+      }
+
+    ];
+
+  }
+
+
+  // =========================
+  // DONUT BACKGROUND
+  // =========================
+
+  get donutBackground(): string {
+
+    let currentPercent = 0;
+
+    const total =
+      this.satisfactionData.reduce(
+
+        (sum, item) => sum + item.value,
+
+        0
+
+      ) || 1;
+
+
+    const gradients =
+      this.satisfactionData.map(item => {
+
+        const start = currentPercent;
+
+        currentPercent +=
+          (item.value / total) * 100;
+
+        return `${item.color} ${start}% ${currentPercent}%`;
+
+      });
+
+    return `conic-gradient(${gradients.join(',')})`;
+
+  }
+
+
+  // =========================
+  // PIE BACKGROUND
+  // =========================
 
   get pieBackground(): string {
-    const total = this.evaluationPieData.reduce((sum, item) => sum + item.value, 0);
+
+    const total =
+      this.evaluationPieData.reduce(
+
+        (sum, item) => sum + item.value,
+
+        0
+
+      );
+
     if (total === 0) {
+
       return 'conic-gradient(#64748b 0% 100%)';
+
     }
 
     let currentPercent = 0;
-    const gradients = this.evaluationPieData.map(item => {
-      const start = currentPercent;
-      currentPercent += (item.value / total) * 100;
-      return `${item.color} ${start}% ${currentPercent}%`;
-    });
+
+    const gradients =
+      this.evaluationPieData.map(item => {
+
+        const start = currentPercent;
+
+        currentPercent +=
+          (item.value / total) * 100;
+
+        return `${item.color} ${start}% ${currentPercent}%`;
+
+      });
 
     return `conic-gradient(${gradients.join(',')})`;
+
   }
 
+
+  // =========================
+  // HOURLY STATS
+  // =========================
+
   calculateHourlyStats(): void {
-    const counts = new Array(12).fill(0);
-    const scoreSums = new Array(12).fill(0);
-    const scoreCounts = new Array(12).fill(0);
+
+    const counts =
+      new Array(12).fill(0);
+
+    const scoreSums =
+      new Array(12).fill(0);
+
+    const scoreCounts =
+      new Array(12).fill(0);
+
 
     this.comments.forEach(comment => {
-      const dateStr = comment.date ?? comment.Date;
+
+      const dateStr =
+        comment.date ?? comment.Date;
+
       if (!dateStr) return;
 
       let hour = 0;
-      // Extrai a hora diretamente da string para evitar distorções causadas pelo fuso horário (timezone offset)
-      const match = dateStr.match(/[T ](\d{2}):/);
+
+      const match =
+        dateStr.match(/[T ](\d{2}):/);
+
       if (match) {
+
         hour = parseInt(match[1], 10);
+
       } else {
-        const dateObj = new Date(dateStr);
+
+        const dateObj =
+          new Date(dateStr);
+
         if (isNaN(dateObj.getTime())) return;
+
         hour = dateObj.getHours();
+
       }
 
-      const bucketIndex = Math.floor(hour / 2);
+      const bucketIndex =
+        Math.floor(hour / 2);
 
       if (bucketIndex >= 0 && bucketIndex < 12) {
+
         counts[bucketIndex]++;
-        
-        const score = comment.score ?? comment.Score;
+
+        const score =
+          comment.score ?? comment.Score;
+
         if (score !== undefined && score !== null) {
+
           scoreSums[bucketIndex] += Number(score);
+
           scoreCounts[bucketIndex]++;
+
         }
+
       }
+
     });
 
-    const labels = ['02h', '04h', '06h', '08h', '10h', '12h', '14h', '16h', '18h', '20h', '22h', '24h'];
 
-    const maxCount = Math.max(...counts, 1);
-    this.hourlyCountData = counts.map((count, index) => ({
-      label: labels[index],
-      value: count,
-      heightPercent: (count / maxCount) * 100
-    }));
+    const labels = [
+      '02h',
+      '04h',
+      '06h',
+      '08h',
+      '10h',
+      '12h',
+      '14h',
+      '16h',
+      '18h',
+      '20h',
+      '22h',
+      '24h'
+    ];
 
-    const averages = scoreSums.map((sum, index) => {
-      const cnt = scoreCounts[index];
-      return cnt > 0 ? Number((sum / cnt).toFixed(2)) : 0;
-    });
-    this.hourlyAverageData = averages.map((avg, index) => ({
-      label: labels[index],
-      value: avg,
-      heightPercent: (avg / 5.0) * 100
-    }));
+
+    const maxCount =
+      Math.max(...counts, 1);
+
+
+    this.hourlyCountData =
+      counts.map((count, index) => ({
+
+        label: labels[index],
+
+        value: count,
+
+        heightPercent:
+          (count / maxCount) * 100
+
+      }));
+
+
+    const averages =
+      scoreSums.map((sum, index) => {
+
+        const cnt = scoreCounts[index];
+
+        return cnt > 0
+          ? Number((sum / cnt).toFixed(2))
+          : 0;
+
+      });
+
+
+    this.hourlyAverageData =
+      averages.map((avg, index) => ({
+
+        label: labels[index],
+
+        value: avg,
+
+        heightPercent:
+          (avg / 5.0) * 100
+
+      }));
+
   }
+
+
+  // =========================
+  // DESTROY
+  // =========================
 
   ngOnDestroy(): void {
+
     this.destroy$.next();
+
     this.destroy$.complete();
+
   }
+
 }
