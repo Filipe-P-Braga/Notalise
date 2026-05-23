@@ -21,6 +21,7 @@ export class Event implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   eventData = {
+    eventId: '',
     title: '',
     subtitle: '',
     ratingAge: '',
@@ -72,6 +73,7 @@ export class Event implements OnInit, OnDestroy {
     ).subscribe({
       next: (data) => {
         this.eventData = {
+          eventId: data.id || null,
           title: data.name,
           subtitle: data.subtitle || '',
           ratingAge: data.contentRating || 'Livre',
