@@ -1,21 +1,42 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+
 import { Qrcode } from '../../components/qrcode/qrcode';
 import { Comments } from '../../components/comments/comments';
 import { ComentCreateComponent } from '../../components/comentCreate/comentCreate';
 import { CommentService } from '../../services/comment.service';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+
+
+// - switchMap permite reagir à mudança da rota automaticamente.
+// - forkJoin permite carregar stand + comentários juntos.
+import { Subject, forkJoin } from 'rxjs';
+
+import {
+  takeUntil,
+  switchMap
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-stand',
   standalone: true,
-  imports: [CommonModule, RouterModule, Qrcode, Comments, ComentCreateComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    Qrcode,
+    Comments,
+    ComentCreateComponent
+  ],
   templateUrl: './stand.html',
   styleUrl: './stand.css',
 })
-export class Stand implements OnInit {
+
+export class Stand implements OnInit, OnDestroy {
+
+  // Mantemos o destroy$ para evitar vazamentos de memória.
+  private destroy$ = new Subject<void>();
+
   selectedStand: any;
 
   eventData = {
@@ -26,87 +47,157 @@ export class Stand implements OnInit {
     genres: ['Tecnologia', 'Inovação', 'Negócios', 'Universitário'],
     averageRating: 4.9,
     totalRatings: '21.5K',
-    synopsis: 'No maior evento de inovação do estado, alunos apresentam projetos que podem mudar o mundo. Durante as exposições, visitantes avaliam estandes e descobrem o "absoluto segredo" do empreendedorismo moderno. Esta é a história de inovações que encontram desafios, mas alcançam o sucesso.',
-    local: 'Campus Boa Vista (UVV), Vila Velha',
+    synopsis: '',
+    local: '',
     date: '12 a 15 de Outubro de 2026',
-    contentRating: 'Livre para todos os públicos',
-    copyright: '©Universidade Vila Velha / Notalise',
+    contentRating: '',
+    copyright: '',
     image: ''
   };
 
-  stands = [  //Isso aqui na realidade deveria ser chamado do proprio banco, sendo o stand que está sendo acessado via ID, entretanto, como sabemos o Stand ainda está martelado, e por isso seria inutil tentar pegar ele por agora. Sendo assim, isso será um array ainda por hora
-    {
-      id: 1
-    },
-
-  ];
 
   stars = [1, 2, 3, 4, 5];
 
-  onCommentCreated() {
-    console.log('ANTES DO LOAD');
-    this.loadComments();
-  }
+  constructor(
+    private commentService: CommentService,
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private http: HttpClient
+  ) { }
 
-  constructor(private commentService: CommentService, private cdr: ChangeDetectorRef, private route: ActivatedRoute, private http: HttpClient) {
-    this.selectedStand = this.stands[0];
+
+  onCommentCreated() {
+
+    if (!this.selectedStand?.id) return;
+
+    this.loadComments(this.selectedStand.id);
   }
 
   ngOnInit() {
-    this.loadComments();
 
-    this.route.params.subscribe(params => {
-      this.loadStands(params['id']);
+    this.route.paramMap.pipe(
+
+
+      switchMap(params => {
+
+        const id = params.get('id');
+
+        if (!id) {
+          throw new Error('ID do stand inválido');
+        }
+
+        return forkJoin({
+
+          stand: this.http.get<any>(
+            `http://localhost:5000/stand/${id}`
+          ),
+
+          comments: this.commentService.getCommentsByStandId(Number(id))
+
+        });
+
+      }),
+
+      takeUntil(this.destroy$)
+
+    ).subscribe({
+
+      next: ({ stand, comments }) => {
+
+        console.log('Stand carregado:', stand);
+
+        this.selectedStand = {
+          ...stand,
+          comments
+        };
+
+
+        this.eventData = {
+          title: stand.name,
+          subtitle: stand.subtitle || '',
+          ratingAge: stand.contentRating || 'Livre',
+
+          format: stand.format
+            ? stand.format.join(' | ')
+            : 'Presencial | Online',
+
+          genres: stand.genres || [
+            'Tecnologia',
+            'Inovação',
+            'Negócios',
+            'Universitário'
+          ],
+
+          averageRating: stand.score || 0,
+
+          totalRatings: '21.5K',
+
+          synopsis: stand.description,
+
+          local: stand.local,
+
+          date: '12 a 15 de Outubro de 2026',
+
+          contentRating:
+            stand.contentRating
+            || 'Livre para todos os públicos',
+
+          copyright: stand.copyright,
+
+          image: stand.image || ''
+        };
+
+        const roundedScore =
+          Math.round(this.eventData.averageRating);
+
+        this.stars = Array(roundedScore).fill(0);
+
+        this.cdr.markForCheck();
+      },
+
+      error: (err) => {
+        console.error('Erro ao carregar stand:', err);
+      }
+
     });
+
   }
 
-  loadComments() {
-    this.commentService.getCommentsByStandId(this.selectedStand.id).subscribe({
+  loadComments(id: number) {
+
+    this.commentService.getCommentsByStandId(id).pipe(
+
+      takeUntil(this.destroy$)
+
+    ).subscribe({
+
       next: (data) => {
+
         this.selectedStand = {
           ...this.selectedStand,
           comments: data
         };
+
+        this.cdr.markForCheck();
       },
+
       error: (err) => {
-        console.error('Erro ao buscar comentários do stand', err);
+        console.error(
+          'Erro ao buscar comentários do stand',
+          err
+        );
       }
+
     });
+
   }
 
-  loadStands(id?: string) {
-    if (!id) return;
 
-    this.http.get<any>(`http://localhost:5000/stand/${id}`)
-      .subscribe({
-        next: (data) => {
-          this.eventData = {
-            title: data.name,
-            subtitle: data.subtitle || '',
-            ratingAge: data.contentRating || 'Livre',
-            format: data.format ? data.format.join(' | ') : 'Presencial | Online',
-            genres: data.genres || ['Tecnologia', 'Inovação', 'Negócios', 'Universitário'],
-            averageRating: data.score || 0,
-            totalRatings: '21.5K',
-            synopsis: data.description,
-            local: data.local,
-            date: '12 a 15 de Outubro de 2026',
-            contentRating: data.contentRating || 'Livre para todos os públicos',
-            copyright: data.copyright,
-            image: data.image || ''
-          };
+  ngOnDestroy(): void {
 
-          console.log('Eventos carregados ao abrir a página:', data);
+    this.destroy$.next();
 
-          const roundedScore = Math.round(this.eventData.averageRating);
-          this.stars = Array(roundedScore).fill(0);
-
-        },
-        error: (err) => {
-          console.error('Erro ao buscar dados do stand', err);
-        }
-      });
+    this.destroy$.complete();
   }
-
 
 }

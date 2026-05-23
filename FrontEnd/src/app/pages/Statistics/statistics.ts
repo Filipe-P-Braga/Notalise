@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Comments } from '../../components/comments/comments';
 import { EventService } from '../../services/event.service';
 import { CommentService } from '../../services/comment.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserActivityService } from '../../services/userActivity.service';
+import { Subject, forkJoin } from 'rxjs';
+import { takeUntil, switchMap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-statistics',
@@ -13,7 +16,11 @@ import { UserActivityService } from '../../services/userActivity.service';
   templateUrl: './statistics.html',
   styleUrls: ['./statistics.css'],
 })
-export class StatisticsPage implements OnInit {
+
+
+export class StatisticsPage implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   eventId?: number;
   eventDetails: any = null;
   comments: any[] = [];
@@ -85,49 +92,122 @@ export class StatisticsPage implements OnInit {
     private route: ActivatedRoute
   ) { }
 
+
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    const id = idParam ? Number(idParam) : null;
 
-    if (!id || Number.isNaN(id)) {
-      this.errorMessage = 'ID de evento inválido na URL.';
-      return;
-    }
+    this.route.paramMap.pipe(
 
-    this.eventId = id;
-    this.loadEvent(id);
-    this.loadComments(id);
-    this.loadUserActivities(id);
-  }
+      switchMap(params => {
 
-  loadEvent(eventId: number): void {
-    this.loading = true;
-    this.eventService.getEventById(eventId).subscribe({
-      next: event => {
+        const idParam = params.get('id');
+        const id = idParam ? Number(idParam) : null;
+
+        if (!id || Number.isNaN(id)) {
+          throw new Error('ID inválido');
+        }
+
+        this.eventId = id;
+
+        return forkJoin({
+
+          event: this.loadEvent(id),
+
+          comments: this.loadComments(id),
+
+          activities: this.loadUserActivities()
+
+        });
+
+      }),
+
+      takeUntil(this.destroy$)
+
+    ).subscribe({
+
+      next: ({ event, comments, activities }) => {
+
         this.eventDetails = event;
-        this.loading = false;
+
+        this.comments = comments;
+
+        this.updateSatisfaction();
+
+        this.calculateHourlyStats();
+
+        const filtered = activities.filter(activity => {
+
+          const actEventId =
+            activity.eventId ?? activity.EventId;
+
+          return actEventId === this.eventId;
+
+        });
+        
+              // USUÁRIOS QUE AVALIARAM
+        const evaluated = filtered.filter(activity => {
+
+          const hasEvaluated =
+            activity.avaliou ?? activity.Avaliou;
+
+          return hasEvaluated === true
+            || hasEvaluated === 1
+            || hasEvaluated === 'true';
+
+        }).length;
+
+        // USUÁRIOS QUE NÃO AVALIARAM
+        const notEvaluated = filtered.filter(activity => {
+
+          const hasEvaluated =
+            activity.avaliou ?? activity.Avaliou;
+
+          return hasEvaluated === false
+            || hasEvaluated === 0
+            || hasEvaluated === 'false';
+
+        }).length;
+
+        // ATUALIZA O GRÁFICO
+        this.evaluationPieData = [
+
+          {
+            label: 'Avaliaram',
+            value: evaluated,
+            color: '#10b981'
+          },
+
+          {
+            label: 'Não Avaliaram',
+            value: notEvaluated,
+            color: '#ef4444'
+          }
+
+        ];
+
       },
-      error: () => {
-        this.errorMessage = 'Erro ao carregar informações do evento.';
-        this.loading = false;
+
+      error: (err) => {
+
+        console.error(err);
+
+        this.errorMessage =
+          'Erro ao carregar estatísticas';
+
       }
-    });
+  });
+}
+
+
+
+
+  loadEvent(eventId: number) {
+
+    return this.eventService.getEventById(eventId);
   }
 
-  loadComments(eventId: number): void {
-    this.loading = true;
-    this.commentService.getCommentsByEventId(eventId).subscribe({
-      next: comments => {
-        this.comments = comments;
-        this.updateSatisfaction();
-        this.calculateHourlyStats();
-        this.loading = false;
-      },
-      error: () => {
-        this.errorMessage = 'Erro ao carregar estatísticas de satisfação.';
-        this.loading = false;
-      }
-    });
+  loadComments(eventId: number) {
+ 
+    return this.commentService.getCommentsByEventId(eventId);
   }
 
   updateSatisfaction(): void {
@@ -166,33 +246,8 @@ export class StatisticsPage implements OnInit {
     return `conic-gradient(${gradients.join(',')})`;
   }
 
-  loadUserActivities(eventId: number): void {
-    this.userActivityService.getUserActivities().subscribe({
-      next: activities => {
-        const filtered = activities.filter(activity => {
-          const actEventId = activity.eventId ?? activity.EventId;
-          return actEventId === eventId;
-        });
-
-        const evaluated = filtered.filter(activity => {
-          const hasEvaluated = activity.avaliou ?? activity.Avaliou;
-          return hasEvaluated === true || hasEvaluated === 1 || hasEvaluated === 'true';
-        }).length;
-
-        const notEvaluated = filtered.filter(activity => {
-          const hasEvaluated = activity.avaliou ?? activity.Avaliou;
-          return hasEvaluated === false || hasEvaluated === 0 || hasEvaluated === 'false';
-        }).length;
-
-        this.evaluationPieData = [
-          { label: 'Avaliaram', value: evaluated, color: '#10b981' },
-          { label: 'Não Avaliaram', value: notEvaluated, color: '#ef4444' }
-        ];
-      },
-      error: () => {
-        console.error('Erro ao carregar atividades do usuário.');
-      }
-    });
+  loadUserActivities() {
+    return this.userActivityService.getUserActivities();
   }
 
   get pieBackground(): string {
@@ -262,5 +317,10 @@ export class StatisticsPage implements OnInit {
       value: avg,
       heightPercent: (avg / 5.0) * 100
     }));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
