@@ -1,40 +1,83 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+
+import {
+  Router,
+  RouterModule
+} from '@angular/router';
+
 import { HttpClient } from '@angular/common/http';
+
 import { FormsModule } from '@angular/forms';
 
-// Removido EMPTY porque não será mais utilizado.
-import { Subject } from 'rxjs';
+import {
+  Subject,
+  BehaviorSubject,
+  combineLatest,
+  EMPTY
+} from 'rxjs';
 
-// Removido catchError porque o tratamento será feito no subscribe.
-import { takeUntil } from 'rxjs/operators';
+import {
+  takeUntil,
+  switchMap,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  tap,
+  catchError
+} from 'rxjs/operators';
+
 
 interface EventItem {
+
   id: number;
+
   name: string;
+
   subtitle?: string;
+
   address?: string;
+
   description?: string;
+
   image?: string;
+
   score: number;
+
   genres?: string[];
+
   format?: string[];
+
 }
+
 
 @Component({
   selector: 'app-event-list',
-  standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
 
-  // Mantido o caminho correto do HTML.
+  standalone: true,
+
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule
+  ],
+
   templateUrl: './eventList.html',
 
-  // Corrigido para usar styleUrls no padrão Angular.
   styleUrls: ['./eventList.css'],
 })
 
 export class EventList implements OnInit, OnDestroy {
+
+  // =========================
+  // STATE
+  // =========================
 
   events: EventItem[] = [];
 
@@ -46,130 +89,267 @@ export class EventList implements OnInit, OnDestroy {
 
   error = false;
 
-  // Subject usado para cancelar subscriptions ao destruir o componente.
+
+  // =========================
+  // REACTIVE STREAMS
+  // =========================
+
   private destroy$ = new Subject<void>();
 
+  // Responsável por disparar recargas da API.
+  private refreshEvents$ = new BehaviorSubject<void>(undefined);
+
+  // Responsável pela pesquisa reativa.
+  private searchQuery$ = new BehaviorSubject<string>('');
+
+
+  // =========================
+  // CONSTRUCTOR
+  // =========================
 
   constructor(
+
     private http: HttpClient,
-    private router: Router
+
+    private router: Router,
+
+    private cdr: ChangeDetectorRef
+
   ) {}
 
 
+  // =========================
+  // INIT
+  // =========================
+
   ngOnInit(): void {
 
-    // Carrega os eventos quando o componente inicia.
-    this.loadEvents();
+    // =========================================
+    // STREAM DE EVENTOS
+    // =========================================
+    //
+    // Toda vez que refreshEvents$ emitir:
+    // - ativa loading
+    // - faz request
+    // - cancela request anterior se necessário
+    // - salva dados
+    //
+    const events$ = this.refreshEvents$.pipe(
 
-  }
+      tap(() => {
+
+        this.loading = true;
+
+        this.error = false;
+
+      }),
+
+      switchMap(() =>
+
+        this.http.get<EventItem[]>(
+          'http://localhost:5000/event'
+        ).pipe(
+
+          tap((data) => {
+
+            this.events = data;
+
+          }),
+
+          catchError((err) => {
+
+            console.error(
+              'Erro ao carregar eventos:',
+              err
+            );
+
+            this.error = true;
+
+            this.loading = false;
+
+            return EMPTY;
+
+          })
+
+        )
+
+      )
+
+    );
 
 
-  loadEvents(): void {
+    // =========================================
+    // COMBINA EVENTOS + PESQUISA
+    // =========================================
+    //
+    // Sempre que:
+    // - eventos mudarem
+    // OU
+    // - texto pesquisado mudar
+    //
+    // o filtro é recalculado.
+    //
+    combineLatest([
 
-    // Ativa estado de loading.
-    this.loading = true;
+      events$,
 
-    // Reseta estado de erro.
-    this.error = false;
+      this.searchQuery$.pipe(
 
-    this.http.get<EventItem[]>(
-      'http://localhost:5000/event'
-    ).pipe(
+        debounceTime(200),
 
-      // Cancela automaticamente a requisição ao destruir o componente.
+        distinctUntilChanged()
+
+      )
+
+    ]).pipe(
+
+      map(([events, query]) => {
+
+        const normalizedQuery = query
+          .toLowerCase()
+          .trim();
+
+        // Sem pesquisa → retorna tudo.
+        if (!normalizedQuery) {
+
+          return events;
+
+        }
+
+        // Filtra eventos.
+        return events.filter(event =>
+
+          event.name
+            .toLowerCase()
+            .includes(normalizedQuery)
+
+          || event.subtitle
+            ?.toLowerCase()
+            .includes(normalizedQuery)
+
+          || event.description
+            ?.toLowerCase()
+            .includes(normalizedQuery)
+
+          || event.genres?.some(g =>
+
+            g.toLowerCase()
+              .includes(normalizedQuery)
+
+          )
+
+        );
+
+      }),
+
       takeUntil(this.destroy$)
 
     ).subscribe({
 
-      next: (data) => {
+      next: (filtered) => {
 
-        // Salva lista original de eventos.
-        this.events = data;
-
-        // Inicializa lista filtrada.
-        this.filteredEvents = data;
+        // Atualiza lista filtrada.
+        this.filteredEvents = filtered;
 
         // Finaliza loading.
         this.loading = false;
+
+        // Força atualização visual.
+        this.cdr.detectChanges();
 
       },
 
       error: (err) => {
 
-        // Exibe erro no console.
-        console.error('Erro ao carregar eventos:', err);
+        console.error(
+          'Erro no fluxo reativo:',
+          err
+        );
 
-        // Ativa flag de erro.
         this.error = true;
 
-        // Finaliza loading mesmo em caso de erro.
         this.loading = false;
 
       }
 
     });
 
-  }
 
+    // =========================================
+    // PRIMEIRA CARGA
+    // =========================================
 
-  filterEvents(): void {
-
-    // Remove espaços e converte pesquisa para minúsculo.
-    const query = this.searchQuery
-      .toLowerCase()
-      .trim();
-
-    // Se pesquisa estiver vazia, mostra todos os eventos.
-    if (!query) {
-
-      this.filteredEvents = this.events;
-
-      return;
-
-    }
-
-    // Filtra eventos com base no texto digitado.
-    this.filteredEvents = this.events.filter(event =>
-
-      event.name.toLowerCase().includes(query)
-
-      || event.subtitle?.toLowerCase().includes(query)
-
-      || event.description?.toLowerCase().includes(query)
-
-      || event.genres?.some(g =>
-        g.toLowerCase().includes(query)
-      )
-
-    );
+    this.refreshEvents$.next();
 
   }
 
+
+  // =========================
+  // PESQUISA
+  // =========================
+
+  onSearchChange(value: string): void {
+
+    // Mantém valor sincronizado no HTML.
+    this.searchQuery = value;
+
+    // Dispara fluxo reativo.
+    this.searchQuery$.next(value);
+
+  }
+
+
+  // =========================
+  // RECARREGAR EVENTOS
+  // =========================
+
+  refreshEvents(): void {
+
+    this.refreshEvents$.next();
+
+  }
+
+
+  // =========================
+  // NAVEGAÇÃO
+  // =========================
 
   goToEvent(id: number): void {
 
-    // Navega para página do evento selecionado.
-    this.router.navigate(['/evento', id]);
+    this.router.navigate([
+      '/evento',
+      id
+    ]);
 
   }
 
 
+  // =========================
+  // ESTRELAS
+  // =========================
+
   getStars(score: number): number[] {
 
-    // Gera array baseado na quantidade de estrelas.
     return Array(
-      Math.min(5, Math.max(0, Math.round(score)))
+
+      Math.min(
+        5,
+        Math.max(0, Math.round(score))
+      )
+
     ).fill(0);
 
   }
 
 
+  // =========================
+  // DESTROY
+  // =========================
+
   ngOnDestroy(): void {
 
-    // Emite sinal de destruição.
     this.destroy$.next();
 
-    // Finaliza o Subject.
     this.destroy$.complete();
 
   }
