@@ -2,6 +2,7 @@
 
 .event-list-page {
   min-height: calc(100vh - 100px);
+  width: 100%;
   padding: 3rem 4rem 4rem;
   font-family: 'Inter', sans-serif;
   color: #fff;
@@ -122,8 +123,9 @@
 /* Events grid */
 .events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
+  width: 100%;
 }
 
 /* Event card */
@@ -132,7 +134,9 @@
   cursor: pointer;
   border-radius: 4px;
   color: #fff;
-  max-width: 400px;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
 }
 
 /* Normal state */

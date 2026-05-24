@@ -219,3 +219,65 @@ textarea.form-input {
   padding-bottom: 4rem;
   min-height: 100vh;
 }
+
+/* Global responsive helpers */
+img, video, iframe, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .page-wrapper {
+    padding-top: 90px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .page-wrapper {
+    padding-top: 80px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .form-input,
+  .form-group input,
+  .form-group textarea,
+  .search-input {
+    min-width: 0;
+  }
+
+  .glass-panel,
+  .form-card,
+  .event-card,
+  .stand-card,
+  .comments-card,
+  .hero-section,
+  .hero-content,
+  .mockup-body {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  body {
+    min-height: auto;
+  }
+
+  .page-wrapper {
+    padding-bottom: 2rem;
+  }
+}

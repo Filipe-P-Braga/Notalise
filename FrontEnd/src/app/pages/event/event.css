@@ -320,6 +320,19 @@
   .event-title-sub {
     font-size: 2.5rem;
   }
+
+  .events-nav-link {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: 1.5rem;
+    padding: 0 2rem;
+  }
+
+  .all-events-btn {
+    font-size: 0.85rem;
+    width: fit-content;
+  }
 }
 
 /* Stands Section */
@@ -377,41 +390,64 @@
   .stands-grid {
     grid-template-columns: 1fr;
   }
+
+  .events-nav-link {
+    padding: 0 1rem;
+  }
+
+  .action-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .primary-action-btn,
+  .icon-btn,
+  .EstatisticasBTN {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .actions-row {
+    padding: 0 1rem 2rem 1rem;
+    justify-content: center;
+  }
+}
+
+.action-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.actions-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 4rem 4rem 4rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .EstatisticasBTN {
-  position:absolute;
-  right: 2rem;
-  bottom: 2rem;
-
+  position: relative;
   width: fit-content;
-  
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-
   padding: 0.8rem 1.4rem;
-
   background: rgba(249, 115, 22, 0.12);
-
   border: 2px solid #f97316;
-
   border-radius: 6px;
-
   color: #f97316;
-
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-
   text-decoration: none;
   text-transform: uppercase;
-
   backdrop-filter: blur(8px);
-
   cursor: pointer;
-
   transition:
     background 0.2s ease,
     color 0.2s ease,

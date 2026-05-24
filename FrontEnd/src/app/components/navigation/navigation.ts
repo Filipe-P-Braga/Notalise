@@ -9,5 +9,17 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './navigation.css',
 })
 export class Navigation {
+  menuOpen = false;
+
   constructor(public authService: AuthService) {}
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+
+    if (this.menuOpen) {
+      setTimeout(() => {
+        document.querySelector('.nav-links')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+  }
 }
