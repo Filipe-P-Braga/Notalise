@@ -11,7 +11,9 @@ import { CommentService } from '../../services/comment.service';
   styleUrl: './comentCreate.css'
 })
 export class ComentCreateComponent {
-  @Input() standId!: number;
+  @Input() entityId!: number;
+  @Input() entityType!: 'stand' | 'event';
+
   @Output() commentCreated = new EventEmitter<void>();
 
   commentForm: FormGroup;
@@ -44,7 +46,7 @@ export class ComentCreateComponent {
     this.isSubmitted = true;
     if (this.commentForm.valid) {
       const newComment = {
-        standId: this.standId,
+        [this.entityType === 'stand' ? 'standId' : 'eventId']: this.entityId,
         ...this.commentForm.value
       };
 

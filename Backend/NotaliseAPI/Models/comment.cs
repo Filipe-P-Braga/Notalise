@@ -2,7 +2,8 @@ public class Comment
 {
     public int Id { get; set; }
 
-    public int StandId { get; set; } // FK referencia Stands
+    public int? StandId { get; set; } // FK referencia Stands
+    public int? EventId { get; set; } // FK referencia Events
 
     public string Text { get; set; }
 

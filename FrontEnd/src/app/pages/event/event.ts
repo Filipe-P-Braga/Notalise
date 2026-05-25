@@ -9,10 +9,16 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';  
 
+import { Comments } from '../../components/comments/comments';
+import { ComentCreateComponent } from '../../components/comentCreate/comentCreate';
+import { CommentService } from '../../services/comment.service';
+
+import { EMPTY, forkJoin } from 'rxjs';
+
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [CommonModule, Qrcode, StandCard, RouterModule],
+  imports: [CommonModule, Qrcode, StandCard, RouterModule, Comments, ComentCreateComponent],
   templateUrl: './event.html',
   styleUrl: './event.css',
 })
@@ -21,7 +27,7 @@ export class Event implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   eventData = {
-    eventId: '',
+    eventId: 0,
     title: '',
     subtitle: '',
     ratingAge: '',
@@ -34,7 +40,8 @@ export class Event implements OnInit, OnDestroy {
     date: '',
     contentRating: '',
     copyright: '',
-    image: ''
+    image: '',
+    comments: [] as any[]
   };
 
   stars: number[] = [];
@@ -52,55 +59,148 @@ export class Event implements OnInit, OnDestroy {
 
   ];
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) { }
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, private commentService: CommentService) { }
   
   onImageError(event: any) {
   event.target.src = 'ShowInova.jpg';
 }
   ngOnInit(): void {
-    console.log('Evento iniciado, carregando dados...');
 
     this.route.paramMap.pipe(
+
       switchMap(params => {
+
         const id = params.get('id');
-        console.log('Atualizando evento:', id);
-        if (id) {
-          return this.http.get<any>(`http://localhost:5000/event/${id}`);
+
+        if (!id) {
+
+          console.error('ID do evento inválido');
+
+          return EMPTY;
         }
-        return [];
+
+        return forkJoin({
+
+          event: this.http.get<any>(
+            `http://localhost:5000/event/${id}`
+          ),
+
+          comments: this.commentService
+            .getCommentsByEventId(Number(id))
+
+        });
+
       }),
+
       takeUntil(this.destroy$)
+
     ).subscribe({
-      next: (data) => {
+
+      next: ({ event, comments }) => {
+
+        console.log('Evento carregado:', event);
+
         this.eventData = {
-          eventId: data.id || null,
-          title: data.name,
-          subtitle: data.subtitle || '',
-          ratingAge: data.contentRating || 'Livre',
-          format: data.format ? data.format.join(' | ') : 'Presencial | Online',
-          genres: data.genres || ['Tecnologia', 'Inovação', 'Negócios', 'Universitário'],
-          averageRating: data.score || 0,
+
+          eventId: event.id || 0,
+
+          title: event.name,
+
+          subtitle: event.subtitle || '',
+
+          ratingAge:
+            event.contentRating || 'Livre',
+
+          format: event.format
+            ? event.format.join(' | ')
+            : 'Presencial | Online',
+
+          genres: event.genres || [
+            'Tecnologia',
+            'Inovação',
+            'Negócios',
+            'Universitário'
+          ],
+
+          averageRating: event.score || 0,
+
           totalRatings: '21.5K',
-          synopsis: data.description,
-          local: data.address,
+
+          synopsis: event.description,
+
+          local: event.address,
+
           date: '12 a 15 de Outubro de 2026',
-          contentRating: data.contentRating || 'Livre para todos os públicos',
-          copyright: data.copyright,
-          image: data.image || ''
+
+          contentRating:
+            event.contentRating
+            || 'Livre para todos os públicos',
+
+          copyright:
+            event.copyright,
+
+          image:
+            event.image || '',
+
+          comments
         };
 
-        const roundedScore = Math.round(this.eventData.averageRating);
-        this.stars = Array(roundedScore).fill(0);
+        const roundedScore =
+          Math.round(
+            this.eventData.averageRating
+          );
 
-        // Força detecção de mudanças
+        this.stars =
+          Array(roundedScore).fill(0);
+
         this.cdr.markForCheck();
-
-        console.log('Eventos carregados ao abrir a página:', data);
       },
+
       error: (err) => {
-        console.error('Erro ao carregar eventos:', err);
+
+        console.error(
+          'Erro ao carregar evento:',
+          err
+        );
       }
+
     });
+
+  }
+  loadComments(id: number) {
+
+    this.commentService.getCommentsByEventId(id).pipe(
+
+      takeUntil(this.destroy$)
+
+    ).subscribe({
+
+      next: (data) => {
+
+        this.eventData = {
+          ...this.eventData,
+          comments: data
+        };
+
+        this.cdr.markForCheck();
+      },
+
+      error: (err) => {
+        console.error(
+          'Erro ao buscar comentários do stand',
+          err
+        );
+      }
+
+    });
+
+  }
+  
+  onCommentCreated() {
+
+    if (!this.eventData?.eventId) return;
+
+    this.loadComments(this.eventData.eventId);
   }
 
   ngOnDestroy(): void {

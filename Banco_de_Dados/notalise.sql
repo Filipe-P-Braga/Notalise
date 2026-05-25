@@ -106,11 +106,11 @@ CREATE TABLE Comments (
 
 INSERT INTO Comments (Date, StandsID, EventID, Score, UserID, Type, Text)
 VALUES 
-('2026-05-10 10:15:00', 1, 1, 4.5, 1, 'Avaliação', 'A avaliação foi realizada com sucesso e o stand apresentou um ótimo desempenho.'),
-('2026-05-10 12:00:00', 1, 1, 3.0, 1, 'Avaliação', 'O stand tem uma boa proposta, mas o atendimento estava um pouco lento.'),
-('2026-05-11 09:10:00', 1, 1, 5.0, 1, 'Avaliação', 'Excelente! Apresentação impecável e equipe muito atenciosa.'),
-('2026-05-11 14:20:00', 1, 1, 4.0, 1, 'Avaliação', 'Muito interessante a tecnologia utilizada, gostei bastante.'),
-('2026-05-12 15:35:00', 1, 1, 2.0, 1, 'Avaliação', 'A ideia é boa, mas o protótipo não funcionou durante a demonstração.');
+('2026-05-10 10:15:00', 1, null, 4.5, 1, 'Avaliação', 'A avaliação foi realizada com sucesso e o stand apresentou um ótimo desempenho.'),
+('2026-05-10 12:00:00', null, 1, 3.0, 1, 'Avaliação', 'O stand tem uma boa proposta, mas o atendimento estava um pouco lento.'),
+('2026-05-11 09:10:00', 1, null, 5.0, 1, 'Avaliação', 'Excelente! Apresentação impecável e equipe muito atenciosa.'),
+('2026-05-11 14:20:00', null, 1, 4.0, 1, 'Avaliação', 'Muito interessante a tecnologia utilizada, gostei bastante.'),
+('2026-05-12 15:35:00', 1, null, 2.0, 1, 'Avaliação', 'A ideia é boa, mas o protótipo não funcionou durante a demonstração.');
 -- Nova tabela baseada no mockup
 CREATE TABLE UserActivity (
     ID INT PRIMARY KEY AUTO_INCREMENT,

@@ -334,13 +334,14 @@ public double GetAverageScoreByEvent(int eventId)
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = @"INSERT INTO Comments (Date, StandsID, Score, UserID, Type, Text)
-                        VALUES (@date, @standsId, @score, @userId, @type, @text)";
+        string query = @"INSERT INTO Comments (Date, StandsID, EventID, Score, UserID, Type, Text)
+                        VALUES (@date, @standsId, @eventId, @score, @userId, @type, @text)";
 
         using var cmd = new MySqlCommand(query, conn);
 
         cmd.Parameters.AddWithValue("@date", comment.Date);
         cmd.Parameters.AddWithValue("@standsId", comment.StandId);
+        cmd.Parameters.AddWithValue("@eventId", comment.EventId);
         cmd.Parameters.AddWithValue("@score", comment.Score);
         cmd.Parameters.AddWithValue("@userId", comment.UserId ?? (object)DBNull.Value);
         cmd.Parameters.AddWithValue("@type", comment.Type ?? (object)DBNull.Value);
@@ -387,7 +388,8 @@ public double GetAverageScoreByEvent(int eventId)
             lista.Add(new Comment
             {
                 Id = reader.GetInt32("ID"),
-                StandId = reader.GetInt32("StandsID"),
+                StandId = reader.IsDBNull(reader.GetOrdinal("StandsID"))? null: reader.GetInt32("StandsID"),
+                EventId = reader.IsDBNull(reader.GetOrdinal("EventID")) ? null : reader.GetInt32("EventID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
 
@@ -420,7 +422,8 @@ public double GetAverageScoreByEvent(int eventId)
             lista.Add(new Comment
             {
                 Id = reader.GetInt32("ID"),
-                StandId = reader.GetInt32("StandsID"),
+                StandId = reader.IsDBNull(reader.GetOrdinal("StandsID"))? null: reader.GetInt32("StandsID"),
+                EventId = reader.IsDBNull(reader.GetOrdinal("EventID")) ? null : reader.GetInt32("EventID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
 
@@ -445,7 +448,7 @@ public double GetAverageScoreByEvent(int eventId)
             SELECT c.*
             FROM Comments c
             LEFT JOIN Stands s ON c.StandsID = s.ID
-            WHERE c.EventID = @eventId OR s.ID_Event = @eventId
+            WHERE c.EventID = @eventId
             ORDER BY c.Date DESC";
 
         using var cmd = new MySqlCommand(query, conn);
@@ -458,7 +461,8 @@ public double GetAverageScoreByEvent(int eventId)
             lista.Add(new Comment
             {
                 Id = reader.GetInt32("ID"),
-                StandId = reader.GetInt32("StandsID"),
+                StandId = reader.IsDBNull(reader.GetOrdinal("StandsID"))? null: reader.GetInt32("StandsID"),
+                EventId = reader.IsDBNull(reader.GetOrdinal("EventID")) ? null : reader.GetInt32("EventID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
 
@@ -473,20 +477,22 @@ public double GetAverageScoreByEvent(int eventId)
     }
 
 
-public double GetAverageScoreByStand(int standId)
-{
-    using var conn = new MySqlConnection(connectionString);
-    conn.Open();
+    public double GetAverageScoreByStand(int standId)
+    {
+        using var conn = new MySqlConnection(connectionString);
+        conn.Open();
 
-    string query = "SELECT AVG(Score) FROM Comments WHERE StandsID = @standId";
+        string query = "SELECT AVG(Score) FROM Comments WHERE StandsID = @standId";
 
-    using var cmd = new MySqlCommand(query, conn);
-    cmd.Parameters.AddWithValue("@standId", standId);
+        using var cmd = new MySqlCommand(query, conn);
+        cmd.Parameters.AddWithValue("@standId", standId);
 
-    var result = cmd.ExecuteScalar();
+        var result = cmd.ExecuteScalar();
 
-    return result != DBNull.Value ? Convert.ToDouble(result) : 0;
-}
+        return result != DBNull.Value ? Convert.ToDouble(result) : 0;
+    }
+
+
     public Comment? GetCommentById(int id)
     {
         using var conn = new MySqlConnection(connectionString);
@@ -504,7 +510,8 @@ public double GetAverageScoreByStand(int standId)
             return new Comment
             {
                 Id = reader.GetInt32("ID"),
-                StandId = reader.GetInt32("StandsID"),
+                StandId = reader.IsDBNull(reader.GetOrdinal("StandsID"))? null: reader.GetInt32("StandsID"),
+                EventId = reader.IsDBNull(reader.GetOrdinal("EventID")) ? null : reader.GetInt32("EventID"),
                 Text = reader.GetString("Text"),
                 Score = reader.GetInt32("Score"),
 
