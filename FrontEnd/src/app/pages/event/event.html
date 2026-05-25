@@ -123,7 +123,7 @@
 <app-comments [comments]="eventData.comments"></app-comments>
 <app-coment-create  [entityId]="eventData.eventId" entityType="event" (commentCreated)="onCommentCreated()"></app-coment-create>
 
-<div class="actions-row">
+<div class="actions-row" *ngIf="isOrganizador">
   <app-qrcode [value]="'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1'"></app-qrcode>
   <a [routerLink]="['/estatisticas', eventData.eventId]" class="primary-action-btn">
     Estatísticas do Evento

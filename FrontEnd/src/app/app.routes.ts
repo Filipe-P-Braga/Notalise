@@ -19,7 +19,12 @@ export const routes: Routes = [
   { path: 'criar-evento', component: EventCreate },
   { path: 'comentarios', component: CommentsPage },
   { path: 'login', component: LoginPage },
-  { path: 'estatisticas/:id', component: StatisticsPage },
+  {
+    path: 'estatisticas/:id',
+    component: StatisticsPage,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['organizador'] }
+  },
   { path: 'eventos', component: EventList },
   
   {
