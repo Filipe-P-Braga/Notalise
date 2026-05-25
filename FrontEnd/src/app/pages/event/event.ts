@@ -4,6 +4,7 @@ import { Qrcode } from '../../components/qrcode/qrcode';
 import { StandCard, StandData } from '../../components/stand-card/stand-card';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
@@ -20,6 +21,7 @@ import { Subject } from 'rxjs';
 export class Event implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
+  isOrganizador: boolean = false;
   eventData = {
     eventId: '',
     title: '',
@@ -52,12 +54,19 @@ export class Event implements OnInit, OnDestroy {
 
   ];
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
+  ) { }
   
   onImageError(event: any) {
   event.target.src = 'ShowInova.jpg';
 }
   ngOnInit(): void {
+    this.isOrganizador = this.authService.getRole() === 'organizador';
     console.log('Evento iniciado, carregando dados...');
 
     this.route.paramMap.pipe(

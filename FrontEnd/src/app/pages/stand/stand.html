@@ -101,7 +101,7 @@
 <app-comments [comments]="selectedStand.comments"></app-comments>
 <app-coment-create [standId]="selectedStand.id" (commentCreated)="onCommentCreated()"></app-coment-create>
 
-<app-qrcode [value]="'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1'"></app-qrcode>
+<app-qrcode *ngIf="isOrganizador" [value]="'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1'"></app-qrcode>
 
 <!-- Floating Edit Button -->
 <a routerLink="/editar-estande" class="floating-edit-btn" title="Editar Estande">

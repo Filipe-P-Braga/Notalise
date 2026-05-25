@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Qrcode } from '../../components/qrcode/qrcode';
 import { Comments } from '../../components/comments/comments';
+import { AuthService } from '../../services/auth.service';
 import { ComentCreateComponent } from '../../components/comentCreate/comentCreate';
 import { CommentService } from '../../services/comment.service';
 
@@ -37,6 +38,7 @@ export class Stand implements OnInit, OnDestroy {
   // Mantemos o destroy$ para evitar vazamentos de memória.
   private destroy$ = new Subject<void>();
 
+  isOrganizador: boolean = false;
   selectedStand: any;
 
   eventData = {
@@ -62,7 +64,8 @@ export class Stand implements OnInit, OnDestroy {
     private commentService: CommentService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) { }
 
 
@@ -74,6 +77,8 @@ export class Stand implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.isOrganizador = this.authService.getRole() === 'organizador';
 
     this.route.paramMap.pipe(
 
