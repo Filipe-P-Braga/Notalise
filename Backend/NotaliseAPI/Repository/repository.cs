@@ -293,6 +293,82 @@ string connectionString = "server=localhost;database=notalise;user=root;password
         return null;
     }
 
+    public List<Stand> GetStandsByEventId(int eventId)
+    {
+        var lista = new List<Stand>();
+
+        using var conn = new MySqlConnection(connectionString);
+        conn.Open();
+
+        string query = @"
+            SELECT *
+            FROM Stands
+            WHERE ID_Event = @eventId";
+
+        using var cmd = new MySqlCommand(query, conn);
+
+        cmd.Parameters.AddWithValue("@eventId", eventId);
+
+        using var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            lista.Add(new Stand
+            {
+                Id = reader.GetInt32("ID"),
+                EventId = reader.GetInt32("ID_Event"),
+
+                Name = reader.GetString("Name"),
+
+                Subtitle = reader.IsDBNull(reader.GetOrdinal("Subtitle"))
+                    ? ""
+                    : reader.GetString("Subtitle"),
+
+                Local = reader.IsDBNull(reader.GetOrdinal("Local"))
+                    ? null
+                    : reader.GetString("Local"),
+
+                Description = reader.IsDBNull(reader.GetOrdinal("Description"))
+                    ? null
+                    : reader.GetString("Description"),
+
+                Image = reader.IsDBNull(reader.GetOrdinal("Image"))
+                    ? null
+                    : reader.GetString("Image"),
+
+                Score = reader.IsDBNull(reader.GetOrdinal("Score"))
+                    ? 0
+                    : Convert.ToInt32(reader["Score"]),
+
+                Genres = reader.IsDBNull(reader.GetOrdinal("Genres"))
+                    ? Array.Empty<string>()
+                    : System.Text.Json.JsonSerializer.Deserialize<string[]>(
+                        reader.GetString("Genres")
+                    ),
+
+                Format = reader.IsDBNull(reader.GetOrdinal("Format"))
+                    ? Array.Empty<string>()
+                    : System.Text.Json.JsonSerializer.Deserialize<string[]>(
+                        reader.GetString("Format")
+                    ),
+
+                ContentRating = reader.IsDBNull(reader.GetOrdinal("ContentRating"))
+                    ? ""
+                    : reader.GetString("ContentRating"),
+
+                Copyright = reader.IsDBNull(reader.GetOrdinal("Copyright"))
+                    ? ""
+                    : reader.GetString("Copyright"),
+
+                DaysID = reader.IsDBNull(reader.GetOrdinal("DaysID"))
+                    ? 0
+                    : reader.GetInt32("DaysID")
+            });
+        }
+
+        return lista;
+    }
+
     public void DeleteStand(int id)
     {
         using var conn = new MySqlConnection(connectionString);

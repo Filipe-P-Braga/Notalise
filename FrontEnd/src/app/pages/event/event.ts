@@ -73,6 +73,7 @@ export class Event implements OnInit, OnDestroy {
   event.target.src = 'ShowInova.jpg';
 }
   ngOnInit(): void {
+    this.isOrganizador = this.authService.getRole() === 'organizador';
     console.log('Evento iniciado, carregando dados...');
 
     this.route.paramMap.pipe(
@@ -95,7 +96,11 @@ export class Event implements OnInit, OnDestroy {
           ),
 
           comments: this.commentService
-            .getCommentsByEventId(Number(id))
+            .getCommentsByEventId(Number(id)),
+
+          stands: this.http.get<any[]>(
+            `http://localhost:5000/stand/event/${id}`
+          )
 
         });
 
@@ -105,7 +110,7 @@ export class Event implements OnInit, OnDestroy {
 
     ).subscribe({
 
-      next: ({ event, comments }) => {
+      next: ({ event, comments, stands }) => {
 
         console.log('Evento carregado:', event);
 
@@ -154,6 +159,16 @@ export class Event implements OnInit, OnDestroy {
           comments
         };
 
+        this.stands = stands.map((stand: any) => ({
+          id: stand.id,
+          name: stand.name,
+          subtitle: stand.subtitle || '',
+          date: stand.date || '',
+          description: stand.description || '',
+          image: stand.image || '',
+          genres: stand.genres || []
+        }));
+
         const roundedScore =
           Math.round(
             this.eventData.averageRating
@@ -196,7 +211,7 @@ export class Event implements OnInit, OnDestroy {
 
       error: (err) => {
         console.error(
-          'Erro ao buscar comentários do stand',
+          'Erro ao buscar comentários do evento',
           err
         );
       }

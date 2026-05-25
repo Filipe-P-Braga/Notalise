@@ -38,6 +38,14 @@ public IActionResult GetStandById(int id)
     return Ok(stand);
 }
 
+    [HttpGet("event/{eventId}")]
+    public IActionResult GetStandsByEventId(int eventId)
+    {
+        var stands = service.GetStandsByEventId(eventId);
+
+        return Ok(stands);
+    }
+
 [HttpDelete("{id}")]
 public IActionResult DeleteStand(int id)
 {

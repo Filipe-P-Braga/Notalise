@@ -49,4 +49,8 @@ export class StandService {
   getStandById(id: number | string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
+
+  getStandsByEventId(eventId: number | string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/event/${eventId}`);
+  }
 }

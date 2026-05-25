@@ -24,6 +24,11 @@ public class StandService
         return repo.GetStandById(id);
     }
 
+    public List<Stand> GetStandsByEventId(int eventId)
+    {
+        return repo.GetStandsByEventId(eventId);
+    }
+
     public void DeleteStand(int id)
     {
         repo.DeleteStand(id);
