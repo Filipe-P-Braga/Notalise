@@ -5,19 +5,25 @@
         <span class="text-gradient">Notalise</span>
       </a>
     </div>
+
+    <button class="nav-toggle-btn" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" [class.open]="menuOpen" aria-label="Abrir menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
     
-    <div class="nav-links">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">Início</a>
-      <!-- <a routerLink="/estande" routerLinkActive="active" class="nav-item">Estandes</a> -->
-      <a routerLink="/eventos" routerLinkActive="active" class="nav-item">Eventos</a>
-      <!-- <a routerLink="/comentarios" routerLinkActive="active" class="nav-item">Comentários</a> -->
+    <div class="nav-links" [class.open]="menuOpen">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item" (click)="menuOpen = false">Início</a>
+      <!-- <a routerLink="/estande" routerLinkActive="active" class="nav-item" (click)="menuOpen = false">Estandes</a> -->
+      <a routerLink="/eventos" routerLinkActive="active" class="nav-item" (click)="menuOpen = false">Eventos</a>
+      <!-- <a routerLink="/comentarios" routerLinkActive="active" class="nav-item" (click)="menuOpen = false">Comentários</a> -->
       
       @if (authService.isLoggedIn()) {
         <span class="nav-user-email">{{ authService.getUser()?.email }}</span>
         <span class="nav-role-badge role-{{ authService.getRole() }}">{{ authService.getRole() }}</span>
         <button class="nav-logout-btn" (click)="authService.logout()">Sair</button>
       } @else {
-        <a routerLink="/login" class="nav-user-btn" title="Entrar">
+        <a routerLink="/login" class="nav-user-btn" title="Entrar" (click)="menuOpen = false">
           <img src="/IconBranco.png" alt="Entrar" class="nav-item-image">
         </a>
       }
