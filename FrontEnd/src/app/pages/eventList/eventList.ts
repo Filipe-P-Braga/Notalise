@@ -33,6 +33,8 @@ import {
   catchError
 } from 'rxjs/operators';
 
+import { environment } from '../../../env/env';
+
 
 interface EventItem {
 
@@ -147,7 +149,7 @@ export class EventList implements OnInit, OnDestroy {
       switchMap(() =>
 
         this.http.get<EventItem[]>(
-          'http://localhost:5000/event'
+          environment.apiUrl + '/event'
         ).pipe(
 
           tap((data) => {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../env/env';
 
 export interface EventModel {
   title: string;
@@ -13,8 +14,8 @@ export interface EventModel {
   providedIn: 'root'
 })
 export class EventService {
-  // Ajuste a URL se necessário (https://localhost:7185/event ou http://localhost:5000/event)
-  private apiUrl = 'http://localhost:5000/event';
+
+  private apiUrl = environment.apiUrl + '/event';
 
   constructor(private http: HttpClient) { }
 

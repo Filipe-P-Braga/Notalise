@@ -19,6 +19,8 @@ import {
   switchMap
 } from 'rxjs/operators';
 
+import { environment } from '../../../env/env';
+
 @Component({
   selector: 'app-stand',
   standalone: true,
@@ -94,7 +96,7 @@ export class Stand implements OnInit, OnDestroy {
         return forkJoin({
 
           stand: this.http.get<any>(
-            `http://localhost:5000/stand/${id}`
+            `${environment.apiUrl}/stand/${id}`
           ),
 
           comments: this.commentService.getCommentsByStandId(Number(id))

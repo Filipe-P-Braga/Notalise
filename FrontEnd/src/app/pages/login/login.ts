@@ -3,6 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService, UserRole } from '../../services/auth.service';
+import { environment } from '../../../env/env';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,7 @@ export class LoginPage {
     this.loading = true;
     this.errorMessage = '';
 
-    fetch('http://localhost:5000/login', {
+    fetch(environment.apiUrl + '/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: this.email, password: this.password })

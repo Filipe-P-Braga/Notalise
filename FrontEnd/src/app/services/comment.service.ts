@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../env/env';
 
 export interface CommentModel {
   StandId: number;
@@ -14,7 +15,7 @@ export interface CommentModel {
   providedIn: 'root'
 })
 export class CommentService {
-  private apiUrl = 'http://localhost:5000/comment';
+  private apiUrl = environment.apiUrl + '/comment';
 
   constructor(private http: HttpClient) { }
 

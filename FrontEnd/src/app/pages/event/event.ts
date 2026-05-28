@@ -16,6 +16,8 @@ import { CommentService } from '../../services/comment.service';
 
 import { EMPTY, forkJoin } from 'rxjs';
 
+import { environment } from '../../../env/env';
+
 @Component({
   selector: 'app-event',
   standalone: true,
@@ -92,14 +94,14 @@ export class Event implements OnInit, OnDestroy {
         return forkJoin({
 
           event: this.http.get<any>(
-            `http://localhost:5000/event/${id}`
+            `${environment.apiUrl}/event/${id}`
           ),
 
           comments: this.commentService
             .getCommentsByEventId(Number(id)),
 
           stands: this.http.get<any[]>(
-            `http://localhost:5000/stand/event/${id}`
+            `${environment.apiUrl}/stand/event/${id}`
           )
 
         });

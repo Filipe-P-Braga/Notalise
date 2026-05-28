@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../env/env';
 
 export interface StandModel {
   name: string;
@@ -20,7 +21,7 @@ export interface StandModel {
   providedIn: 'root'
 })
 export class StandService {
-  private apiUrl = 'http://localhost:5000/stand';
+  private apiUrl = environment.apiUrl + '/stand';
 
   constructor(private http: HttpClient) { }
 
