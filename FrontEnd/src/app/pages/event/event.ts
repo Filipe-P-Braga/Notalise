@@ -13,13 +13,14 @@ import { Subject } from 'rxjs';
 import { Comments } from '../../components/comments/comments';
 import { ComentCreateComponent } from '../../components/comentCreate/comentCreate';
 import { CommentService } from '../../services/comment.service';
+import { ShareButtonComponent } from '../../components/share-button/share-button';
 
 import { EMPTY, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-event',
   standalone: true,
-  imports: [CommonModule, Qrcode, StandCard, RouterModule, Comments, ComentCreateComponent],
+  imports: [CommonModule, Qrcode, StandCard, RouterModule, Comments, ComentCreateComponent, ShareButtonComponent],
   templateUrl: './event.html',
   styleUrl: './event.css',
 })
@@ -235,6 +236,21 @@ export class Event implements OnInit, OnDestroy {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 100);
+  }
+
+  showDetails = true;
+
+  scrollToStands() {
+    setTimeout(() => {
+      const el = document.getElementById('stands-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
+
+  toggleDetails() {
+    this.showDetails = !this.showDetails;
   }
 
   ngOnDestroy(): void {

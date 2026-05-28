@@ -1,0 +1,101 @@
+.share-inline {
+  position: relative;
+}
+
+.share-button {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: #121826;
+  border: 2px solid #f97316;
+  color: #f97316;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s, transform 0.15s, border-color 0.2s;
+}
+
+.share-button:hover {
+  background: #1f2940;
+  border-color: #fb923c;
+  transform: translateY(-1px);
+}
+
+.share-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+}
+
+.share-card {
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  background: white;
+  color: #0b0f19;
+  padding: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(2, 6, 23, 0.18);
+}
+
+.share-card h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.1rem;
+}
+
+.share-card input {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(11, 15, 25, 0.1);
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(11, 15, 25, 0.1);
+  background: #f8fafc;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn.primary {
+  background: #f97316;
+  color: #fff;
+  border: none;
+}
+
+.close {
+  margin-top: 0.75rem;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #374151;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .share-card {
+    width: 92%;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}
