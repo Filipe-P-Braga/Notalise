@@ -60,7 +60,7 @@ export class Stand implements OnInit, OnDestroy {
   };
 
 
-  stars = [1, 2, 3, 4, 5];
+  starStates: ('full' | 'half' | 'empty')[] = [];
 
   constructor(
     private commentService: CommentService,
@@ -92,6 +92,46 @@ export class Stand implements OnInit, OnDestroy {
 
   toggleDetails() {
     this.showDetails = !this.showDetails;
+  }
+
+  calculateAverageRating(comments: any[], fallbackScore = 0): number {
+    if (!comments || comments.length === 0) {
+      return fallbackScore || 0;
+    }
+
+    const total = comments.reduce((sum, comment) => {
+      const score = comment?.score ?? comment?.Score ?? 0;
+      return sum + Number(score);
+    }, 0);
+
+    const average = total / comments.length;
+    return Number(average.toFixed(1));
+  }
+
+  buildStarStates(rating: number): ('full' | 'half' | 'empty')[] {
+    const fullStars = Math.floor(rating);
+    const fraction = rating - fullStars;
+    const hasHalf = fraction >= 0.25 && fraction < 0.75;
+    const roundUp = fraction >= 0.75;
+    const states: ('full' | 'half' | 'empty')[] = [];
+
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        states.push('full');
+      } else if (i === fullStars && hasHalf) {
+        states.push('half');
+      } else if (i === fullStars && roundUp) {
+        states.push('full');
+      } else {
+        states.push('empty');
+      }
+    }
+
+    if (roundUp && fullStars < 5) {
+      states[fullStars] = 'full';
+    }
+
+    return states;
   }
 
   ngOnInit() {
@@ -134,6 +174,8 @@ export class Stand implements OnInit, OnDestroy {
           comments
         };
 
+        const commentCount = comments?.length ?? 0;
+        const averageFromComments = this.calculateAverageRating(comments, stand.score);
 
         this.eventData = {
           title: stand.name,
@@ -151,9 +193,9 @@ export class Stand implements OnInit, OnDestroy {
             'Universitário'
           ],
 
-          averageRating: stand.score || 0,
+          averageRating: averageFromComments,
 
-          totalRatings: '21.5K',
+          totalRatings: commentCount.toString(),
 
           synopsis: stand.description,
 
@@ -170,10 +212,7 @@ export class Stand implements OnInit, OnDestroy {
           image: stand.image || ''
         };
 
-        const roundedScore =
-          Math.round(this.eventData.averageRating);
-
-        this.stars = Array(roundedScore).fill(0);
+        this.starStates = this.buildStarStates(this.eventData.averageRating);
 
         this.cdr.markForCheck();
       },
@@ -195,12 +234,21 @@ export class Stand implements OnInit, OnDestroy {
     ).subscribe({
 
       next: (data) => {
+        const averageFromComments = this.calculateAverageRating(data, this.eventData.averageRating);
+        const commentCount = data?.length ?? 0;
 
         this.selectedStand = {
           ...this.selectedStand,
           comments: data
         };
 
+        this.eventData = {
+          ...this.eventData,
+          averageRating: averageFromComments,
+          totalRatings: commentCount.toString()
+        };
+
+        this.starStates = this.buildStarStates(averageFromComments);
         this.cdr.markForCheck();
       },
 

@@ -145,7 +145,18 @@
 .star-icon {
   width: 20px;
   height: 20px;
+}
+
+.full-star path {
   fill: #f97316;
+}
+
+.half-star path {
+  fill: url(#halfGradient);
+}
+
+.empty-star path {
+  fill: rgba(249, 115, 22, 0.25);
 }
 
 .dropdown-rating {

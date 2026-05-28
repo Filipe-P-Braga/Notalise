@@ -47,7 +47,7 @@ export class Event implements OnInit, OnDestroy {
     comments: [] as any[]
   };
 
-  stars: number[] = [];
+  starStates: ('full' | 'half' | 'empty')[] = [];
 
   stands: StandData[] = [
     {
@@ -115,6 +115,9 @@ export class Event implements OnInit, OnDestroy {
 
         console.log('Evento carregado:', event);
 
+        const commentCount = comments?.length ?? 0;
+        const averageFromComments = this.calculateAverageRating(comments, event.score);
+
         this.eventData = {
 
           eventId: event.id || 0,
@@ -137,9 +140,9 @@ export class Event implements OnInit, OnDestroy {
             'Universitário'
           ],
 
-          averageRating: event.score || 0,
+          averageRating: averageFromComments,
 
-          totalRatings: '21.5K',
+          totalRatings: commentCount.toString(),
 
           synopsis: event.description,
 
@@ -170,13 +173,7 @@ export class Event implements OnInit, OnDestroy {
           genres: stand.genres || []
         }));
 
-        const roundedScore =
-          Math.round(
-            this.eventData.averageRating
-          );
-
-        this.stars =
-          Array(roundedScore).fill(0);
+        this.starStates = this.buildStarStates(this.eventData.averageRating);
 
         this.cdr.markForCheck();
       },
@@ -201,12 +198,17 @@ export class Event implements OnInit, OnDestroy {
     ).subscribe({
 
       next: (data) => {
+        const averageFromComments = this.calculateAverageRating(data);
+        const commentCount = data?.length ?? 0;
 
         this.eventData = {
           ...this.eventData,
-          comments: data
+          comments: data,
+          averageRating: averageFromComments,
+          totalRatings: commentCount.toString()
         };
 
+        this.starStates = this.buildStarStates(averageFromComments);
         this.cdr.markForCheck();
       },
 
@@ -226,6 +228,46 @@ export class Event implements OnInit, OnDestroy {
     if (!this.eventData?.eventId) return;
 
     this.loadComments(this.eventData.eventId);
+  }
+
+  calculateAverageRating(comments: any[], fallbackScore = 0): number {
+    if (!comments || comments.length === 0) {
+      return fallbackScore || 0;
+    }
+
+    const total = comments.reduce((sum, comment) => {
+      const score = comment?.score ?? comment?.Score ?? 0;
+      return sum + Number(score);
+    }, 0);
+
+    const average = total / comments.length;
+    return Number(average.toFixed(1));
+  }
+
+  buildStarStates(rating: number): ('full' | 'half' | 'empty')[] {
+    const fullStars = Math.floor(rating);
+    const fraction = rating - fullStars;
+    const hasHalf = fraction >= 0.25 && fraction < 0.75;
+    const roundUp = fraction >= 0.75;
+    const states: ('full' | 'half' | 'empty')[] = [];
+
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        states.push('full');
+      } else if (i === fullStars && hasHalf) {
+        states.push('half');
+      } else if (i === fullStars && roundUp) {
+        states.push('full');
+      } else {
+        states.push('empty');
+      }
+    }
+
+    if (roundUp && fullStars < 5) {
+      states[fullStars] = 'full';
+    }
+
+    return states;
   }
 
   scrollToComments() {

@@ -42,9 +42,23 @@
 
       <div class="rating-row">
         <div class="stars">
-          <svg *ngFor="let star of stars" viewBox="0 0 24 24" class="star-icon">
-            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-          </svg>
+          <ng-container *ngFor="let state of starStates">
+            <svg *ngIf="state === 'full'" viewBox="0 0 24 24" class="star-icon full-star">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+            </svg>
+            <svg *ngIf="state === 'half'" viewBox="0 0 24 24" class="star-icon half-star">
+              <defs>
+                <linearGradient id="halfGradient">
+                  <stop offset="50%" stop-color="#f97316" />
+                  <stop offset="50%" stop-color="rgba(249, 115, 22, 0.25)" />
+                </linearGradient>
+              </defs>
+              <path fill="url(#halfGradient)" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+            </svg>
+            <svg *ngIf="state === 'empty'" viewBox="0 0 24 24" class="star-icon empty-star">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+            </svg>
+          </ng-container>
         </div>
         <div class="dropdown-rating">
           Classificação média: {{ eventData.averageRating }} ({{ eventData.totalRatings }})
