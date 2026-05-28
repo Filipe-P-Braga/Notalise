@@ -8,6 +8,7 @@ import { Comments } from '../../components/comments/comments';
 import { AuthService } from '../../services/auth.service';
 import { ComentCreateComponent } from '../../components/comentCreate/comentCreate';
 import { CommentService } from '../../services/comment.service';
+import { ShareButtonComponent } from '../../components/share-button/share-button';
 
 
 // - switchMap permite reagir à mudança da rota automaticamente.
@@ -29,7 +30,8 @@ import { environment } from '../../../env/env';
     RouterModule,
     Qrcode,
     Comments,
-    ComentCreateComponent
+    ComentCreateComponent,
+    ShareButtonComponent
   ],
   templateUrl: './stand.html',
   styleUrl: './stand.css',
@@ -78,6 +80,8 @@ export class Stand implements OnInit, OnDestroy {
     this.loadComments(this.selectedStand.id);
   }
 
+  showDetails = true;
+
   scrollToComments() {
     // Pequeno delay para garantir que a renderização ocorra antes do scroll
     setTimeout(() => {
@@ -86,6 +90,10 @@ export class Stand implements OnInit, OnDestroy {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 100);
+  }
+
+  toggleDetails() {
+    this.showDetails = !this.showDetails;
   }
 
   ngOnInit() {
