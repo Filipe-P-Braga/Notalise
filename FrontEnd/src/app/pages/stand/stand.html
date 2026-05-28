@@ -45,7 +45,7 @@
       </div>
 
       <div class="action-row">
-        <button class="primary-action-btn">
+        <button class="primary-action-btn" (click)="scrollToComments()">
           <svg viewBox="0 0 24 24" class="play-icon">
             <path d="M8 5v14l11-7z" />
           </svg>
@@ -98,7 +98,7 @@
   </div>
 </div>
 
-<app-comments [comments]="selectedStand.comments"></app-comments>
+<app-comments id="comments-section" [comments]="selectedStand.comments"></app-comments>
 <app-coment-create   [entityId]="selectedStand.id" entityType="stand" (commentCreated)="onCommentCreated()"></app-coment-create>
 
 <app-qrcode *ngIf="isOrganizador" [value]="'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1'"></app-qrcode>

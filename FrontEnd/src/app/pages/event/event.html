@@ -55,7 +55,7 @@
       </div>
 
       <div class="action-row">
-        <button class="primary-action-btn">
+        <button class="primary-action-btn" (click)="scrollToComments()">
           <svg viewBox="0 0 24 24" class="play-icon">
             <path d="M8 5v14l11-7z" />
           </svg>
@@ -120,7 +120,7 @@
 </div>
 
 
-<app-comments [comments]="eventData.comments"></app-comments>
+<app-comments id="comments-section" [comments]="eventData.comments"></app-comments>
 <app-coment-create  [entityId]="eventData.eventId" entityType="event" (commentCreated)="onCommentCreated()"></app-coment-create>
 
 <div class="actions-row" *ngIf="isOrganizador">

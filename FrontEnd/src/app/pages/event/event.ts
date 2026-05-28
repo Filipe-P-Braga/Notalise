@@ -227,6 +227,16 @@ export class Event implements OnInit, OnDestroy {
     this.loadComments(this.eventData.eventId);
   }
 
+  scrollToComments() {
+    // Pequeno delay para garantir que a seção esteja renderizada
+    setTimeout(() => {
+      const el = document.getElementById('comments-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
