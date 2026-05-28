@@ -12,6 +12,12 @@ public class CommentController : ControllerBase
     {
         try
         {
+            // Validação: ao menos um ID (stand ou evento) deve estar preenchido
+            if (!comment.StandId.HasValue && !comment.EventId.HasValue)
+            {
+                return BadRequest(new { error = "Comentário deve estar vinculado a um stand ou evento" });
+            }
+
             service.CreateComment(comment);
             return Ok(new { message = "Comentário criado com sucesso", comment });
         }

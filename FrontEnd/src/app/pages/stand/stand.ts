@@ -78,6 +78,16 @@ export class Stand implements OnInit, OnDestroy {
     this.loadComments(this.selectedStand.id);
   }
 
+  scrollToComments() {
+    // Pequeno delay para garantir que a renderização ocorra antes do scroll
+    setTimeout(() => {
+      const el = document.getElementById('comments-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  }
+
   ngOnInit() {
 
     this.isOrganizador = this.authService.getRole() === 'organizador';

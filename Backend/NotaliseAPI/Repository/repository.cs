@@ -13,7 +13,7 @@ public class Repositorio : IRepositorio
     // talvez cause problema ? usuário padrão ? senha padrão ? 
     // database sendo eventsdb para todos
 
-string connectionString = "server=localhost;database=notalise;user=root;password=JohnGalt24!";
+string connectionString = "server=localhost;database=notalise;user=root;password=123456";
 
     private bool HasColumn(MySqlDataReader reader, string columnName)
     {
@@ -416,8 +416,8 @@ public double GetAverageScoreByEvent(int eventId)
         using var cmd = new MySqlCommand(query, conn);
 
         cmd.Parameters.AddWithValue("@date", comment.Date);
-        cmd.Parameters.AddWithValue("@standsId", comment.StandId);
-        cmd.Parameters.AddWithValue("@eventId", comment.EventId);
+        cmd.Parameters.AddWithValue("@standsId", comment.StandId ?? (object)DBNull.Value);
+        cmd.Parameters.AddWithValue("@eventId", comment.EventId ?? (object)DBNull.Value);
         cmd.Parameters.AddWithValue("@score", comment.Score);
         cmd.Parameters.AddWithValue("@userId", comment.UserId ?? (object)DBNull.Value);
         cmd.Parameters.AddWithValue("@type", comment.Type ?? (object)DBNull.Value);

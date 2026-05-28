@@ -24,7 +24,8 @@ export class CommentService {
     // A interface TypeScript não muda os nomes dessas propriedades em tempo de execução.
     // Vamos garantir que a conversão ocorra independente do formato:
     const payload = {
-      StandId: comment.standId || comment.StandId,
+      StandId: comment.standId || comment.StandId || null,
+      EventId: comment.eventId || comment.EventId || null,
       Text: comment.text || comment.Text,
       Score: comment.score || comment.Score,
       //UserId: (comment.userId === '' || comment.UserId === '') ? null : (comment.userId || comment.UserId),
