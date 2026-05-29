@@ -29,6 +29,8 @@ import { environment } from '../../../env/env';
 
 export class Event implements OnInit, OnDestroy {
 
+  qrCodeUrl: string = '';
+
   private destroy$ = new Subject<void>();
   isOrganizador: boolean = false;
   isAnonymous: boolean = false;
@@ -70,8 +72,8 @@ export class Event implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService
-    , private commentService: CommentService) { }
+    private authService: AuthService, 
+    private commentService: CommentService) { }
 
   onImageError(event: any) {
     event.target.src = 'ShowInova.jpg';
@@ -164,6 +166,8 @@ export class Event implements OnInit, OnDestroy {
 
           comments
         };
+
+        this.qrCodeUrl =`${environment.frontendUrl}/event/${event.id}`;
 
         this.stands = stands.map((stand: any) => ({
           id: stand.id,

@@ -1,6 +1,6 @@
 export const environment = {
-  frontendUrl: 'http://localhost:4200',
-  apiUrl: 'https://abstract-raised-texas-favorites.trycloudflare.com'
+  frontendUrl: 'https://yea-switches-tuition-automatically.trycloudflare.com',
+  apiUrl: 'https://hugo-run-aka-deeper.trycloudflare.com'
 };
 
 //http://localhost:5000

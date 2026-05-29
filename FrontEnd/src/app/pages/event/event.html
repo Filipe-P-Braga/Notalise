@@ -125,9 +125,18 @@
 </div>
 
 <div class="actions-row" *ngIf="isOrganizador">
-  <app-qrcode [value]="'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1'"></app-qrcode>
+  <app-qrcode [value]="qrCodeUrl"></app-qrcode>
 
   <a [routerLink]="['/estatisticas', eventData.eventId]" class="primary-action-btn">
     Estatísticas do Evento
   </a>
 </div>
+
+<!-- Floating Edit Button -->
+<a *ngIf="!isAnonymous" routerLink="/editar-evento/{{ eventData.eventId }}" class="floating-edit-btn"
+  title="Editar Estande">
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <path
+      d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+  </svg>
+</a>

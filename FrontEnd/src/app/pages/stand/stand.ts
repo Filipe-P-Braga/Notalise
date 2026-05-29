@@ -46,6 +46,7 @@ export class Stand implements OnInit, OnDestroy {
   isAnonymous: boolean = false;
 
   selectedStand: any;
+  qrCodeUrl: string = '';
 
   eventData = {
     title: 'Notalise',
@@ -138,6 +139,8 @@ export class Stand implements OnInit, OnDestroy {
           ...stand,
           comments
         };
+
+        this.qrCodeUrl = `${environment.frontendUrl}/estande/${stand.id}`;
 
         const ratings = this.calculateRatings(comments, stand.score);
 

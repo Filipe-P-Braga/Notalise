@@ -11,11 +11,13 @@ import { LoginPage } from './pages/login/login';
 import { StatisticsPage } from './pages/Statistics/statistics';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
+import { EditionEvent } from './pages/editionEvent/edition-event';
 
 export const routes: Routes = [
   { path: '', component: Intro },
   { path: 'estande/:id', component: Stand },
   { path: 'editar-estande', component: EStand },
+  { path: 'editar-evento/:id', component: EditionEvent },
   { path: 'evento/:id', component: Event },
   { path: 'criar-evento', component: EventCreate },
   { path: 'criar-stand/:id', component: StandCreate },
@@ -40,6 +42,12 @@ export const routes: Routes = [
     component: EStand,
     canActivate: [authGuard, roleGuard],
     data: { roles: ['suporte', 'organizador', 'expositor'] }
+  },
+  {
+    path: 'editar-evento/:id',
+    component: EditionEvent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['suporte', 'organizador'] }
   },
   { path: '**', redirectTo: '' }
 ];

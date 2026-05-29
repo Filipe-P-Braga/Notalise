@@ -96,7 +96,7 @@
     (commentCreated)="onCommentCreated()"></app-coment-create>
 </div>
 
-<app-qrcode *ngIf="isOrganizador" [value]="'https://truck-for-mlb-correctly.trycloudflare.com'"></app-qrcode>
+<app-qrcode *ngIf="isOrganizador" [value]="qrCodeUrl"></app-qrcode>
 
 <!-- Floating Edit Button -->
 <a *ngIf="!isAnonymous" routerLink="/editar-estande" class="floating-edit-btn" title="Editar Estande">
