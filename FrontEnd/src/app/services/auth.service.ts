@@ -6,6 +6,8 @@ import { CookieService } from 'ngx-cookie-service';
 export type UserRole = 'suporte' | 'organizador' | 'expositor' | 'usuario' | 'anonimo';
 
 export interface AuthUser {
+  id?: number | null;
+  name?: string | null;
   email: string;
   role: UserRole;
 }
@@ -18,9 +20,11 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
-  login(email: string, role: UserRole): void {
+  login(id: number | null, name: string | null, email: string, role: UserRole): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    const user: AuthUser = { email, role };
+
+    const user: AuthUser = { id, name, email, role };
+
     localStorage.setItem('user', JSON.stringify(user));
     this.cookieService.set('auth_role', role, { path: '/', sameSite: 'Strict' });
   }
