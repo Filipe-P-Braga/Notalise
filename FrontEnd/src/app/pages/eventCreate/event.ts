@@ -17,8 +17,12 @@ export class EventCreate {
   constructor(private fb: FormBuilder, private eventService: EventService) {
     this.eventForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
+      subtitle: ['', Validators.required],
       date: ['', Validators.required],
       local: ['', Validators.required],
+      imageUrl: ['', Validators.required],
+      genres: ['', Validators.required],
+      format: ['', Validators.required],
       description: ['', [Validators.required, Validators.minLength(10)]]
     });
   }

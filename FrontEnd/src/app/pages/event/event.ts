@@ -59,7 +59,7 @@ export class Event implements OnInit, OnDestroy {
       subtitle: 'A01',
       date: '12/10/2026',
       description: 'No maior evento de inovação do estado, alunos apresentam projetos que podem mudar o mundo. Durante as exposições, visitantes avaliam estandes e descobrem o "absoluto segredo" do empreendedorismo moderno. Esta é a história de inovações que encontram desafios, mas alcançam o sucesso.',
-      image: '/tamanduA.webp',
+      image: 'https://media.istockphoto.com/id/827247322/pt/vetorial/danger-sign-vector-icon-attention-caution-illustration-business-concept-simple-flat.jpg?s=612x612&w=0&k=20&c=Sh_ACBawrfyU23atGVRvQzB6ql4nyVoKxsbN9ARoU6U=',
       genres: ['Inovação', 'Software']
     },
 
@@ -160,7 +160,7 @@ export class Event implements OnInit, OnDestroy {
             event.copyright,
 
           image:
-            event.image || '',
+            event.image || 'https://media.istockphoto.com/id/827247322/pt/vetorial/danger-sign-vector-icon-attention-caution-illustration-business-concept-simple-flat.jpg?s=612x612&w=0&k=20&c=Sh_ACBawrfyU23atGVRvQzB6ql4nyVoKxsbN9ARoU6U=',
 
           comments
         };

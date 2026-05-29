@@ -1,7 +1,7 @@
 <div class="page-container animate-fade-in">
   <div class="header-section">
     <h1 class="title-lg">Mapeie seu <span class="text-gradient">Estande</span></h1>
-    <p>Cadastre sua equipe e suas ideias para o Inovaweek, e permita que todos avaliem sua inovação.</p>
+    <p>Cadastre sua equipe e suas ideias para o evento, e permita que todos avaliem sua inovação.</p>
   </div>
 
   <div class="form-card glass-panel">
@@ -14,22 +14,38 @@
         </div>
         
         <div class="form-group">
+          <label class="form-label">Subtítulo do Estande</label>
+          <input type="text" formControlName="subtitle" class="form-input" placeholder="Ex: Inovação Urbana" [class.error]="isSubmitted && standForm.get('subtitle')?.invalid"/>
+        </div>
+      </div>
+
+      <div class="form-group-row">
+        <div class="form-group">
           <label class="form-label">Curso Responsável</label>
           <input type="text" formControlName="course" class="form-input" placeholder="Ex: Ciência da Computação" [class.error]="isSubmitted && standForm.get('course')?.invalid"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Coordenador/Orientador</label>
+          <input type="text" formControlName="coordinator" class="form-input" placeholder="Nome do professor orientador" [class.error]="isSubmitted && standForm.get('coordinator')?.invalid"/>
+        </div>
+      </div>
+
+      <div class="form-group-row">
+        <div class="form-group">
+          <label class="form-label">Gêneros (separados por vírgula)</label>
+          <input type="text" formControlName="genres" class="form-input" placeholder="Ex: Inovação, Software" [class.error]="isSubmitted && standForm.get('genres')?.invalid"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Formatos (separados por vírgula)</label>
+          <input type="text" formControlName="format" class="form-input" placeholder="Ex: Presencial, Online" [class.error]="isSubmitted && standForm.get('format')?.invalid"/>
         </div>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Coordenador/Orientador</label>
-        <input type="text" formControlName="coordinator" class="form-input" placeholder="Nome do professor orientador" [class.error]="isSubmitted && standForm.get('coordinator')?.invalid"/>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Evento de Exibição</label>
-        <select formControlName="event" class="form-input select-input">
-          <option value="inovaweek">Inovaweek UVV</option>
-          <option value="other">Outro Evento Universitário</option>
-        </select>
+        <label class="form-label">Link da Imagem do Estande</label>
+        <input type="text" formControlName="imageUrl" class="form-input" placeholder="Ex: https://i.imgur.com/example.jpg" [class.error]="isSubmitted && standForm.get('imageUrl')?.invalid"/>
       </div>
 
       <div class="form-group">

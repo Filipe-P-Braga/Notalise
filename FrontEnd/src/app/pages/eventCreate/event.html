@@ -1,32 +1,67 @@
 <div class="page-container animate-fade-in">
   <div class="header-section">
     <h1 class="title-lg">Criar <span class="text-gradient-orange">Evento</span></h1>
-    <p>Organize novos eventos universitários. Embora nosso foco de demonstração seja o Inovaweek, a plataforma Notalise suporta infinitos eventos.</p>
+    <p>Organize novos eventos universitários. Embora nosso foco de demonstração seja o Inovaweek, a plataforma Notalise
+      suporta infinitos eventos.</p>
   </div>
 
   <div class="form-card glass-panel orange-accent">
     <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="stand-form">
-      
+
       <div class="form-group-row">
         <div class="form-group">
           <label class="form-label">Título do Evento</label>
-          <input type="text" formControlName="title" class="form-input" placeholder="Ex: Inovaweek 2026" [class.error]="isSubmitted && eventForm.get('title')?.invalid"/>
+          <input type="text" formControlName="title" class="form-input" placeholder="Ex: Inovaweek"
+            [class.error]="isSubmitted && eventForm.get('title')?.invalid" />
         </div>
-        
+
+        <div class="form-group">
+          <label class="form-label">Subtítulo</label>
+          <input type="text" formControlName="subtitle" class="form-input" placeholder="Ex: 2026"
+            [class.error]="isSubmitted && eventForm.get('subtitle')?.invalid" />
+        </div>
+      </div>
+
+      <div class="form-group-row">
         <div class="form-group">
           <label class="form-label">Data de Realização</label>
-          <input type="date" formControlName="date" class="form-input" [class.error]="isSubmitted && eventForm.get('date')?.invalid"/>
+          <input type="date" formControlName="date" class="form-input"
+            [class.error]="isSubmitted && eventForm.get('date')?.invalid" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Local do Evento</label>
+          <input type="text" formControlName="local" class="form-input" placeholder="Ex: Campus Boa Vista UVV"
+            [class.error]="isSubmitted && eventForm.get('local')?.invalid" />
+        </div>
+      </div>
+
+      <div class="form-group-row">
+        <div class="form-group">
+          <label class="form-label">Gêneros (separados por vírgula)</label>
+          <input type="text" formControlName="genres" class="form-input" placeholder="Ex: Tecnologia, Inovação, Negócios"
+            [class.error]="isSubmitted && eventForm.get('genres')?.invalid" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Formatos (separados por vírgula)</label>
+          <input type="text" formControlName="format" class="form-input" placeholder="Ex: Presencial, Online"
+            [class.error]="isSubmitted && eventForm.get('format')?.invalid" />
         </div>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Local de Evento</label>
-        <input type="text" formControlName="local" class="form-input" placeholder="Ex: Campus Boa Vista UVV" [class.error]="isSubmitted && eventForm.get('local')?.invalid"/>
+        <label class="form-label">Link da Imagem de Capa</label>
+        <input type="text" formControlName="imageUrl" class="form-input"
+          placeholder="Ex: https://i.imgur.com/example.jpg"
+          [class.error]="isSubmitted && eventForm.get('imageUrl')?.invalid" />
       </div>
 
       <div class="form-group">
         <label class="form-label">Descrição Oficial</label>
-        <textarea formControlName="description" class="form-input" placeholder="Objetivo do evento e critérios de avaliação..." [class.error]="isSubmitted && eventForm.get('description')?.invalid"></textarea>
+        <textarea formControlName="description" class="form-input"
+          placeholder="Objetivo do evento e critérios de avaliação..."
+          [class.error]="isSubmitted && eventForm.get('description')?.invalid"></textarea>
       </div>
 
       <div class="form-actions">
@@ -34,7 +69,7 @@
           Cadastrar Novo Evento
         </button>
       </div>
-      
+
       <div class="success-message" *ngIf="isSuccess">
         Evento registrado! Vá para Estandes ou Comentários para explorá-lo. 🏅
       </div>

@@ -100,10 +100,20 @@
 
 </div>
 <div class="stands-section" id="stands-section">
-  <div class="stands-header">
-    <h2 class="section-title">Estandes do Evento</h2>
-    <!-- <a href="#" class="view-all">VER TODOS</a> -->
-  </div>
+<div class="stands-header">
+  <h2 class="section-title">Estandes do Evento</h2>
+
+  <a
+    *ngIf="isOrganizador"
+    [routerLink]="['/criar-stand', eventData.eventId]"
+    class="create-stand-btn"
+    aria-label="Criar estande"
+  >
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+      <path d="M19 11H13V5h-2v6H5v2h6v6h2v-6h6z"/>
+    </svg>
+  </a>
+</div>
 
   <div class="stands-grid">
     <app-stand-card *ngFor="let stand of stands" [stand]="stand"></app-stand-card>
@@ -120,6 +130,9 @@
 
 <div class="actions-row" *ngIf="isOrganizador">
   <app-qrcode [value]="'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1'"></app-qrcode>
+  <a [routerLink]="['/criar-stand', eventData.eventId]" class="primary-action-btn">
+    Criar Estande
+  </a>
   <a [routerLink]="['/estatisticas', eventData.eventId]" class="primary-action-btn">
     Estatísticas do Evento
   </a>

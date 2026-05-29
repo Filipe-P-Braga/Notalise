@@ -519,3 +519,43 @@
   flex-wrap: wrap;
   align-items: center;
 }
+
+.create-stand-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+  background-color: #f97316;
+  color: white;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s,
+    transform 0.15s,
+    box-shadow 0.2s;
+
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.create-stand-btn:hover {
+  background-color: #fb923c;
+  transform: scale(1.05);
+}
+
+.create-stand-btn:active {
+  transform: scale(0.96);
+}
+
+.content-layout {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1;
+  padding: 5rem 4rem 4rem 4rem; /* aumente o padding-top */
+  align-items: flex-end;
+}

@@ -5,9 +5,13 @@ import { environment } from '../../env/env';
 
 export interface EventModel {
   title: string;
+  subtitle?: string;
   date: string;
   local: string;
+  imageUrl?: string;
   description: string;
+  genres?: string | string[];
+  format?: string | string[];
 }
 
 @Injectable({
@@ -20,19 +24,26 @@ export class EventService {
   constructor(private http: HttpClient) { }
 
   createEvent(event: EventModel): Observable<any> {
-    // O backend (C#) espera um objeto com Name, Address, Description, e Score
+    const genresArray = Array.isArray(event.genres)
+      ? event.genres
+      : (event.genres ? event.genres.split(',').map(g => g.trim()).filter(g => g !== '') : []);
+
+    const formatArray = Array.isArray(event.format)
+      ? event.format
+      : (event.format ? event.format.split(',').map(f => f.trim()).filter(f => f !== '') : []);
+
     const payload = {
       name: event.title,
-      subtitle: '',
+      subtitle: event.subtitle || '',
       address: event.local,
       manager: 1,
       description: event.description,
       score: 0,
-      image: '',
-      genres: [],
-      format: [],
+      image: event.imageUrl || '',
+      genres: genresArray,
+      format: formatArray,
       contentRating: 'Livre para todos os públicos',
-      copyright: '',
+      copyright: 'Notalise',
       daysID: 1
     };
     // responseType: 'text' pois o backend retorna Ok("Evento criado") que é texto, não JSON
