@@ -20,7 +20,7 @@ public class UserController : ControllerBase
         if (user == null)
             return Unauthorized(new { message = "Email ou senha incorretos" });
 
-        return Ok(new { email = user.Email, role = user.Role });
+        return Ok(new { id = user.Id, name = user.Name, email = user.Email, role = user.Role });
     }
 }
 

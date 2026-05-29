@@ -46,4 +46,8 @@ export class EventService {
   getEventById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
+
+  updateEvent(event: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update`, event, { responseType: 'text' });
+  }
 }

@@ -519,3 +519,51 @@
   flex-wrap: wrap;
   align-items: center;
 }
+
+/* Floating Edit Button */
+.floating-edit-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  background-color: #f97316;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.floating-edit-btn:hover {
+  background-color: #fb923c;
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.6);
+}
+
+.floating-edit-btn:active {
+  transform: scale(0.95);
+}
+
+.floating-edit-btn svg {
+  width: 28px;
+  height: 28px;
+}
+
+@media (max-width: 768px) {
+  .floating-edit-btn {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 50px;
+    height: 50px;
+  }
+
+  .floating-edit-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+}

@@ -6,6 +6,7 @@ import { EventCreate } from './pages/eventCreate/event';
 import { CommentsPage } from './pages/comments/comments';
 import { EventList } from './pages/eventList/eventList';
 import { EStand } from './pages/editionStand/e-stand';
+import { EditionEvent } from './pages/editionEvent/edition-event';
 import { LoginPage } from './pages/login/login';
 import { StatisticsPage } from './pages/Statistics/statistics';
 import { authGuard } from './guards/auth.guard';
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'estande/:id', component: Stand },
   { path: 'editar-estande', component: EStand },
   { path: 'evento/:id', component: Event },
+  { path: 'editar-evento/:id', component: EditionEvent },
   { path: 'criar-evento', component: EventCreate },
   { path: 'comentarios', component: CommentsPage },
   { path: 'login', component: LoginPage },
@@ -38,6 +40,12 @@ export const routes: Routes = [
     component: EStand,
     canActivate: [authGuard, roleGuard],
     data: { roles: ['suporte', 'organizador', 'expositor'] }
+  },
+  {
+    path: 'editar-evento/:id',
+    component: EditionEvent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['suporte', 'organizador', 'usuario', 'expositor'] }
   },
   { path: '**', redirectTo: '' }
 ];

@@ -7,7 +7,7 @@ export interface CommentModel {
   StandId: number;
   Text: string;
   Score: number;
-  UserId?: string;
+  UserId?: number;
   Type?: string;
 }
 
@@ -28,8 +28,7 @@ export class CommentService {
       EventId: comment.eventId || comment.EventId || null,
       Text: comment.text || comment.Text,
       Score: comment.score || comment.Score,
-      //UserId: (comment.userId === '' || comment.UserId === '') ? null : (comment.userId || comment.UserId),
-      UserId: null,
+      UserId: comment.userId || comment.UserId || null,
       Type: (comment.type === '' || comment.Type === '') ? null : (comment.type || comment.Type),
       Date: new Date().toISOString()
     };

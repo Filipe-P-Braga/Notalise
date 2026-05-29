@@ -78,6 +78,7 @@ export class Event implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.isOrganizador = this.authService.getRole() === 'organizador';
+    this.isAnonymous = this.authService.getRole() === 'anonimo';
     console.log('Evento iniciado, carregando dados...');
 
     this.route.paramMap.pipe(

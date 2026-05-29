@@ -14,4 +14,6 @@ public class Comment
     public string? Type { get; set; } // Tipo de comentário
 
     public DateTime Date { get; set; } = DateTime.UtcNow;
+
+    public string? UserName { get; set; }
 }

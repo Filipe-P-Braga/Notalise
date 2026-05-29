@@ -454,7 +454,7 @@ public double GetAverageScoreByEvent(int eventId)
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = "SELECT * FROM Comments";
+        string query = "SELECT c.*, u.Name AS UserName FROM Comments c LEFT JOIN User u ON c.UserID = u.ID";
 
         using var cmd = new MySqlCommand(query, conn);
         using var reader = cmd.ExecuteReader();
@@ -472,7 +472,8 @@ public double GetAverageScoreByEvent(int eventId)
                 UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
 
                 Date = reader.GetDateTime("Date"),
-                Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
+                Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type"),
+                UserName = reader.IsDBNull(reader.GetOrdinal("UserName")) ? null : reader.GetString("UserName")
             });
         }
 
@@ -486,7 +487,7 @@ public double GetAverageScoreByEvent(int eventId)
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = "SELECT * FROM Comments WHERE StandsID=@standId ORDER BY Date DESC";
+        string query = "SELECT c.ID, c.Date, c.StandsID, c.EventID, c.Score, c.UserID, c.Type, c.Text, COALESCE(u.Name, 'Anônimo') AS UserName FROM Comments c LEFT JOIN User u ON c.UserID = u.ID WHERE c.StandsID=@standId ORDER BY c.Date DESC";
 
         using var cmd = new MySqlCommand(query, conn);
         cmd.Parameters.AddWithValue("@standId", standId);
@@ -506,7 +507,8 @@ public double GetAverageScoreByEvent(int eventId)
                 UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
 
                 Date = reader.GetDateTime("Date"),
-                Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
+                Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type"),
+                UserName = reader.IsDBNull(reader.GetOrdinal("UserName")) ? "Anônimo" : reader.GetString("UserName")
             });
         }
 
@@ -521,8 +523,9 @@ public double GetAverageScoreByEvent(int eventId)
         conn.Open();
 
         string query = @"
-            SELECT c.*
+            SELECT c.ID, c.Date, c.StandsID, c.EventID, c.Score, c.UserID, c.Type, c.Text, COALESCE(u.Name, 'Anônimo') AS UserName
             FROM Comments c
+            LEFT JOIN User u ON c.UserID = u.ID
             LEFT JOIN Stands s ON c.StandsID = s.ID
             WHERE c.EventID = @eventId
             ORDER BY c.Date DESC";
@@ -545,7 +548,8 @@ public double GetAverageScoreByEvent(int eventId)
                 UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
 
                 Date = reader.GetDateTime("Date"),
-                Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
+                Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type"),
+                UserName = reader.IsDBNull(reader.GetOrdinal("UserName")) ? "Anônimo" : reader.GetString("UserName")
             });
         }
 
@@ -574,7 +578,7 @@ public double GetAverageScoreByEvent(int eventId)
         using var conn = new MySqlConnection(connectionString);
         conn.Open();
 
-        string query = "SELECT * FROM Comments WHERE ID=@id";
+        string query = "SELECT c.*, u.Name AS UserName FROM Comments c LEFT JOIN User u ON c.UserID = u.ID WHERE c.ID=@id";
 
         using var cmd = new MySqlCommand(query, conn);
         cmd.Parameters.AddWithValue("@id", id);
@@ -594,7 +598,8 @@ public double GetAverageScoreByEvent(int eventId)
                 UserId = reader.IsDBNull(reader.GetOrdinal("UserID")) ? null : reader.GetInt32("UserID"),
 
                 Date = reader.GetDateTime("Date"),
-                Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type")
+                Type = reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader.GetString("Type"),
+                UserName = reader.IsDBNull(reader.GetOrdinal("UserName")) ? null : reader.GetString("UserName")
             };
         }
 
@@ -633,6 +638,7 @@ public double GetAverageScoreByEvent(int eventId)
             return new User
             {
                 Id = reader.GetInt32("ID"),
+                Name = reader.GetString("Name"),
                 Email = reader.GetString("email"),
                 Password = reader.GetString("password"),
                 Role = reader.GetString("Tipo").ToLower()

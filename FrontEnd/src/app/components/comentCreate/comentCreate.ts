@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from '../../services/comment.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-coment-create',
@@ -24,7 +25,7 @@ export class ComentCreateComponent {
   hovered: number = 0;
   stars = [1, 2, 3, 4, 5];
 
-  constructor(private fb: FormBuilder, private commentService: CommentService) {
+  constructor(private fb: FormBuilder, private commentService: CommentService, private authService: AuthService) {
     this.commentForm = this.fb.group({
       text: ['', [Validators.required, Validators.minLength(5)]],
       score: [5, [Validators.required, Validators.min(1), Validators.max(5)]],
@@ -45,9 +46,11 @@ export class ComentCreateComponent {
   onSubmit() {
     this.isSubmitted = true;
     if (this.commentForm.valid) {
+      const user = this.authService.getUser();
       const newComment = {
         [this.entityType === 'stand' ? 'standId' : 'eventId']: this.entityId,
-        ...this.commentForm.value
+        ...this.commentForm.value,
+        userId: user?.id || null
       };
 
       this.commentService.createComment(newComment).subscribe({
