@@ -13,6 +13,8 @@ export class StandCreate implements OnInit {
   standForm: FormGroup;
   isSubmitted = false;
   isSuccess = false;
+  isError = false;
+  feedbackMessage = '';
   eventId!: number;
 
   constructor(
@@ -23,9 +25,8 @@ export class StandCreate implements OnInit {
     this.standForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       subtitle: ['', Validators.required],
+      date: ['', Validators.required],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      coordinator: ['', Validators.required],
-      course: ['', Validators.required],
       imageUrl: ['', Validators.required],
       genres: ['', Validators.required],
       format: ['', Validators.required]
@@ -57,28 +58,35 @@ export class StandCreate implements OnInit {
         name: formValue.name,
         subtitle: formValue.subtitle || '',
         description: formValue.description,
-        local: formValue.course || '',
+        local: '',
         eventId: this.eventId || 1,
-        image: formValue.imageUrl || '',
+        image: formValue.imageUrl || 'https://media.istockphoto.com/id/827247322/pt/vetorial/danger-sign-vector-icon-attention-caution-illustration-business-concept-simple-flat.jpg?s=612x612&w=0&k=20&c=Sh_ACBawrfyU23atGVRvQzB6ql4nyVoKxsbN9ARoU6U=',
         genres: genresArray,
         format: formatArray,
         contentRating: 'Livre para todos os públicos',
         copyright: 'Notalise',
-        daysID: 1
+        daysID: 1,
       };
 
       this.standService.createStand(newStand).subscribe({
         next: (res) => {
           console.log('Estande Cadastrado:', res);
+
           this.isSuccess = true;
+          this.isError = false;
+          this.feedbackMessage = 'Estande cadastrado com sucesso! 🚀';
+
           setTimeout(() => {
-            this.isSuccess = false;
-            this.standForm.reset();
-            this.isSubmitted = false;
-          }, 3000);
+            window.history.back();
+          }, 2000);
         },
+
         error: (err) => {
           console.error('Erro ao cadastrar estande:', err);
+
+          this.isSuccess = false;
+          this.isError = true;
+          this.feedbackMessage = 'Erro ao cadastrar estande.';
         }
       });
     }

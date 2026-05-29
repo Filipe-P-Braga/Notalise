@@ -54,7 +54,7 @@ CREATE TABLE Event (
 INSERT INTO Event (Name, Subtitle, Address, Manager, Description, Score, Image, Genres, Format, ContentRating, Copyright, DaysID)
 VALUES (
     'InovaWeek',
-    'Evento de inovação e tecnologia',
+    'InovaWeek UVV 2026',
     'Vitória - ES',
     1,
     'Evento de inovação e tecnologia',

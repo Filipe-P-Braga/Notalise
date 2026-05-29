@@ -21,13 +21,13 @@
 
       <div class="form-group-row">
         <div class="form-group">
-          <label class="form-label">Curso Responsável</label>
-          <input type="text" formControlName="course" class="form-input" placeholder="Ex: Ciência da Computação" [class.error]="isSubmitted && standForm.get('course')?.invalid"/>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Coordenador/Orientador</label>
-          <input type="text" formControlName="coordinator" class="form-input" placeholder="Nome do professor orientador" [class.error]="isSubmitted && standForm.get('coordinator')?.invalid"/>
+          <label class="form-label">Data de Apresentação</label>
+          <input
+            type="date"
+            formControlName="date"
+            class="form-input"
+            [class.error]="isSubmitted && standForm.get('date')?.invalid"
+          />
         </div>
       </div>
 
@@ -59,8 +59,13 @@
         </button>
       </div>
       
-      <div class="success-message" *ngIf="isSuccess">
-        Estande cadastrado com sucesso! Preparado para receber avaliações no Notalise. 🚀
+      <div
+        class="feedback-message"
+        [class.success-message]="isSuccess"
+        [class.error-message]="isError"
+        *ngIf="feedbackMessage"
+      >
+        {{ feedbackMessage }}
       </div>
 
     </form>

@@ -1,10 +1,10 @@
 INSERT INTO Event (Name, Subtitle, Address, Manager, Description, Score, Image, Genres, Format, ContentRating, Copyright, DaysID)
 VALUES (
     'Google Brasil',
-    '',
+    'Google Event',
     'Google - São Paulo',
     1,
-    'Evento do google pra googlar por ai. Pesquisar coisas pertinentes como porquê o pinguigm não voa e se eu jogar ele de um aviaão ele plana', 
+    'Evento do Google voltado para tecnologia, inovação, inteligência artificial e transformação digital.',
     5.0,
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNy800Zggg7_pv3Ld3JcFbSxNVRLln-h4UYA&s',
     JSON_ARRAY('Tecnologia', 'Inovação'),
@@ -14,7 +14,7 @@ VALUES (
     1
 ), (
     'Tech Expo',
-    '2.000',
+    'Tech 2000',
     'São Paulo - SP',
     2,
     'Exposição de tecnologias emergentes',
@@ -27,7 +27,7 @@ VALUES (
     2
 ),(
     'GameFest',
-    'São Paulo Edition',
+    'SP Edition',
     'Vila Velha - ES',
     2,
     'Festival de jogos e eSports',
@@ -38,6 +38,110 @@ VALUES (
     'Livre para todos os públicos',
     '©Universidade Vila Velha / Notalise',
     3
+),(
+    'Rio Summit Week',
+    'AI Expo',
+    'Vila Velha - ES',
+    2,
+    'Evento focado em Inteligência Artificial, automação, machine learning e inovação tecnológica',
+    4.8,
+    'https://s2.glbimg.com/O_z6ddxuZ6xA28LMpr1-mPMbDY0=/620x300/e.glbimg.com/og/ed/f/original/2022/01/11/rio-innovation-week-1.jpg',
+    JSON_ARRAY('Inteligência Artificial', 'Machine Learning', 'Tecnologia', 'Inovação'),
+    JSON_ARRAY('Presencial'),
+    'Livre para todos os públicos',
+    '©Universidade Vila Velha / Notalise',
+    3
+),(
+    'Brasil AI Summit',
+    'AI Summit',
+    'São Paulo - SP',
+    2,
+    'Evento dedicado à Inteligência Artificial, transformação digital, automação e inovação tecnológica no Brasil',
+    4.9,
+    'https://www.showmetech.com.br/wp-content/uploads//2026/01/image-378-1024x536.webp',
+    JSON_ARRAY('Inteligência Artificial', 'Tecnologia', 'Inovação', 'Machine Learning'),
+    JSON_ARRAY('Presencial'),
+    'Livre para todos os públicos',
+    '©Universidade Vila Velha / Notalise',
+    4
+),(
+    'Minas Summit',
+    'Tech Summit',
+    'Belo Horizonte - MG',
+    2,
+    'Evento voltado para inovação, inteligência artificial, tecnologia e transformação digital com palestras, networking e experiências interativas.',
+    4.7,
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdSzDxXDoDE00E_UDcEFNMYph3N1v_jxveGw&s',
+    JSON_ARRAY('Inteligência Artificial', 'Tecnologia', 'Inovação', 'Networking'),
+    JSON_ARRAY('Presencial'),
+    'Livre para todos os públicos',
+    '©Universidade Vila Velha / Notalise',
+    5
+),(
+    'TDC Experience',
+    'TDC',
+    'Porto Alegre - RS',
+    2,
+    'Evento voltado para desenvolvimento de software, inteligência artificial, inovação, cloud computing e networking entre profissionais da tecnologia.',
+    4.8,
+    'https://www.listadeeventos.com.br/storage/events/77b70b1c-f1fe-42a4-b8ce-d6794234d16d.webp',
+    JSON_ARRAY('Tecnologia', 'Desenvolvimento', 'IA', 'Cloud Computing'),
+    JSON_ARRAY('Presencial'),
+    'Livre para todos os públicos',
+    '©Universidade Vila Velha / Notalise',
+    6
+),(
+    'Digital Tech Show',
+    'Digital Tech',
+    'São Paulo - SP',
+    2,
+    'Evento focado em tecnologia, transformação digital, inteligência artificial, desenvolvimento de software e inovação empresarial.',
+    4.7,
+    'https://docmanagement.com.br/wp-content/uploads/2025/07/DIGITAL-TECH-SHOW-823x450.png',
+    JSON_ARRAY('Tecnologia', 'Inovação', 'Inteligência Artificial', 'Transformação Digital'),
+    JSON_ARRAY('Presencial'),
+    'Livre para todos os públicos',
+    '©Universidade Vila Velha / Notalise',
+    7
+),(
+    'Energy Show',
+    'Energy Expo',
+    'Florianópolis - SC',
+    2,
+    'Evento voltado para inovação, tecnologia e soluções sustentáveis no setor energético, reunindo empresas, startups, especialistas e líderes do mercado de energia.',
+    4.8,
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJMTnpqNpUjrpy8NvdPb4TLRX_KotS5MR4uA&s',
+    JSON_ARRAY('Energia', 'Tecnologia', 'Sustentabilidade', 'Inovação'),
+    JSON_ARRAY('Presencial', 'Online'),
+    'Livre para todos os públicos',
+    '©Universidade Vila Velha / Notalise',
+    8
+),(
+    'CSBC',
+    'Computação',
+    'Gramado - RS',
+    2,
+    'Evento acadêmico e tecnológico voltado para computação, inteligência artificial, inovação, pesquisa científica e desenvolvimento tecnológico no Brasil.',
+    4.9,
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAAjlcP7T4hFQmFuE07oZ2aqf-91N0tezUyw&s',
+    JSON_ARRAY('Computação', 'Tecnologia', 'Inteligência Artificial', 'Pesquisa'),
+    JSON_ARRAY('Presencial'),
+    'Livre para todos os públicos',
+    '©Universidade Vila Velha / Notalise',
+    9
+),(
+    'WPMC',
+    'Mobile Computing',
+    'Natal - RN',
+    2,
+    'Evento internacional voltado para computação móvel, redes sem fio, inteligência artificial, inovação tecnológica e pesquisas acadêmicas na área de tecnologia.',
+    4.8,
+    'https://arquivista.imd.ufrn.br/fileservice/file/019e2663-ef47-713e-9a1d-314440c36fd4?key=f72e37212fb44d8d077ad4f5667ad72df2a66eb5ecedb2357e6509319e14fdf0',
+    JSON_ARRAY('Computação', 'Redes', 'Tecnologia', 'Inteligência Artificial'),
+    JSON_ARRAY('Presencial'),
+    'Livre para todos os públicos',
+    '©Universidade Vila Velha / Notalise',
+    10
 );
 
 SELECT * FROM `Event`;
