@@ -136,6 +136,7 @@ export class Stand implements OnInit, OnDestroy {
           comments
         };
 
+        const ratings = this.calculateRatings(comments, stand.score);
 
         this.eventData = {
           title: stand.name,
@@ -153,9 +154,9 @@ export class Stand implements OnInit, OnDestroy {
             'Universitário'
           ],
 
-          averageRating: stand.score || 0,
+          averageRating: ratings.averageRating,
 
-          totalRatings: '21.5K',
+          totalRatings: ratings.totalRatings,
 
           synopsis: stand.description,
 
@@ -188,6 +189,22 @@ export class Stand implements OnInit, OnDestroy {
 
   }
 
+  calculateRatings(comments: any[], fallbackScore: number): { averageRating: number, totalRatings: string } {
+    const commentsList = comments || [];
+    const totalRatingsCount = commentsList.length;
+    let averageRating = 0;
+    if (totalRatingsCount > 0) {
+      const totalScore = commentsList.reduce((sum: number, c: any) => sum + (c.score || c.Score || 0), 0);
+      averageRating = parseFloat((totalScore / totalRatingsCount).toFixed(1));
+    } else {
+      averageRating = fallbackScore || 0;
+    }
+    return {
+      averageRating,
+      totalRatings: totalRatingsCount.toString()
+    };
+  }
+
   loadComments(id: number) {
 
     this.commentService.getCommentsByStandId(id).pipe(
@@ -202,6 +219,19 @@ export class Stand implements OnInit, OnDestroy {
           ...this.selectedStand,
           comments: data
         };
+
+        const ratings = this.calculateRatings(data, this.selectedStand?.score);
+
+        this.eventData = {
+          ...this.eventData,
+          averageRating: ratings.averageRating,
+          totalRatings: ratings.totalRatings
+        };
+
+        const roundedScore =
+          Math.round(this.eventData.averageRating);
+
+        this.stars = Array(roundedScore).fill(0);
 
         this.cdr.markForCheck();
       },

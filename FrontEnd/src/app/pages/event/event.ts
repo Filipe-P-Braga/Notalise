@@ -117,6 +117,8 @@ export class Event implements OnInit, OnDestroy {
 
         console.log('Evento carregado:', event);
 
+        const ratings = this.calculateRatings(comments, event.score);
+
         this.eventData = {
 
           eventId: event.id || 0,
@@ -139,9 +141,9 @@ export class Event implements OnInit, OnDestroy {
             'Universitário'
           ],
 
-          averageRating: event.score || 0,
+          averageRating: ratings.averageRating,
 
-          totalRatings: '21.5K',
+          totalRatings: ratings.totalRatings,
 
           synopsis: event.description,
 
@@ -194,6 +196,23 @@ export class Event implements OnInit, OnDestroy {
     });
 
   }
+
+  calculateRatings(comments: any[], fallbackScore: number): { averageRating: number, totalRatings: string } {
+    const commentsList = comments || [];
+    const totalRatingsCount = commentsList.length;
+    let averageRating = 0;
+    if (totalRatingsCount > 0) {
+      const totalScore = commentsList.reduce((sum: number, c: any) => sum + (c.score || c.Score || 0), 0);
+      averageRating = parseFloat((totalScore / totalRatingsCount).toFixed(1));
+    } else {
+      averageRating = fallbackScore || 0;
+    }
+    return {
+      averageRating,
+      totalRatings: totalRatingsCount.toString()
+    };
+  }
+
   loadComments(id: number) {
 
     this.commentService.getCommentsByEventId(id).pipe(
@@ -204,10 +223,22 @@ export class Event implements OnInit, OnDestroy {
 
       next: (data) => {
 
+        const ratings = this.calculateRatings(data, this.eventData?.averageRating);
+
         this.eventData = {
           ...this.eventData,
+          averageRating: ratings.averageRating,
+          totalRatings: ratings.totalRatings,
           comments: data
         };
+
+        const roundedScore =
+          Math.round(
+            this.eventData.averageRating
+          );
+
+        this.stars =
+          Array(roundedScore).fill(0);
 
         this.cdr.markForCheck();
       },
