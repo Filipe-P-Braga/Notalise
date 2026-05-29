@@ -39,7 +39,9 @@ export class LoginPage {
     })
     .then((data) => {
       const role: UserRole = data.role ?? 'usuario';
-      this.authService.login(data.email ?? this.email, role);
+      const id = data.id ?? null;
+      const name = data.name ?? data.email ?? this.email;
+      this.authService.login(id, name, data.email ?? this.email, role);
       this.router.navigate(['/']);
     })
     .catch((err: Error) => {
