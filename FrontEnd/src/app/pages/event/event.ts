@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';  
+import { Subject } from 'rxjs';
 
 import { Comments } from '../../components/comments/comments';
 import { ComentCreateComponent } from '../../components/comentCreate/comentCreate';
@@ -31,6 +31,7 @@ export class Event implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   isOrganizador: boolean = false;
+  isAnonymous: boolean = false;
   eventData = {
     eventId: 0,
     title: '',
@@ -70,11 +71,11 @@ export class Event implements OnInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private authService: AuthService
-  , private commentService: CommentService) { }
-  
+    , private commentService: CommentService) { }
+
   onImageError(event: any) {
-  event.target.src = 'ShowInova.jpg';
-}
+    event.target.src = 'ShowInova.jpg';
+  }
   ngOnInit(): void {
     this.isOrganizador = this.authService.getRole() === 'organizador';
     console.log('Evento iniciado, carregando dados...');
@@ -253,7 +254,7 @@ export class Event implements OnInit, OnDestroy {
     });
 
   }
-  
+
   onCommentCreated() {
 
     if (!this.eventData?.eventId) return;

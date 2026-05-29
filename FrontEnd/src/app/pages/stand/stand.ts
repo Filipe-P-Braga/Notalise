@@ -43,6 +43,8 @@ export class Stand implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   isOrganizador: boolean = false;
+  isAnonymous: boolean = false;
+
   selectedStand: any;
 
   eventData = {
@@ -99,6 +101,7 @@ export class Stand implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.isOrganizador = this.authService.getRole() === 'organizador';
+    this.isAnonymous = this.authService.getRole() === 'anonimo';
 
     this.route.paramMap.pipe(
 
