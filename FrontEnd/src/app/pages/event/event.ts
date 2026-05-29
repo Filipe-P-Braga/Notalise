@@ -284,7 +284,7 @@ export class Event implements OnInit, OnDestroy {
 
   scrollToStands() {
     setTimeout(() => {
-      const el = document.getElementById('stands-section');
+      const el = document.getElementById('create-comment-section');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
