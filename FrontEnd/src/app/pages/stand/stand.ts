@@ -87,7 +87,7 @@ export class Stand implements OnInit, OnDestroy {
   scrollToComments() {
     // Pequeno delay para garantir que a renderização ocorra antes do scroll
     setTimeout(() => {
-      const el = document.getElementById('comments-section');
+      const el = document.getElementById('create-comment-section');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }

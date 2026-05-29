@@ -90,8 +90,11 @@
 </div>
 
 <app-comments id="comments-section" [comments]="selectedStand.comments"></app-comments>
-<app-coment-create [entityId]="selectedStand.id" entityType="stand"
-  (commentCreated)="onCommentCreated()"></app-coment-create>
+
+<div id="create-comment-section">
+  <app-coment-create [entityId]="selectedStand.id" entityType="stand"
+    (commentCreated)="onCommentCreated()"></app-coment-create>
+</div>
 
 <app-qrcode *ngIf="isOrganizador" [value]="'https://diane-fossil-utilize-student.trycloudflare.com'"></app-qrcode>
 
